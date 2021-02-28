@@ -1,4 +1,4 @@
-package com.nurverek.thunderbolt;
+package com.nurverek.cerberus;
 
 import android.opengl.Matrix;
 
@@ -13,16 +13,7 @@ import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
 import com.nurverek.vanguard.VLVariable;
 
-public final class Camera{
-
-    private static final float DISTANCE_FROM_PLATFORM_ASCEND = 5F;
-    private static final float DISTANCE_REVEAL_PLATFORM = 5F;
-    private static final float DISTANCE_FROM_PLATFORM_FINAL = 2F;
-
-    private static final int CYCLES_CAMERA_PLACEMENT = 100;
-
-    private static final VLVCurved.Curve CURVE_CAMERA_PLACEMENT = VLVCurved.CURVE_ACC_DEC_COS;
-    private static final VLVCurved.Curve CURVE_DESCEND = VLVCurved.CURVE_ACC_DEC_COS;
+public final class CBCamera{
 
     private static VLVRunner controllerview;
     private static VLVRunner controllerpos;
@@ -32,7 +23,7 @@ public final class Camera{
     private static VLVRunner controllernear;
     private static VLVRunner controllerfar;
 
-    public static void initialize(Gen gen){
+    public static void initialize(){
         controllerfov = new VLVRunner(1, 5);
         controlleraspect = new VLVRunner(1, 5);
         controllernear = new VLVRunner(1, 5);
@@ -48,36 +39,6 @@ public final class Camera{
         FSR.getControlManager().add(controllerpos);
         FSR.getControlManager().add(controllerview);
         FSR.getControlManager().add(controllerrotate);
-    }
-
-    public static void descend(Runnable post){
-        final float platformy = City1.platform.instance(0).modelMatrix().getY(0).get();
-        final float initialvalue = platformy + DISTANCE_FROM_PLATFORM_ASCEND;
-
-        position(0F, 4000F, 0.01F);
-        lookAt(0F, -1000F, 0F);
-
-        movePosition(0F, initialvalue, -0.01F, 0, 10, CURVE_DESCEND, post);
-        moveView(0F, initialvalue - 10F, 0, 0, 10, CURVE_DESCEND, null);
-    }
-
-    public static void riseWithPlatform(final Gen gen){
-        Light.setForPlatformRise(gen);
-
-        movePosition(0F, DISTANCE_REVEAL_PLATFORM, -0.01F, Platform.DELAY_RISE, Platform.CYCLES_RISE, Platform.CURVE_RISE, new Runnable(){
-
-            @Override
-            public void run(){
-                Light.radiateForPuzzle(gen, 0, 60);
-                lookAtPuzzle(0, 100);
-            }
-        });
-    }
-
-    public static void lookAtPuzzle(int delay, int cycles){
-        moveView(0F, 0F, 0F, delay, cycles, CURVE_CAMERA_PLACEMENT, null);
-        movePosition(0F, DISTANCE_FROM_PLATFORM_FINAL, -0.01F, delay, cycles, CURVE_CAMERA_PLACEMENT, null);
-        moveNear(0.1F, delay, cycles, CURVE_CAMERA_PLACEMENT, null);
     }
 
     public static void perspective(float fov, float aspect, float near, float far){
@@ -271,7 +232,9 @@ public final class Camera{
         controllerview.start();
     }
 
-    public static void rotate(float fromangle, float toangle, float rotationx, float rotationy, float rotationz, int delay, int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
+    public static void rotate(float fromangle, float toangle, float rotationx, float rotationy, float rotationz, int delay,
+                              int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
+
         final float[] settings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
 
         VLVCurved angle = new VLVCurved(fromangle, toangle, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
@@ -305,21 +268,49 @@ public final class Camera{
         controllerrotate.start();
     }
 
-    public static void stopPosition(){
-        controllerpos.clear();
-    }
+    private static VLVRunner controllerview;
+    private static VLVRunner controllerpos;
+    private static VLVRunner controllerrotate;
+    private static VLVRunner controllerfov;
+    private static VLVRunner controlleraspect;
+    private static VLVRunner controllernear;
+    private static VLVRunner controllerfar;
 
     public static void stopView(){
         controllerview.clear();
+    }
+
+    public static void stopPosition(){
+        controllerpos.clear();
     }
 
     public static void stopRotation(){
         controllerrotate.clear();
     }
 
+    public static void stopFOV(){
+        controllerfov.clear();
+    }
+
+    public static void stopAspect(){
+        controlleraspect.clear();
+    }
+
+    public static void stopNear(){
+        controllernear.clear();
+    }
+
+    public static void stopFar(){
+        controllerfar.clear();
+    }
+
     public static void stop(){
         stopPosition();
         stopView();
         stopRotation();
+        stopFOV();
+        stopAspect();
+        stopNear();
+        stopFar();
     }
 }
