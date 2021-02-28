@@ -9,89 +9,36 @@ import com.nurverek.vanguard.VLTask;
 import com.nurverek.vanguard.VLTaskContinous;
 import com.nurverek.vanguard.VLVControl;
 import com.nurverek.vanguard.VLVCurved;
+import com.nurverek.vanguard.VLVManager;
 import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
 import com.nurverek.vanguard.VLVariable;
 
-public final class CBCamera{
+public final class CBView{
 
-    private static VLVRunner controllerview;
-    private static VLVRunner controllerpos;
-    private static VLVRunner controllerrotate;
-    private static VLVRunner controllerfov;
-    private static VLVRunner controlleraspect;
-    private static VLVRunner controllernear;
-    private static VLVRunner controllerfar;
+    private CBAnimator animator;
+    private FSViewConfig target;
+    
+    public CBView(FSViewConfig target){
+        this.target = target;
 
-    public static void initialize(){
-        controllerfov = new VLVRunner(1, 5);
-        controlleraspect = new VLVRunner(1, 5);
-        controllernear = new VLVRunner(1, 5);
-        controllerfar = new VLVRunner(1, 5);
-        controllerpos = new VLVRunner(4, 5);
-        controllerview = new VLVRunner(4, 5);
-        controllerrotate = new VLVRunner(1, 5);
-
-        FSR.getControlManager().add(controllerfov);
-        FSR.getControlManager().add(controlleraspect);
-        FSR.getControlManager().add(controllernear);
-        FSR.getControlManager().add(controllerfar);
-        FSR.getControlManager().add(controllerpos);
-        FSR.getControlManager().add(controllerview);
-        FSR.getControlManager().add(controllerrotate);
+        animator = new CBAnimator(FSR.getControlManager(), 7, 0);
+        animator.add(3, 0);
+        animator.register(0, ,,0);
     }
 
-    public static void perspective(float fov, float aspect, float near, float far){
-        FSViewConfig config = FSControl.getViewConfig();
-        config.perspective(fov, aspect, near, far);
-        config.updateViewProjection();
+    public void target(FSViewConfig target){
+        this.target = target;
     }
 
-    public static void fov(float fov){
-        FSViewConfig config = FSControl.getViewConfig();
-        float[] settings = config.perspectiveSettings().provider();
-        config.perspective(fov, settings[1], settings[2], settings[3]);
-        config.updateViewProjection();
+    public FSViewConfig target(){
+        return target;
     }
 
-    public static void aspect(float aspect){
-        FSViewConfig config = FSControl.getViewConfig();
-        float[] settings = config.perspectiveSettings().provider();
-        config.perspective(settings[0], aspect, settings[2], settings[3]);
-        config.updateViewProjection();
-    }
+    public void movePosition(float x, float y, float z, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        final float[] orgviewsettings = target.viewMatrixSettings().provider().clone();
 
-    public static void near(float near){
-        FSViewConfig config = FSControl.getViewConfig();
-        float[] settings = config.perspectiveSettings().provider();
-        config.perspective(settings[0], settings[1], near, settings[3]);
-        config.updateViewProjection();
-    }
-
-    public static void far(float far){
-        FSViewConfig config = FSControl.getViewConfig();
-        float[] settings = config.perspectiveSettings().provider();
-        config.perspective(settings[0], settings[1], settings[2], far);
-        config.updateViewProjection();
-    }
-
-    public static void position(float x, float y, float z){
-        FSViewConfig config = FSControl.getViewConfig();
-        config.eyePosition(x, y, z);
-        config.lookAtUpdate();
-        config.updateViewProjection();
-    }
-
-    public static void lookAt(float viewx, float viewy, float viewz){
-        FSViewConfig config = FSControl.getViewConfig();
-        config.lookAt(viewx, viewy, viewz, 0f, 1f, 0f);
-        config.updateViewProjection();
-    }
-
-    public static void movePosition(float x, float y, float z, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        final float[] orgviewsettings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
-
-        VLVCurved controlx = new VLVCurved(orgviewsettings[0], x, cycles, VLVariable.LOOP_NONE, curve);
+        VLVCurved controlx = ;
         VLVCurved controly = new VLVCurved(orgviewsettings[1], y, cycles, VLVariable.LOOP_NONE, curve);
         VLVCurved controlz = new VLVCurved(orgviewsettings[2], z, cycles, VLVariable.LOOP_NONE, curve);
 
@@ -118,8 +65,8 @@ public final class CBCamera{
         controllerpos.start();
     }
 
-    public static void moveFOV(float fov, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        VLVCurved control = new VLVCurved(FSControl.getViewConfig().perspectiveSettings().get(0), fov, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
+    public void moveFOV(float fov, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        VLVCurved control = new VLVCurved(target.perspectiveSettings().get(0), fov, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
 
             @Override
             public void run(VLTask task, VLVariable var){
@@ -139,8 +86,8 @@ public final class CBCamera{
         controllerfov.start();
     }
 
-    public static void moveAspect(float aspect, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        VLVCurved control = new VLVCurved(FSControl.getViewConfig().perspectiveSettings().get(1), aspect, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
+    public void moveAspect(float aspect, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        VLVCurved control = new VLVCurved(target.perspectiveSettings().get(1), aspect, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
 
             @Override
             public void run(VLTask task, VLVariable var){
@@ -160,8 +107,8 @@ public final class CBCamera{
         controlleraspect.start();
     }
 
-    public static void moveNear(float near, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        VLVCurved control = new VLVCurved(FSControl.getViewConfig().perspectiveSettings().get(2), near, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
+    public void moveNear(float near, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        VLVCurved control = new VLVCurved(target.perspectiveSettings().get(2), near, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
 
             @Override
             public void run(VLTask task, VLVariable var){
@@ -181,8 +128,8 @@ public final class CBCamera{
         controllernear.start();
     }
 
-    public static void moveFar(float far, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        VLVCurved control = new VLVCurved(FSControl.getViewConfig().perspectiveSettings().get(3), far, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
+    public void moveFar(float far, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        VLVCurved control = new VLVCurved(target.perspectiveSettings().get(3), far, cycles, VLVariable.LOOP_NONE, curve, new VLTaskContinous(new VLTask.Task(){
 
             @Override
             public void run(VLTask task, VLVariable var){
@@ -202,8 +149,8 @@ public final class CBCamera{
         controllerfar.start();
     }
 
-    public static void moveView(float viewx, float viewy, float viewz, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
-        final float[] orgviewsettings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
+    public void moveView(float viewx, float viewy, float viewz, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+        final float[] orgviewsettings = target.viewMatrixSettings().provider().clone();
 
         VLVCurved controlviewx = new VLVCurved(orgviewsettings[3], viewx, cycles, VLVariable.LOOP_NONE, curve);
         VLVCurved controlviewy = new VLVCurved(orgviewsettings[4], viewy, cycles, VLVariable.LOOP_NONE, curve);
@@ -232,10 +179,10 @@ public final class CBCamera{
         controllerview.start();
     }
 
-    public static void rotate(float fromangle, float toangle, float rotationx, float rotationy, float rotationz, int delay,
+    public void rotate(float fromangle, float toangle, float rotationx, float rotationy, float rotationz, int delay,
                               int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
 
-        final float[] settings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
+        final float[] settings = target.viewMatrixSettings().provider().clone();
 
         VLVCurved angle = new VLVCurved(fromangle, toangle, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
 
@@ -243,16 +190,15 @@ public final class CBCamera{
 
             @Override
             public void run(VLTask task, VLVariable var){
-                FSViewConfig config = FSControl.getViewConfig();
-                final float[] pos = config.eyePosition().provider();
+                final float[] pos = target.eyePosition().provider();
 
                 Matrix.setIdentityM(cache, 0);
                 Matrix.rotateM(cache, 0, var.get(), rotationx, rotationy, rotationz);
                 Matrix.multiplyMV(pos, 0, cache, 0, settings, 0);
 
-                config.eyePositionUpdate();
-                config.lookAtUpdate();
-                config.updateViewProjection();
+                target.eyePositionUpdate();
+                target.lookAtUpdate();
+                target.updateViewProjection();
 
                 if(!var.active()){
                     controllerrotate.clear();
@@ -267,44 +213,36 @@ public final class CBCamera{
         controllerrotate.add(new VLVRunnerEntry(angle, delay));
         controllerrotate.start();
     }
-
-    private static VLVRunner controllerview;
-    private static VLVRunner controllerpos;
-    private static VLVRunner controllerrotate;
-    private static VLVRunner controllerfov;
-    private static VLVRunner controlleraspect;
-    private static VLVRunner controllernear;
-    private static VLVRunner controllerfar;
-
-    public static void stopView(){
+    
+    public void stopView(){
         controllerview.clear();
     }
 
-    public static void stopPosition(){
+    public void stopPosition(){
         controllerpos.clear();
     }
 
-    public static void stopRotation(){
+    public void stopRotation(){
         controllerrotate.clear();
     }
 
-    public static void stopFOV(){
+    public void stopFOV(){
         controllerfov.clear();
     }
 
-    public static void stopAspect(){
+    public void stopAspect(){
         controlleraspect.clear();
     }
 
-    public static void stopNear(){
+    public void stopNear(){
         controllernear.clear();
     }
 
-    public static void stopFar(){
+    public void stopFar(){
         controllerfar.clear();
     }
 
-    public static void stop(){
+    public void stop(){
         stopPosition();
         stopView();
         stopRotation();

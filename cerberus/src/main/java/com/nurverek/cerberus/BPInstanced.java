@@ -1,4 +1,4 @@
-package com.nurverek.thunderbolt;
+package com.nurverek.cerberus;
 
 import android.opengl.GLES32;
 
@@ -23,25 +23,25 @@ public class BPInstanced extends CustomBluePrint{
     public BPInstanced(FSG gen, int maxinstancecount){
         this.maxinstancecount = maxinstancecount;
 
-        bindpointoffset = Gen.UBOBINDPOINT;
-        Gen.UBOBINDPOINT++;
+        bindpointoffset = com.nurverek.thunderbolt.Gen.UBOBINDPOINT;
+        com.nurverek.thunderbolt.Gen.UBOBINDPOINT++;
 
         initialize(gen);
     }
 
     @Override
     protected void createPrograms(){
-        program = new FSP(Gen.DEBUG_MODE_PROGRAMS);
-        program.modify(new ModModel.UBO(1, maxinstancecount), FSConfig.POLICY_ALWAYS);
+        program = new FSP(com.nurverek.thunderbolt.Gen.DEBUG_MODE_PROGRAMS);
+        program.modify(new com.nurverek.thunderbolt.ModModel.UBO(1, maxinstancecount), FSConfig.POLICY_ALWAYS);
         program.modify(new com.shayan.shapecity.ModColor.UBO(1, maxinstancecount), FSConfig.POLICY_ALWAYS);
-        program.modify(new com.shayan.shapecity.ModLight.Point(Gen.GAMMA, null, Gen.BRIGHTNESS, Gen.light, null, com.shayan.shapecity.Material.MATERIAL_WHITE_RUBBER.getGLSLSize()), FSConfig.POLICY_ALWAYS);
+        program.modify(new com.shayan.shapecity.ModLight.Point(com.nurverek.thunderbolt.Gen.GAMMA, null, com.nurverek.thunderbolt.Gen.BRIGHTNESS, com.nurverek.thunderbolt.Gen.light, null, com.shayan.shapecity.Material.MATERIAL_WHITE_RUBBER.getGLSLSize()), FSConfig.POLICY_ALWAYS);
         program.addMeshConfig(new FSP.DrawElementsInstanced(FSConfig.POLICY_ALWAYS, 0));
         program.build();
     }
 
     @Override
     protected void attachPrograms(FSG gen){
-        gen.programSet(Gen.MAIN_PROGRAMSET).add(program);
+        gen.programSet(com.nurverek.thunderbolt.Gen.MAIN_PROGRAMSET).add(program);
     }
 
     @Override
@@ -101,12 +101,12 @@ public class BPInstanced extends CustomBluePrint{
         layout.add(manager, colorbuffer, 1)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_SEQUENTIAL_INSTANCED, FSG.ELEMENT_COLOR));
 
-        layout.add(manager, Gen.BUFFER_ARRAY_FLOAT_DEFAULT, 3)
+        layout.add(manager, com.nurverek.thunderbolt.Gen.BUFFER_ARRAY_FLOAT_DEFAULT, 3)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_POSITION))
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_TEXCOORD))
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_NORMAL));
 
-        layout.add(manager, Gen.BUFFER_ELEMENT_SHORT_DEFAULT, 1)
+        layout.add(manager, com.nurverek.thunderbolt.Gen.BUFFER_ELEMENT_SHORT_DEFAULT, 1)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_SEQUENTIAL_INDICES, FSG.ELEMENT_INDEX));
 
         return layout;

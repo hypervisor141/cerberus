@@ -1,4 +1,4 @@
-package com.nurverek.thunderbolt;
+package com.nurverek.cerberus;
 
 import com.nurverek.firestorm.FSBrightness;
 import com.nurverek.firestorm.FSConfig;

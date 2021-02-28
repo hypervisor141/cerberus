@@ -3,6 +3,10 @@ package com.nurverek.cerberus;
 import android.opengl.Matrix;
 
 import com.nurverek.firestorm.FSAttenuation;
+import com.nurverek.firestorm.FSLight;
+import com.nurverek.firestorm.FSLightDirect;
+import com.nurverek.firestorm.FSLightPoint;
+import com.nurverek.firestorm.FSLightSpot;
 import com.nurverek.firestorm.FSR;
 import com.nurverek.vanguard.VLTask;
 import com.nurverek.vanguard.VLTaskContinous;
@@ -13,46 +17,23 @@ import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
 import com.nurverek.vanguard.VLVariable;
 
-public final class Light{
+public final class CBLight{
 
     private VLVRunner controllerpos;
-    private VLVRunner controllerradius;
     private VLVRunner controllerotate;
     private VLVManager root;
 
-    public static void initialize(){
+    public CBLight(FSLight target){
+        this.target = target;
+
         controllerpos = new VLVRunner(10, 10);
-        controllerradius = new VLVRunner(10, 10);
         controllerotate = new VLVRunner(10, 10);
 
         root.add(controllerpos);
         root.add(controllerradius);
         root.add(controllerotate);
     }
-
-    public static void descend(com.nurverek.thunderbolt.Gen gen){
-        position(gen, 0F, 0F, 0F);
-        radiate(gen, 10000F);
-
-        moveRadius(gen, 20F, 0, 200, CURVE_DEFAULT, null);
-    }
-
-    public static void setForPlatformRise(com.nurverek.thunderbolt.Gen gen){
-        position(gen,0F, 0F, 0F);
-        radiate(gen,20F);
-    }
-
-    public static void radiateForPuzzle(final com.nurverek.thunderbolt.Gen gen, int delay, int cycles){
-        moveRadius(gen, 1.5F, delay, cycles, CURVE_DEFAULT, null);
-        movePosition(gen, 0.1F, 1.5F, 0.1F, delay, cycles, CURVE_DEFAULT, new Runnable(){
-
-            @Override
-            public void run(){
-                rotate(gen,0F, 360F, 0F, 1F, 0F,0,300, VLVCurved.CURVE_LINEAR, VLVariable.LOOP_FORWARD, null);
-            }
-        });
-    }
-
+    
     public static void position(com.nurverek.thunderbolt.Gen gen, float x, float y, float z){
         float[] pos = gen.light.position().provider();
 
@@ -61,11 +42,11 @@ public final class Light{
         pos[2] = z;
     }
 
-    public static void radiate(com.nurverek.thunderbolt.Gen gen, float radius){
+    public static void radius(com.nurverek.thunderbolt.Gen gen, float radius){
         ((FSAttenuation.Radius)gen.light.attenuation()).radius().set(radius);
     }
 
-    public static void movePosition(final com.nurverek.thunderbolt.Gen gen, float x, float y, float z, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+    public static void movePosition(float x, float y, float z, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
         final float[] orgpos = gen.light.position().provider().clone();
 
         VLVCurved controlx = new VLVCurved(orgpos[0], x, cycles, VLVariable.LOOP_NONE, curve);
@@ -95,7 +76,7 @@ public final class Light{
         controllerpos.start();
     }
 
-    public static void moveRadius(final com.nurverek.thunderbolt.Gen gen, float radius, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
+    public static void moveRadius(float radius, int delay, int cycles, VLVCurved.Curve curve, final Runnable post){
         float orgradius = ((FSAttenuation.Radius)gen.light.attenuation()).radius().get();
         VLVCurved controlradius = new VLVCurved(orgradius, radius, cycles, VLVariable.LOOP_NONE, curve);
 
@@ -120,7 +101,7 @@ public final class Light{
         controllerradius.start();
     }
 
-    public static void rotate(final com.nurverek.thunderbolt.Gen gen, float fromangle, float toangle, final float x, final float y, final float z, int delay, int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
+    public static void rotate(float fromangle, float toangle, final float x, final float y, final float z, int delay, int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
         final float[] orgpos = gen.light.position().provider().clone();
 
         VLVCurved angle = new VLVCurved(fromangle, toangle, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){

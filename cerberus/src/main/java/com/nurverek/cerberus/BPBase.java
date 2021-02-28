@@ -1,4 +1,4 @@
-package com.nurverek.thunderbolt;
+package com.nurverek.cerberus;
 
 import android.opengl.GLES32;
 
