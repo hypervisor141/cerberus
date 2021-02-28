@@ -1,2 +1,5 @@
+include ':vanguard'
+include ':firestorm'
+include ':cerberus'
 include ':app'
 rootProject.name = "cerberus"
