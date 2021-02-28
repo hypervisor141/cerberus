@@ -4,7 +4,7 @@ import com.nurverek.firestorm.FSLightMaterial;
 import com.nurverek.vanguard.VLArrayFloat;
 import com.nurverek.vanguard.VLFloat;
 
-public final class Material{
+public final class CEMaterial{
 
     public static final FSLightMaterial EMERALD = new FSLightMaterial(
             new VLArrayFloat(new float[]{ 0.0215F, 0.1745F, 0.0215F }),
