@@ -7,14 +7,11 @@ import com.nurverek.firestorm.FSViewConfig;
 import com.nurverek.vanguard.VLListType;
 import com.nurverek.vanguard.VLTask;
 import com.nurverek.vanguard.VLTaskContinous;
-import com.nurverek.vanguard.VLVControl;
 import com.nurverek.vanguard.VLVCurved;
 import com.nurverek.vanguard.VLVDynamicTree;
 import com.nurverek.vanguard.VLVManager;
 import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
-import com.nurverek.vanguard.VLVTypeManager;
-import com.nurverek.vanguard.VLVTypeRunner;
 import com.nurverek.vanguard.VLVariable;
 
 public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLVRunner>>{
@@ -22,7 +19,7 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
     public static final int BRANCH_POSITION = 0;
     public static final int BRANCH_PESPECTIVE = 1;
     public static final int BRANCH_LOOKAT = 2;
-    public static final int BRANCH_ROTATION_ANGLE = 3;
+    public static final int BRANCH_ROTATION = 3;
     
     public static final int NODE_POSITION_X = 0;
     public static final int NODE_POSITION_Y = 1;
@@ -44,6 +41,18 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
     protected CLViewConfig(VLVManager registrar, FSViewConfig target){
         super(registrar, 7);
         this.target = target;
+    }
+
+    public void target(FSViewConfig target){
+        this.target = target;
+    }
+
+    public FSViewConfig target(){
+        return target;
+    }
+
+    public VLVCurved get(int branch, int node){
+        return (VLVCurved)root.get(branch).get(node).target;
     }
 
     @Override
@@ -68,49 +77,6 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
         VLVRunner rview = new VLVRunner(3, 0);
         VLVRunner rrotate = new VLVRunner(1, 0);
 
-        posz.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                position(posx.get(), posy.get(), posz.get());
-            }
-        }));
-        fov.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                fov(var.get());
-            }
-        }));
-        aspect.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                aspect(var.get());
-            }
-        }));
-        near.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                near(var.get());
-            }
-        }));
-        far.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                far(var.get());
-            }
-        }));
-        viewz.setTask(new VLTaskContinous(new VLTask.Task(){
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                lookAt(viewx.get(), viewy.get(), viewz.get());
-            }
-        }));
-
         rpos.add(new VLVRunnerEntry(posx, 0));
         rpos.add(new VLVRunnerEntry(posy, 0));
         rpos.add(new VLVRunnerEntry(posz, 0));
@@ -132,16 +98,14 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
         branches.add(rrotate);
     }
 
-    public void target(FSViewConfig target){
-        this.target = target;
-    }
-    
-    public FSViewConfig target(){
-        return target;
-    }
-
-    public VLVCurved get(int branch, int node){
-        return (VLVCurved)root.get(branch).get(node).target;
+    private void tune(int branch, int node, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, VLTask task){
+        VLVCurved target = get(branch, node);
+        target.setFrom(from);
+        target.setTo(to);
+        target.initialize(cycles);
+        target.setCurve(curve);
+        target.setLoop(loop);
+        target.setTask(task);
     }
 
     public void position(float x, float y, float z){
@@ -188,26 +152,150 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
         target.updateViewProjection();
     }
 
-    public void animate(int branch, int node, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        activate(branch);
+    public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_POSITION, NODE_POSITION_X, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
 
-        VLVCurved target = get(branch, node);
-        target.setFrom(from);
-        target.setTo(to);
-        target.initialize(cycles);
-        target.setCurve(curve);
-        target.setLoop(loop);
+            @Override
+            public void run(VLTask task, VLVariable var){
+                position(get(BRANCH_POSITION, NODE_POSITION_X).get(), get(BRANCH_POSITION, NODE_POSITION_Y).get(), get(BRANCH_POSITION, NODE_POSITION_Z).get());
 
-        if(post != null){
-            target.setTask(new VLTask.TaskGroup<VLVariable>(tasks, 0));
-        }
-
-        root.start();
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
     }
 
-    public void rotate(float fromangle, float toangle, float rotationx, float rotationy, float rotationz, int delay, int cycles, VLVCurved.Curve curve, VLVariable.Loop loop, final Runnable post){
+    public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_POSITION, NODE_POSITION_Y, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                position(get(BRANCH_POSITION, NODE_POSITION_X).get(), get(BRANCH_POSITION, NODE_POSITION_Y).get(), get(BRANCH_POSITION, NODE_POSITION_Z).get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_POSITION, NODE_POSITION_Z, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                position(get(BRANCH_POSITION, NODE_POSITION_X).get(), get(BRANCH_POSITION, NODE_POSITION_Y).get(), get(BRANCH_POSITION, NODE_POSITION_Z).get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void fov(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_PESPECTIVE, NODE_PERSPECTIVE_FOV, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                fov(var.get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void aspect(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_PESPECTIVE, NODE_PERSPECTIVE_FOV, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                aspect(var.get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void near(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_PESPECTIVE, NODE_PERSPECTIVE_NEAR, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                near(var.get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void far(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_PESPECTIVE, NODE_PERSPECTIVE_FAR, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                far(var.get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void lookAtX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_LOOKAT, NODE_LOOKAT_X, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                lookAt(get(BRANCH_LOOKAT, NODE_LOOKAT_X).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Y).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Z).get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void lookAtY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_LOOKAT, NODE_LOOKAT_Y, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                lookAt(get(BRANCH_LOOKAT, NODE_LOOKAT_X).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Y).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Z).get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void lookAtZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        tune(BRANCH_LOOKAT, NODE_LOOKAT_Z, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
+
+            @Override
+            public void run(VLTask task, VLVariable var){
+                lookAt(get(BRANCH_LOOKAT, NODE_LOOKAT_X).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Y).get(), get(BRANCH_LOOKAT, NODE_LOOKAT_Z).get());
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
+            }
+        }));
+    }
+
+    public void rotate(float from, float to, float rotationx, float rotationy, float rotationz, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
         final float[] settings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
-        angle.setTask(new VLTaskContinous(new VLTask.Task(){
+
+        tune(BRANCH_ROTATION, NODE_ROTATION_ANGLE, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
 
             private float[] cache = new float[16];
 
@@ -222,6 +310,10 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
                 target.eyePositionUpdate();
                 target.lookAtUpdate();
                 target.updateViewProjection();
+
+                if(!var.active() && post != null){
+                    post.run();
+                }
             }
         }));
     }
