@@ -17,7 +17,7 @@ import com.nurverek.vanguard.VLVTypeManager;
 import com.nurverek.vanguard.VLVTypeRunner;
 import com.nurverek.vanguard.VLVariable;
 
-public final class CLManagerViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLVRunner>>{
+public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLVRunner>>{
     
     public static final int BRANCH_POSITION = 0;
     public static final int BRANCH_PESPECTIVE = 1;
@@ -41,7 +41,7 @@ public final class CLManagerViewConfig extends VLVDynamicTree<VLVRunner, VLVMana
 
     private FSViewConfig target;
 
-    protected CLManagerViewConfig(VLVManager registrar, FSViewConfig target){
+    protected CLViewConfig(VLVManager registrar, FSViewConfig target){
         super(registrar, 7);
         this.target = target;
     }
