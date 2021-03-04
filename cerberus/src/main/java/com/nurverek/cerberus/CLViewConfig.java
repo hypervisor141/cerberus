@@ -5,16 +5,21 @@ import android.opengl.Matrix;
 import com.nurverek.firestorm.FSControl;
 import com.nurverek.firestorm.FSViewConfig;
 import com.nurverek.vanguard.VLListType;
+import com.nurverek.vanguard.VLSyncMap;
+import com.nurverek.vanguard.VLSyncTree;
 import com.nurverek.vanguard.VLTask;
 import com.nurverek.vanguard.VLTaskContinous;
 import com.nurverek.vanguard.VLVCurved;
 import com.nurverek.vanguard.VLVDynamicTree;
 import com.nurverek.vanguard.VLVManager;
+import com.nurverek.vanguard.VLVManagerDynamic;
 import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
+import com.nurverek.vanguard.VLVTypeRunnable;
+import com.nurverek.vanguard.VLVTypeRunner;
 import com.nurverek.vanguard.VLVariable;
 
-public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLVRunner>>{
+public class CLViewConfig{
     
     public static final int BRANCH_POSITION = 0;
     public static final int BRANCH_PESPECTIVE = 1;
@@ -37,10 +42,41 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
     public static final int NODE_ROTATION_ANGLE = 0;
 
     private FSViewConfig target;
+    private VLVManagerDynamic<VLVTypeRunner, VLVManager<VLVTypeRunner>> manager;
 
-    protected CLViewConfig(VLVManager registrar, FSViewConfig target){
-        super(registrar, 7);
+    protected CLViewConfig(VLVManager root, FSViewConfig target){
         this.target = target;
+
+        manager = new VLVManagerDynamic<>(new VLVManager<>(4, 4), 4);
+
+        VLSyncTree<VLSyncMap<VLVariable, FSViewConfig>> syncer = new VLSyncTree<>(4, 0);
+        VLListType<VLSyncMap<VLVariable, FSViewConfig>> branches =  syncer.branches();
+
+        VLVRunner rpos = new VLVRunner(3, 0);
+        VLVRunner rperspective = new VLVRunner(4, 0);
+        VLVRunner rview = new VLVRunner(3, 0);
+        VLVRunner rrotate = new VLVRunner(1, 0);
+
+        rpos.add(new VLVRunnerEntry(new VLVCurved(), syncer, 0, 0));
+        rpos.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rpos.add(new VLVRunnerEntry(new VLVCurved(), 0));
+
+        rperspective.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rperspective.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rperspective.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rperspective.add(new VLVRunnerEntry(new VLVCurved(), 0));
+
+        rview.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rview.add(new VLVRunnerEntry(new VLVCurved(), 0));
+        rview.add(new VLVRunnerEntry(new VLVCurved(), 0));
+
+        rrotate.add(new VLVRunnerEntry(new VLVCurved(), 0));
+
+        VLListType<VLVTypeRunner> entries = manager.entries();
+        entries.add(rpos);
+        entries.add(rperspective);
+        entries.add(rview);
+        entries.add(rrotate);
     }
 
     public void target(FSViewConfig target){
@@ -51,51 +87,8 @@ public final class CLViewConfig extends VLVDynamicTree<VLVRunner, VLVManager<VLV
         return target;
     }
 
-    public VLVCurved get(int branch, int node){
-        return (VLVCurved)root.get(branch).get(node).target;
-    }
-
-    @Override
-    protected void createBranches(VLListType<VLVRunner> branches){
-        VLVCurved posx = new VLVCurved();
-        VLVCurved posy = new VLVCurved();
-        VLVCurved posz = new VLVCurved();
-
-        VLVCurved fov = new VLVCurved();
-        VLVCurved aspect = new VLVCurved();
-        VLVCurved near = new VLVCurved();
-        VLVCurved far = new VLVCurved();
-
-        VLVCurved viewx = new VLVCurved();
-        VLVCurved viewy = new VLVCurved();
-        VLVCurved viewz = new VLVCurved();
-
-        VLVCurved angle = new VLVCurved();
-
-        VLVRunner rpos = new VLVRunner(3, 0);
-        VLVRunner rperspective = new VLVRunner(4, 0);
-        VLVRunner rview = new VLVRunner(3, 0);
-        VLVRunner rrotate = new VLVRunner(1, 0);
-
-        rpos.add(new VLVRunnerEntry(posx, 0));
-        rpos.add(new VLVRunnerEntry(posy, 0));
-        rpos.add(new VLVRunnerEntry(posz, 0));
-
-        rperspective.add(new VLVRunnerEntry(fov, 0));
-        rperspective.add(new VLVRunnerEntry(aspect, 0));
-        rperspective.add(new VLVRunnerEntry(near, 0));
-        rperspective.add(new VLVRunnerEntry(far, 0));
-
-        rview.add(new VLVRunnerEntry(viewx, 0));
-        rview.add(new VLVRunnerEntry(viewy, 0));
-        rview.add(new VLVRunnerEntry(viewz, 0));
-
-        rrotate.add(new VLVRunnerEntry(angle, 0));
-
-        branches.add(rpos);
-        branches.add(rperspective);
-        branches.add(rview);
-        branches.add(rrotate);
+    public VLVManagerDynamic<VLVTypeRunner, VLVManager<VLVTypeRunner>> manager(){
+        return manager;
     }
 
     private void tune(int branch, int node, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, VLTask task){
