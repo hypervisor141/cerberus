@@ -9,26 +9,50 @@ import com.nurverek.vanguard.VLSyncMap;
 import com.nurverek.vanguard.VLVCurved;
 import com.nurverek.vanguard.VLVEntry;
 import com.nurverek.vanguard.VLVManager;
+import com.nurverek.vanguard.VLVManagerRoot;
 import com.nurverek.vanguard.VLVManagerRootDynamic;
 import com.nurverek.vanguard.VLVTypeRunner;
 import com.nurverek.vanguard.VLVariable;
 
-public class CLViewConfig{
-    
-    public static final int MANAGER_POSITION = 0;
-    public static final int MANAGER_PESPECTIVE = 1;
-    public static final int MANAGER_LOOKAT = 2;
+public class CLManagerView{
+
+    public static final int CAT_VIEW = 0;
+    public static final int CAT_PERSPECTIVE = 1;
+    public static final int CAT_ORTHO = 2;
+
+    public static final int VAR_VIEW_X = 0;
+    public static final int VAR_VIEW_Y = 1;
+    public static final int VAR_VIEW_Z = 2;
+    public static final int VAR_CENTER_X = 3;
+    public static final int VAR_CENTER_Y = 4;
+    public static final int VAR_CENTER_Z = 5;
+    public static final int VAR_UP_X = 6;
+    public static final int VAR_UP_Y = 7;
+    public static final int VAR_UP_Z = 8;
+
+    public static final int VAR_PERS_FOV = 0;
+    public static final int VAR_PERS_ASPECT = 1;
+    public static final int VAR_PERS_NEAR = 2;
+    public static final int VAR_PERS_FAR = 3;
+
+    public static final int VAR_ORTHO_LEFT = 0;
+    public static final int VAR_ORTHO_RIGHT = 1;
+    public static final int VAR_ORTHO_BOTTOM = 2;
+    public static final int VAR_ORTHO_TOP = 3;
+    public static final int VAR_ORTHO_NEAR = 4;
+    public static final int VAR_ORTHO_FAR = 5;
 
     private FSView target;
     private VLVManagerRootDynamic manager;
 
-    protected CLViewConfig(){
-        this.target = target;
-        initialize();
+    public CLManagerView(FSView target){
+        initialize(target);
     }
-    
+
     public void initialize(FSView target){
-        manager = new VLVManagerRootDynamic(4, 0, 4);
+        this.target = target;
+
+        manager = new VLVManagerRootDynamic(3, 0, 3, new MapManagerCheck(manager));
 
         VLVManager view = new VLVManager(9, 0, new MapView(target));
         VLVManager perspective = new VLVManager(4, 0, new MapPerspective(target));
@@ -74,8 +98,21 @@ public class CLViewConfig{
         return manager;
     }
 
-    private void tune(int managerindex, int varindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = ((VLVManager)manager.entries().get(managerindex)).get(varindex);
+    public void start(){
+        manager.start();
+    }
+
+    public void activate(int category){
+        manager.activate(category);
+    }
+
+    public void deactivate(int category){
+        manager.deactivate(category);
+    }
+
+    public void tune(int category, int variable, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+        VLVManager manager = (VLVManager)this.manager.entries().get(category);
+        VLVEntry entry = manager.get(variable);
         entry.delay(delay);
         entry.resetDelayTrackers();
 
@@ -85,58 +122,6 @@ public class CLViewConfig{
         target.setLoop(loop);
         target.setCurve(curve);
         target.initialize(cycles);
-    }
-
-    public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_POSITION, 0, from, to, delay, cycles, loop, curve);
-    }
-
-    public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_POSITION, 1, from, to, delay, cycles, loop, curve);
-    }
-
-    public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_POSITION, 2, from, to, delay, cycles, loop, curve);
-    }
-
-    public void centerX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 3, from, to, delay, cycles, loop, curve);
-    }
-
-    public void centerY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 4, from, to, delay, cycles, loop, curve);
-    }
-
-    public void centerZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 5, from, to, delay, cycles, loop, curve);
-    }
-
-    public void upX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 6, from, to, delay, cycles, loop, curve);
-    }
-
-    public void upY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 7, from, to, delay, cycles, loop, curve);
-    }
-
-    public void upZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_LOOKAT, 8, from, to, delay, cycles, loop, curve);
-    }
-
-    public void fov(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_PESPECTIVE, 0, from, to, delay, cycles, loop, curve);
-    }
-
-    public void aspect(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_PESPECTIVE, 1, from, to, delay, cycles, loop, curve);
-    }
-
-    public void near(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_PESPECTIVE, 2, from, to, delay, cycles, loop, curve);
-    }
-
-    public void far(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        tune(MANAGER_PESPECTIVE, 3, from, to, delay, cycles, loop, curve);
     }
 
     public void rotate(float from, float to, float rotationx, float rotationy, float rotationz, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
@@ -163,6 +148,20 @@ public class CLViewConfig{
                 }
             }
         }));
+    }
+
+    private static class MapManagerCheck extends VLSyncMap<VLVManagerRoot, VLVManagerRootDynamic>{
+
+        public MapManagerCheck(VLVManagerRootDynamic target){
+            super(target);
+        }
+
+        @Override
+        public void sync(VLVManagerRoot source){
+            if(target.done()){
+                target.get().nullify();
+            }
+        }
     }
 
     private static class MapView extends VLSyncMap<VLVManager, FSView>{
