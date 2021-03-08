@@ -14,6 +14,15 @@ import com.nurverek.vanguard.VLVManagerRootDynamic;
 import com.nurverek.vanguard.VLVTypeRunner;
 import com.nurverek.vanguard.VLVariable;
 
+import vanguard.VLListType;
+import vanguard.VLSyncMap;
+import vanguard.VLVCurved;
+import vanguard.VLVEntry;
+import vanguard.VLVManager;
+import vanguard.VLVManagerRoot;
+import vanguard.VLVManagerRootDynamic;
+import vanguard.VLVTypeRunner;
+
 public class CLManagerView{
 
     public static final int CAT_VIEW = 0;
