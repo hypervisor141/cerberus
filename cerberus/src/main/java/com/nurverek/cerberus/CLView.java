@@ -36,7 +36,7 @@ public class CLView{
 
         float[] viewsettings = target.settingsView().provider();
 
-        manager = new VLVManagerDynamic<>(3, 0, 3, new MapManagerCheck(manager));
+        manager = new VLVManagerDynamic<>(3, 0, 3);
 
         MapView mapview = new MapView(target);
         MapPerspective mappers = new MapPerspective(target);
@@ -297,21 +297,6 @@ public class CLView{
         tune(CAT_PERSPECTIVE,3, fromTop, toTop, delay, cycles, loop, curve);
         tune(CAT_PERSPECTIVE,4, fromNear, toNear, delay, cycles, loop, curve);
         tune(CAT_PERSPECTIVE,5, fromFar, toFar, delay, cycles, loop, curve);
-    }
-
-    private static class MapManagerCheck extends VLSyncMap<VLVManager<VLVManager<VLVEntry>>, VLVManagerDynamic<VLVManager<VLVEntry>>>{
-
-        public MapManagerCheck(VLVManagerDynamic<VLVManager<VLVEntry>> target){
-            super(target);
-        }
-
-        @Override
-        public void sync(VLVManager<VLVManager<VLVEntry>> source){
-            if(target.done()){
-                target.get().nullify();
-            }
-        }
-
     }
 
     private static class MapView extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
