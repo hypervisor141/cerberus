@@ -1,8 +1,5 @@
 package com.nurverek.cerberus;
 
-import android.opengl.Matrix;
-
-import com.nurverek.firestorm.FSControl;
 import com.nurverek.firestorm.FSView;
 
 import vanguard.VLListType;
@@ -11,9 +8,6 @@ import vanguard.VLVCurved;
 import vanguard.VLVEntry;
 import vanguard.VLVManager;
 import vanguard.VLVManagerDynamic;
-import vanguard.VLVManagerRoot;
-import vanguard.VLVManagerRootDynamic;
-import vanguard.VLVTypeRunner;
 import vanguard.VLVariable;
 
 public class CLManagerView{
@@ -34,9 +28,14 @@ public class CLManagerView{
 
         manager = new VLVManagerDynamic<>(3, 0, 3, new MapManagerCheck(manager));
 
-        VLVManager<VLVEntry> view = new VLVManager<>(9, 0, new MapView(target));
-        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(target));
-        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(target));
+        MapView mapview = new MapView(target);
+        MapPerspective mappers = new MapPerspective(target);
+        MapOrthographic maportho = new MapOrthographic(target);
+
+        VLVManager<VLVEntry> view = new VLVManager<>(9, 0, mapview);
+        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, mappers);
+        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, maportho);
+        VLVManager<VLVEntry> rotation = new VLVManager<>(1, 0);
 
         view.add(new VLVEntry(new VLVCurved(), 0));
         view.add(new VLVEntry(new VLVCurved(), 0));
@@ -58,12 +57,15 @@ public class CLManagerView{
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
-        orthographic.add(new VLVEntry(new VLVCurved(), 0)); 
+        orthographic.add(new VLVEntry(new VLVCurved(), 0));
+
+        rotation.add(new VLVEntry(new VLVCurved(), 0));
 
         VLListType<VLVManager<VLVEntry>> entries = manager.entries();
         entries.add(view);
         entries.add(perspective);
         entries.add(orthographic);
+        entries.add(rotation);
     }
     
     public void target(FSView target){
@@ -218,29 +220,7 @@ public class CLManagerView{
     }
 
     public void rotate(float from, float to, float rotationx, float rotationy, float rotationz, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        final float[] settings = FSControl.getViewConfig().viewMatrixSettings().provider().clone();
-
-        tune(MANAGER_ROTATION, NODE_ROTATION_ANGLE, from, to, delay, cycles, loop, curve, new VLTaskContinous(new VLTask.Task(){
-
-            private float[] cache = new float[16];
-
-            @Override
-            public void run(VLTask task, VLVariable var){
-                final float[] pos = target.eyePosition().provider();
-
-                Matrix.setIdentityM(cache, 0);
-                Matrix.rotateM(cache, 0, var.get(), rotationx, rotationy, rotationz);
-                Matrix.multiplyMV(pos, 0, cache, 0, settings, 0);
-
-                target.eyePositionUpdate();
-                target.lookAtUpdate();
-                target.updateViewProjection();
-
-                if(!var.active() && post != null){
-                    post.run();
-                }
-            }
-        }));
+        tune(MANAGER_ROTATION, NODE_ROTATION_ANGLE, from, to, delay, cycles, loop, curve);
     }
 
     private static class MapManagerCheck extends VLSyncMap<VLVManager<VLVManager<VLVEntry>>, VLVManagerDynamic<VLVManager<VLVEntry>>>{
