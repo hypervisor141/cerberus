@@ -1,8 +1,9 @@
 package com.nurverek.cerberus;
 
 import com.nurverek.firestorm.FSLightMaterial;
-import com.nurverek.vanguard.VLArrayFloat;
-import com.nurverek.vanguard.VLFloat;
+
+import vanguard.VLArrayFloat;
+import vanguard.VLFloat;
 
 public final class CLMaterial{
 

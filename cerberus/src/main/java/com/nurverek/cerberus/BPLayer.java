@@ -41,23 +41,23 @@ public final class BPLayer extends CustomBluePrint{
     public BPLayer(FSG gen){
         initialize(gen);
 
-        bindpointoffset = com.nurverek.thunderbolt.Gen.UBOBINDPOINT;
-        com.nurverek.thunderbolt.Gen.UBOBINDPOINT++;
+        bindpointoffset = Gen.UBOBINDPOINT;
+        Gen.UBOBINDPOINT++;
     }
 
     @Override
     protected void createPrograms(){
-        program = new FSP(com.nurverek.thunderbolt.Gen.DEBUG_MODE_PROGRAMS);
-        program.modify(new com.nurverek.thunderbolt.ModModel.UBO(1, com.shayan.shapecity.BPLayer.INSTANCE_COUNT), FSConfig.POLICY_ALWAYS);
+        program = new FSP(Gen.DEBUG_MODE_PROGRAMS);
+        program.modify(new ModModel.UBO(1, com.shayan.shapecity.BPLayer.INSTANCE_COUNT), FSConfig.POLICY_ALWAYS);
         program.modify(new com.shayan.shapecity.ModColor.TextureAndUBO(1, com.shayan.shapecity.BPLayer.INSTANCE_COUNT, true, false, true), FSConfig.POLICY_ALWAYS);
-        program.modify(new com.nurverek.thunderbolt.ModLight.Point(com.nurverek.thunderbolt.Gen.GAMMA, null, com.nurverek.thunderbolt.Gen.BRIGHTNESS, com.nurverek.thunderbolt.Gen.light, null, com.shayan.shapecity.Material.MATERIAL_WHITE_RUBBER.getGLSLSize()), FSConfig.POLICY_ALWAYS);
+        program.modify(new ModLight.Point(Gen.GAMMA, null, Gen.BRIGHTNESS, Gen.light, null, com.shayan.shapecity.Material.MATERIAL_WHITE_RUBBER.getGLSLSize()), FSConfig.POLICY_ALWAYS);
         program.addMeshConfig(new FSP.DrawElementsInstanced(FSConfig.POLICY_ALWAYS, 0));
         program.build();
     }
 
     @Override
     protected void attachPrograms(FSG gen){
-        gen.programSet(com.nurverek.thunderbolt.Gen.MAIN_PROGRAMSET).add(program);
+        gen.programSet(Gen.MAIN_PROGRAMSET).add(program);
     }
 
     @Override
@@ -96,7 +96,7 @@ public final class BPLayer extends CustomBluePrint{
 
     @Override
     protected void postScanAdjustment(FSMesh mesh){
-        FSTexture texture = new FSTexture(new VLInt(GLES32.GL_TEXTURE_2D_ARRAY), new VLInt(com.nurverek.thunderbolt.Gen.TEXUNIT++));
+        FSTexture texture = new FSTexture(new VLInt(GLES32.GL_TEXTURE_2D_ARRAY), new VLInt(Gen.TEXUNIT++));
         texture.bind();
         texture.storage3D(1, GLES32.GL_RGBA8, LAYER_PIECE_TEXTURE_DIMENSION, LAYER_PIECE_TEXTURE_DIMENSION, com.shayan.shapecity.BPLayer.INSTANCE_COUNT);
         texture.minFilter(GLES32.GL_LINEAR);
@@ -138,12 +138,12 @@ public final class BPLayer extends CustomBluePrint{
         layout.add(manager, colorbuffer, 1)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_SEQUENTIAL_INSTANCED, FSG.ELEMENT_COLOR));
 
-        layout.add(manager, com.nurverek.thunderbolt.Gen.BUFFER_ARRAY_FLOAT_DEFAULT, 3)
+        layout.add(manager, Gen.BUFFER_ARRAY_FLOAT_DEFAULT, 3)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_POSITION))
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_TEXCOORD))
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_INTERLEAVED_SINGULAR, FSG.ELEMENT_NORMAL));
 
-        layout.add(manager, com.nurverek.thunderbolt.Gen.BUFFER_ELEMENT_SHORT_DEFAULT, 1)
+        layout.add(manager, Gen.BUFFER_ELEMENT_SHORT_DEFAULT, 1)
                 .addElement(new FSBufferLayout.EntryElement(FSBufferLayout.ELEMENT_SEQUENTIAL_INDICES, FSG.ELEMENT_INDEX));
 
         layout.add(manager, texcontrolbuffer, 1)
@@ -200,10 +200,10 @@ public final class BPLayer extends CustomBluePrint{
         Arrays.fill(symbols, -1);
 
         for(int i = 0; i < requiredchoices; i++){
-            choice = com.nurverek.thunderbolt.Gen.RANDOM.nextInt(resources.length);
+            choice = Gen.RANDOM.nextInt(resources.length);
 
             while(timespicked[choice] >= Game.GAME_MATCHSYM_REPEAT_ICON_LIMIT){
-                choice = com.nurverek.thunderbolt.Gen.RANDOM.nextInt(resources.length);
+                choice = Gen.RANDOM.nextInt(resources.length);
             }
 
             timespicked[choice]++;
@@ -221,10 +221,10 @@ public final class BPLayer extends CustomBluePrint{
             b.recycle();
 
             for(int i2 = 0; i2 < Game.GAME_MATCHSYM_PICK_LIMIT; i2++){
-                index = com.nurverek.thunderbolt.Gen.RANDOM.nextInt(com.shayan.shapecity.BPLayer.INSTANCE_COUNT);
+                index = Gen.RANDOM.nextInt(com.shayan.shapecity.BPLayer.INSTANCE_COUNT);
 
                 while(symbols[index] != -1){
-                    index = com.nurverek.thunderbolt.Gen.RANDOM.nextInt(com.shayan.shapecity.BPLayer.INSTANCE_COUNT);
+                    index = Gen.RANDOM.nextInt(com.shayan.shapecity.BPLayer.INSTANCE_COUNT);
                 }
 
                 symbols[index] = choice;

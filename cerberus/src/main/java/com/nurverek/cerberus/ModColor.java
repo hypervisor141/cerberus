@@ -1,18 +1,16 @@
 package com.nurverek.cerberus;
 
-import com.nurverek.firestorm.FSBufferAddress;
-import com.nurverek.firestorm.FSBufferManager;
 import com.nurverek.firestorm.FSConfig;
 import com.nurverek.firestorm.FSConfigLocated;
 import com.nurverek.firestorm.FSG;
-import com.nurverek.firestorm.FSLinkBufferedType;
 import com.nurverek.firestorm.FSMesh;
 import com.nurverek.firestorm.FSP;
 import com.nurverek.firestorm.FSPMod;
 import com.nurverek.firestorm.FSShader;
 import com.nurverek.firestorm.FSVertexBuffer;
-import com.nurverek.vanguard.VLArrayFloat;
-import com.nurverek.vanguard.VLDebug;
+
+import vanguard.VLArrayFloat;
+import vanguard.VLDebug;
 
 public final class ModColor{
 
