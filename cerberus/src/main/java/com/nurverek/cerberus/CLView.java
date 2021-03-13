@@ -265,38 +265,38 @@ public class CLView{
     }
 
     public void orthographicLeft(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,0, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,0, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicRight(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,1, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,1, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicBottom(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,2, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,2, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicTop(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,3, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,3, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicNear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,4, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,4, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicFar(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        tune(CAT_PERSPECTIVE,5, from, to, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,5, from, to, delay, cycles, loop, curve);
     }
 
     public void orthographic(float fromLeft, float toLeft, float fromRight, float toRight, float fromBottom, float toBottom, float fromTop, float toTop, float fromNear, float toNear,
                              float fromFar, float toFar, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
 
-        tune(CAT_PERSPECTIVE,0, fromLeft, toLeft, delay, cycles, loop, curve);
-        tune(CAT_PERSPECTIVE,1, fromRight, toRight, delay, cycles, loop, curve);
-        tune(CAT_PERSPECTIVE,2, fromBottom, fromBottom, delay, cycles, loop, curve);
-        tune(CAT_PERSPECTIVE,3, fromTop, toTop, delay, cycles, loop, curve);
-        tune(CAT_PERSPECTIVE,4, fromNear, toNear, delay, cycles, loop, curve);
-        tune(CAT_PERSPECTIVE,5, fromFar, toFar, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,0, fromLeft, toLeft, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,1, fromRight, toRight, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,2, fromBottom, fromBottom, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,3, fromTop, toTop, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,4, fromNear, toNear, delay, cycles, loop, curve);
+        tune(CAT_ORTHOGRAPHIC,5, fromFar, toFar, delay, cycles, loop, curve);
     }
 
     private static class MapView extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
