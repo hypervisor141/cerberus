@@ -12,7 +12,7 @@ import vanguard.VLVManager;
 import vanguard.VLVManagerDynamic;
 import vanguard.VLVariable;
 
-public class CLView{
+public class CLView extends FSView{
 
     public static final int CAT_VIEW = 0;
     public static final int CAT_PERSPECTIVE = 1;
@@ -24,23 +24,20 @@ public class CLView{
     public static final int CAT_SCALE_VIEW_CENTER = 7;
     public static final int CAT_SCALE_VIEW_UP = 8;
 
-    private FSView target;
     private VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
-    public CLView(FSView target){
-        initialize(target);
+    public CLView(){
+
     }
 
-    public void initialize(FSView target){
-        this.target = target;
-
-        float[] viewsettings = target.settingsView().provider();
+    public void initializeManager(){
+        float[] viewsettings = settingsView().provider();
 
         manager = new VLVManagerDynamic<>(3, 0, 3);
 
-        MapView mapview = new MapView(target);
-        MapPerspective mappers = new MapPerspective(target);
-        MapOrthographic maportho = new MapOrthographic(target);
+        MapView mapview = new MapView(this);
+        MapPerspective mappers = new MapPerspective(this);
+        MapOrthographic maportho = new MapOrthographic(this);
 
         VLVManager<VLVEntry> view = new VLVManager<>(9, 0, mapview);
         VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, mappers);
@@ -101,14 +98,6 @@ public class CLView{
         entries.add(scaleviewpos);
         entries.add(scaleviewcenter);
         entries.add(scaleviewup);
-    }
-    
-    public void target(FSView target){
-        this.target = target;
-    }
-
-    public FSView target(){
-        return target;
     }
 
     public VLVManager<VLVManager<VLVEntry>> manager(){
