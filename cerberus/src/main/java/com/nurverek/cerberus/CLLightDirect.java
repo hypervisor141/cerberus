@@ -17,11 +17,16 @@ import com.nurverek.vanguard.VLVRunner;
 import com.nurverek.vanguard.VLVRunnerEntry;
 import com.nurverek.vanguard.VLVariable;
 
+import vanguard.VLVEntry;
+import vanguard.VLVManager;
+import vanguard.VLVManagerDynamic;
+
 public final class CLLight{
 
     private static VLVRunner controllerpos;
     private static VLVRunner controllerradius;
     private static VLVRunner controllerotate;
+    private static VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
     public static void initialize(){
         controllerpos = new VLVRunner(10, 10);
