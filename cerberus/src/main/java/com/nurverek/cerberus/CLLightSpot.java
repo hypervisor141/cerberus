@@ -1,8 +1,9 @@
 package com.nurverek.cerberus;
 
-import com.nurverek.firestorm.FSLightDirect;
+import com.nurverek.firestorm.FSLightSpot;
 
 import vanguard.VLArrayFloat;
+import vanguard.VLFloat;
 import vanguard.VLListType;
 import vanguard.VLVCurved;
 import vanguard.VLVEntry;
@@ -10,26 +11,28 @@ import vanguard.VLVManager;
 import vanguard.VLVManagerDynamic;
 import vanguard.VLVariable;
 
-public final class CLLightDirect extends FSLightDirect{
+public class CLLightSpot extends FSLightSpot{
 
     public static final int CAT_POSITION = 0;
     public static final int CAT_CENTER = 1;
-    public static final int CAT_ROTATE_POSITION = 2;
-    public static final int CAT_ROTATE_CENTER = 3;
-    public static final int CAT_SCALE_POSITION = 4;
-    public static final int CAT_SCALE_CENTER = 5;
+    public static final int CAT_CUTOFFS = 2;
+    public static final int CAT_ROTATE_POSITION = 3;
+    public static final int CAT_ROTATE_CENTER = 4;
+    public static final int CAT_SCALE_POSITION = 5;
+    public static final int CAT_SCALE_CENTER = 6;
 
     private VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
-    public CLLightDirect(VLArrayFloat position, VLArrayFloat center){
-        super(position, center);
+    public CLLightSpot(VLArrayFloat position, VLArrayFloat center, VLFloat cutoff, VLFloat outtercutoff){
+        super(position, center, cutoff, outtercutoff);
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(2, 2, 6);
+        manager = new VLVManagerDynamic<>(2, 2, 7);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
         VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));
+        VLVManager<VLVEntry> cutoffs = new VLVManager<>(2, 0);
         VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
@@ -42,6 +45,9 @@ public final class CLLightDirect extends FSLightDirect{
         center.add(new VLVEntry(new VLVCurved(), 0));
         center.add(new VLVEntry(new VLVCurved(), 0));
         center.add(new VLVEntry(new VLVCurved(), 0));
+
+        cutoffs.add(new VLVEntry(new VLVCurved(), new CLMaps.Set(cutoff), 0));
+        cutoffs.add(new VLVEntry(new VLVCurved(), new CLMaps.Set(outercutoff),0));
 
         rotatepos.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F), 0));
         rotatecenter.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F), 0));
@@ -62,6 +68,7 @@ public final class CLLightDirect extends FSLightDirect{
         entries.add(rotatecenter);
         entries.add(scalepos);
         entries.add(scalecenter);
+        entries.add(cutoffs);
     }
 
     public VLVManager<VLVManager<VLVEntry>> manager(){
@@ -104,6 +111,14 @@ public final class CLLightDirect extends FSLightDirect{
         CLVTools.tune(manager.get(CAT_CENTER).get(2), from, to, delay, cycles, loop, curve);
     }
 
+    public void cutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+        CLVTools.tune(manager.get(CAT_CUTOFFS).get(0), from, to, delay, cycles, loop, curve);
+    }
+
+    public void outerCutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+        CLVTools.tune(manager.get(CAT_CUTOFFS).get(1), from, to, delay, cycles, loop, curve);
+    }
+
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVEntry entry = manager.get(CAT_ROTATE_POSITION).get(0);
 
@@ -135,10 +150,11 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void scaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.get(CAT_SCALE_POSITION);
+        VLVManager<VLVEntry> manager = this.manager.get(CAT_SCALE_CENTER);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
     }
 }
+
