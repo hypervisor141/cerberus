@@ -3,16 +3,16 @@ package com.nurverek.cerberus;
 import android.opengl.GLES32;
 
 import com.nurverek.firestorm.FSBufferLayout;
-import com.nurverek.firestorm.FSBufferManager;
 import com.nurverek.firestorm.FSConfig;
 import com.nurverek.firestorm.FSG;
 import com.nurverek.firestorm.FSGAssembler;
+import com.nurverek.firestorm.FSGBluePrint;
 import com.nurverek.firestorm.FSGScanner;
 import com.nurverek.firestorm.FSInstance;
 import com.nurverek.firestorm.FSMesh;
 import com.nurverek.firestorm.FSP;
 
-public class BPBase extends CustomBluePrint{
+public class BPBase extends FSGBluePrint{
 
     public FSP program;
 
@@ -82,7 +82,7 @@ public class BPBase extends CustomBluePrint{
     }
 
     @Override
-    public FSBufferLayout bufferLayouts(FSMesh mesh, FSBufferManager manager){
+    protected FSBufferLayout bufferLayouts(FSMesh fsMesh){
         FSBufferLayout layout = new FSBufferLayout(mesh);
 
         layout.add(manager, Gen.BUFFER_ARRAY_FLOAT_DEFAULT, 3)
