@@ -81,31 +81,31 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_POSITION).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_POSITION).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_POSITION).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_POSITION).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_POSITION).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_POSITION).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void centerX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_CENTER).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_CENTER).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void centerY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_CENTER).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_CENTER).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void centerZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.get(CAT_CENTER).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.entries().get(CAT_CENTER).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = manager.get(CAT_ROTATE_POSITION).get(0);
+        VLVEntry entry = manager.entries().get(CAT_ROTATE_POSITION).get(0);
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
@@ -116,7 +116,7 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void rotateCenter(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = manager.get(CAT_ROTATE_CENTER).get(0);
+        VLVEntry entry = manager.entries().get(CAT_ROTATE_CENTER).get(0);
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
@@ -127,7 +127,7 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void scalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.get(CAT_SCALE_POSITION);
+        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_SCALE_POSITION);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -135,7 +135,7 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void scaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.get(CAT_SCALE_POSITION);
+        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_SCALE_POSITION);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
