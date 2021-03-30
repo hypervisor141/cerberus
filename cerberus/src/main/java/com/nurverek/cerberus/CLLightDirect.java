@@ -64,7 +64,7 @@ public final class CLLightDirect extends FSLightDirect{
         entries.add(scalecenter);
     }
 
-    public VLVManager<VLVManager<VLVEntry>> manager(){
+    public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
     }
 

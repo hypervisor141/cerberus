@@ -71,7 +71,7 @@ public class CLLightSpot extends FSLightSpot{
         entries.add(cutoffs);
     }
 
-    public VLVManager<VLVManager<VLVEntry>> manager(){
+    public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
     }
 

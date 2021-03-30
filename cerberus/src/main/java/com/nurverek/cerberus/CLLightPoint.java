@@ -47,7 +47,7 @@ public class CLLightPoint extends FSLightPoint{
         entries.add(scalepos);
     }
 
-    public VLVManager<VLVManager<VLVEntry>> manager(){
+    public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
     }
 
