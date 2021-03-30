@@ -61,8 +61,6 @@ public class CLMaps{
             cache = new float[16];
             startstatecache = new float[4];
 
-            Matrix.setIdentityM(cache, 0);
-
             this.offset = offset;
             this.x = x;
             this.y = y;
@@ -80,6 +78,7 @@ public class CLMaps{
         public void sync(VLVEntry source){
             float[] target = this.target.provider();
 
+            Matrix.setIdentityM(cache, 0);
             Matrix.rotateM(cache, 0, source.target.get(), x, y, z);
             Matrix.multiplyMV(target, offset, cache, 0, startstatecache, 0);
         }
