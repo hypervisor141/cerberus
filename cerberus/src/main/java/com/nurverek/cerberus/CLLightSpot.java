@@ -128,6 +128,7 @@ public class CLLightSpot extends FSLightSpot{
         map.x = x;
         map.y = y;
         map.z = z;
+        map.tune();
     }
 
     public void rotateCenter(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -139,6 +140,7 @@ public class CLLightSpot extends FSLightSpot{
         map.x = x;
         map.y = y;
         map.z = z;
+        map.tune();
     }
 
     public void scalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

@@ -177,6 +177,7 @@ public class CLView extends FSView{
         map.x = x;
         map.y = y;
         map.z = z;
+        map.tune();
     }
 
     public void viewRotateCenter(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -188,6 +189,7 @@ public class CLView extends FSView{
         map.x = x;
         map.y = y;
         map.z = z;
+        map.tune();
     }
 
     public void viewRotateUp(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -199,6 +201,7 @@ public class CLView extends FSView{
         map.x = x;
         map.y = y;
         map.z = z;
+        map.tune();
     }
 
     public void viewScalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

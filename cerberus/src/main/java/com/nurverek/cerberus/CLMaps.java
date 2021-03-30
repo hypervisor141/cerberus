@@ -49,6 +49,7 @@ public class CLMaps{
     public static class RotatePoint extends VLSyncMap<VLVEntry, VLArrayFloat>{
 
         public float[] cache;
+        public float[] startstatecache;
         public int offset;
         public float x;
         public float y;
@@ -58,6 +59,9 @@ public class CLMaps{
             super(target);
 
             cache = new float[16];
+            startstatecache = new float[4];
+
+            Matrix.setIdentityM(cache, 0);
 
             this.offset = offset;
             this.x = x;
@@ -65,13 +69,19 @@ public class CLMaps{
             this.z = z;
         }
 
+        public void tune(){
+            startstatecache[0] = target.get(0);
+            startstatecache[1] = target.get(1);
+            startstatecache[2] = target.get(2);
+            startstatecache[3] = 1F;
+        }
+
         @Override
         public void sync(VLVEntry source){
             float[] target = this.target.provider();
 
-            Matrix.setIdentityM(cache, 0);
-            Matrix.rotateM(cache, 0, source.target.get(), x, y, z);
-            Matrix.multiplyMV(target, offset, cache, 0, target, offset);
+            Matrix.rotateM(startstatecache, 0, source.target.get(), x, y, z);
+            Matrix.multiplyMV(target, offset, cache, 0, startstatecache, 0);
         }
     }
 
