@@ -80,7 +80,7 @@ public class CLMaps{
         public void sync(VLVEntry source){
             float[] target = this.target.provider();
 
-            Matrix.rotateM(startstatecache, 0, source.target.get(), x, y, z);
+            Matrix.rotateM(cache, 0, source.target.get(), x, y, z);
             Matrix.multiplyMV(target, offset, cache, 0, startstatecache, 0);
         }
     }
