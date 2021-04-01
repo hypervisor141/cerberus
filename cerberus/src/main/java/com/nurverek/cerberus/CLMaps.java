@@ -68,9 +68,11 @@ public class CLMaps{
         }
 
         public void tune(){
-            startstatecache[0] = target.get(offset);
-            startstatecache[1] = target.get(offset + 1);
-            startstatecache[2] = target.get(offset + 2);
+            float[] target = this.target.provider();
+
+            startstatecache[0] = target[offset];
+            startstatecache[1] = target[offset + 1];
+            startstatecache[2] = target[offset + 2];
             startstatecache[3] = 1F;
         }
 
