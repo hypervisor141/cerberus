@@ -173,7 +173,7 @@ public class CLView extends FSView{
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)entry.syncer;
+        MapRotateView map = (MapRotateView)entry.syncer;
         map.x = x;
         map.y = y;
         map.z = z;
@@ -185,7 +185,7 @@ public class CLView extends FSView{
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)entry.syncer;
+        MapRotateView map = (MapRotateView)entry.syncer;
         map.x = x;
         map.y = y;
         map.z = z;
@@ -197,7 +197,7 @@ public class CLView extends FSView{
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)entry.syncer;
+        MapRotateView map = (MapRotateView)entry.syncer;
         map.x = x;
         map.y = y;
         map.z = z;
