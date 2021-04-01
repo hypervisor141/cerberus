@@ -348,6 +348,7 @@ public class CLView extends FSView{
         public void sync(VLVManager<VLVEntry> source){
             super.sync(source);
 
+            view.applyLookAt();
             view.applyViewProjection();
         }
     }
@@ -365,6 +366,7 @@ public class CLView extends FSView{
         public void sync(VLVEntry source){
             super.sync(source);
 
+            view.applyLookAt();
             view.applyViewProjection();
         }
     }
