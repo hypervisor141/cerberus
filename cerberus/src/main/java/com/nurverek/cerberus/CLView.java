@@ -1,5 +1,7 @@
 package com.nurverek.cerberus;
 
+import android.opengl.Matrix;
+
 import com.nurverek.firestorm.FSView;
 
 import vanguard.VLListType;
@@ -353,21 +355,50 @@ public class CLView extends FSView{
         }
     }
 
-    public static class MapRotateView extends CLMaps.RotatePoint{
+    public static class MapRotateView extends VLSyncMap<VLVEntry, CLView>{
 
-        private final CLView view;
+        protected float[] cache;
+        protected float[] startstatecache;
 
-        public MapRotateView(CLView view, int offset, float x, float y, float z){
-            super(view.settingsview, offset, x, y, z);
-            this.view = view;
+        public int offset;
+        public float x;
+        public float y;
+        public float z;
+
+        public MapRotateView(CLView target, int offset, float x, float y, float z){
+            super(target);
+
+            this.offset = offset;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+
+            cache = new float[16];
+            startstatecache = new float[4];
+        }
+
+        public void tune(){
+            float[] settings = target.settingsview.provider();
+
+            startstatecache[0] = settings[offset];
+            startstatecache[1] = settings[offset + 1];
+            startstatecache[2] = settings[offset + 2];
+            startstatecache[3] = 1F;
         }
 
         @Override
         public void sync(VLVEntry source){
-            super.sync(source);
+            Matrix.setIdentityM(cache, 0);
+            Matrix.rotateM(cache, 0, source.target.get(), x, y, z);
+            Matrix.multiplyMV(cache, 0, cache, 0, startstatecache, 0);
 
-            view.applyLookAt();
-            view.applyViewProjection();
+            float[] settings = target.settingsview.provider();
+            settings[offset] = cache[0];
+            settings[offset + 1] = cache[1];
+            settings[offset + 2] = cache[2];
+
+            target.applyLookAt();
+            target.applyViewProjection();
         }
     }
 }

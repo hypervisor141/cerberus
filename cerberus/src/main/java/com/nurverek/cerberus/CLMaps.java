@@ -48,8 +48,9 @@ public class CLMaps{
 
     public static class RotatePoint extends VLSyncMap<VLVEntry, VLArrayFloat>{
 
-        public float[] cache;
-        public float[] startstatecache;
+        protected float[] cache;
+        protected float[] startstatecache;
+
         public int offset;
         public float x;
         public float y;
@@ -88,7 +89,8 @@ public class CLMaps{
 
     public static class ScalePoint extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
-        public float[] cache;
+        protected float[] cache;
+
         public int targetoffset;
         public int sourceoffset;
 
