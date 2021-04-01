@@ -37,9 +37,9 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0);
-        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.settingsview, 0, 0));
-        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.settingsview, 3, 0));
-        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.settingsview, 6, 0));
+        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, new MapScaleView(this, 0, 0));
+        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new MapScaleView(this, 3, 0));
+        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new MapScaleView(this, 6, 0));
 
         view.add(new VLVEntry(new VLVCurved(), 0));
         view.add(new VLVEntry(new VLVCurved(), 0));
@@ -63,9 +63,9 @@ public class CLView extends FSView{
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
 
-        rotateviewpos.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.settingsview, 0, 0F, 0F, 0F), 0));
-        rotateviewcenter.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.settingsview, 3, 0F, 0F, 0F), 0));
-        rotateviewup.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.settingsview, 6, 0F, 0F, 0F), 0));
+        rotateviewpos.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 0, 0F, 0F, 0F), 0));
+        rotateviewcenter.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 3, 0F, 0F, 0F), 0));
+        rotateviewup.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 6, 0F, 0F, 0F), 0));
 
         scaleviewpos.add(new VLVEntry(new VLVCurved(), 0));
         scaleviewpos.add(new VLVEntry(new VLVCurved(), 0));
@@ -332,6 +332,40 @@ public class CLView extends FSView{
                     source.get(3).target.get(), source.get(4).target.get(), source.get(5).target.get());
 
             target.applyViewProjection();
+        }
+    }
+
+    private static class MapScaleView extends CLMaps.ScalePoint{
+
+        private final CLView view;
+
+        public MapScaleView(CLView view, int targetoffset, int sourceoffset){
+            super(view.settingsview, targetoffset, sourceoffset);
+            this.view = view;
+        }
+
+        @Override
+        public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
+            view.applyViewProjection();
+        }
+    }
+
+    public static class MapRotateView extends CLMaps.RotatePoint{
+
+        private final CLView view;
+
+        public MapRotateView(CLView view, int offset, float x, float y, float z){
+            super(view.settingsview, offset, x, y, z);
+            this.view = view;
+        }
+
+        @Override
+        public void sync(VLVEntry source){
+            super.sync(source);
+
+            view.applyViewProjection();
         }
     }
 }
