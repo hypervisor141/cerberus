@@ -34,7 +34,7 @@ public class CLLightPoint extends FSLightPoint{
         position.add(new VLVEntry(new VLVCurved(), 0));
         position.add(new VLVEntry(new VLVCurved(), 0));
 
-        rotatepos.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F), 0));
+        rotatepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)));
 
         scalepos.add(new VLVEntry(new VLVCurved(), 0));
         scalepos.add(new VLVEntry(new VLVCurved(), 0));

@@ -23,7 +23,7 @@ public class CLAttenuation{
         }
 
         public void initializeManager(){
-            entry = new VLVEntry(new VLVCurved(), new CLMaps.Set(radius), 0);
+            entry = new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(radius));
         }
 
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -45,9 +45,9 @@ public class CLAttenuation{
 
         public void initializeManager(){
             manager = new VLVManager<>(3,0);
-            manager.add(new VLVEntry(new VLVCurved(), new CLMaps.Set(constant), 0));
-            manager.add(new VLVEntry(new VLVCurved(), new CLMaps.Set(linear), 0));
-            manager.add(new VLVEntry(new VLVCurved(), new CLMaps.Set(quadratic), 0));
+            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(constant)));
+            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(linear)));
+            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(quadratic)));
         }
 
         public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

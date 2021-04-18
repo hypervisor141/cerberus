@@ -43,8 +43,8 @@ public final class CLLightDirect extends FSLightDirect{
         center.add(new VLVEntry(new VLVCurved(), 0));
         center.add(new VLVEntry(new VLVCurved(), 0));
 
-        rotatepos.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F), 0));
-        rotatecenter.add(new VLVEntry(new VLVCurved(), new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F), 0));
+        rotatepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)));
+        rotatecenter.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)));
 
         scalepos.add(new VLVEntry(new VLVCurved(), 0));
         scalepos.add(new VLVEntry(new VLVCurved(), 0));

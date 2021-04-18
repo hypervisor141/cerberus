@@ -65,9 +65,9 @@ public class CLView extends FSView{
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
 
-        rotateviewpos.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 0, 0F, 0F, 0F), 0));
-        rotateviewcenter.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 3, 0F, 0F, 0F), 0));
-        rotateviewup.add(new VLVEntry(new VLVCurved(), new MapRotateView(this, 6, 0F, 0F, 0F), 0));
+        rotateviewpos.add(new VLVEntry(new VLVCurved(), 0, new MapRotateView(this, 0, 0F, 0F, 0F)));
+        rotateviewcenter.add(new VLVEntry(new VLVCurved(), 0, new MapRotateView(this, 3, 0F, 0F, 0F)));
+        rotateviewup.add(new VLVEntry(new VLVCurved(), 0, new MapRotateView(this, 6, 0F, 0F, 0F)));
 
         scaleviewpos.add(new VLVEntry(new VLVCurved(), 0));
         scaleviewpos.add(new VLVEntry(new VLVCurved(), 0));
