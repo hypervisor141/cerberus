@@ -51,18 +51,6 @@ public class CLLightPoint extends FSLightPoint{
         return manager;
     }
 
-    public void start(){
-        manager.start();
-    }
-
-    public void activate(int category){
-        manager.activate(category);
-    }
-
-    public void deactivate(int category){
-        manager.deactivate(category);
-    }
-
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         CLVTools.tune(manager.entries().get(CAT_POSITION).get(0), from, to, delay, cycles, loop, curve);
     }
