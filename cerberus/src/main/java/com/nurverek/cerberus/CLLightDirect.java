@@ -1,5 +1,6 @@
 package com.nurverek.cerberus;
 
+import com.nurverek.firestorm.FSLight;
 import com.nurverek.firestorm.FSLightDirect;
 
 import vanguard.VLArrayFloat;
@@ -23,6 +24,14 @@ public final class CLLightDirect extends FSLightDirect{
 
     public CLLightDirect(VLArrayFloat position, VLArrayFloat center){
         super(position, center);
+    }
+
+    public CLLightDirect(CLLightDirect src, long flags){
+        copy(src, flags);
+    }
+
+    protected CLLightDirect(){
+
     }
 
     public void initializeManager(){
@@ -130,5 +139,27 @@ public final class CLLightDirect extends FSLightDirect{
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
+    }
+
+    @Override
+    public void copy(FSLight src, long flags){
+        super.copy(src, flags);
+
+        CLLightDirect target = (CLLightDirect)src;
+
+        if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+            manager = target.manager;
+
+        }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+
+        }else{
+            Helper.throwMissingDefaultFlags();
+        }
+    }
+
+    @Override
+    public CLLightDirect duplicate(long flags){
+        return new CLLightDirect(this, flags);
     }
 }

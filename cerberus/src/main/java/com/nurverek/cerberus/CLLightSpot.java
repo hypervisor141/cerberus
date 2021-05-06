@@ -1,6 +1,8 @@
 package com.nurverek.cerberus;
 
+import com.nurverek.firestorm.FSLight;
 import com.nurverek.firestorm.FSLightSpot;
+import com.nurverek.firestorm.FSView;
 
 import vanguard.VLArrayFloat;
 import vanguard.VLFloat;
@@ -25,6 +27,14 @@ public class CLLightSpot extends FSLightSpot{
 
     public CLLightSpot(VLArrayFloat position, VLArrayFloat center, VLFloat cutoff, VLFloat outtercutoff){
         super(position, center, cutoff, outtercutoff);
+    }
+
+    public CLLightSpot(CLLightSpot src, long flags){
+        copy(src, flags);
+    }
+
+    protected CLLightSpot(){
+
     }
 
     public void initializeManager(){
@@ -145,6 +155,28 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
+    }
+
+    @Override
+    public void copy(FSLight src, long flags){
+        super.copy(src, flags);
+
+        CLLightSpot target = (CLLightSpot)src;
+
+        if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+            manager = target.manager;
+
+        }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+
+        }else{
+            Helper.throwMissingDefaultFlags();
+        }
+    }
+
+    @Override
+    public CLLightSpot duplicate(long flags){
+        return new CLLightSpot(this, flags);
     }
 }
 

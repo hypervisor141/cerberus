@@ -1,6 +1,7 @@
 package com.nurverek.cerberus;
 
 import com.nurverek.firestorm.FSAttenuation;
+import com.nurverek.firestorm.FSLight;
 import com.nurverek.firestorm.FSLightPoint;
 
 import vanguard.VLArrayFloat;
@@ -21,6 +22,14 @@ public class CLLightPoint extends FSLightPoint{
 
     public CLLightPoint(FSAttenuation attenuation, VLArrayFloat position){
         super(attenuation, position);
+    }
+
+    public CLLightPoint(CLLightPoint src, long flags){
+        copy(src, flags);
+    }
+
+    protected CLLightPoint(){
+
     }
 
     public void initializeManager(){
@@ -81,5 +90,27 @@ public class CLLightPoint extends FSLightPoint{
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
+    }
+
+    @Override
+    public void copy(FSLight src, long flags){
+        super.copy(src, flags);
+
+        CLLightPoint target = (CLLightPoint)src;
+
+        if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+            manager = target.manager;
+
+        }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+
+        }else{
+            Helper.throwMissingDefaultFlags();
+        }
+    }
+
+    @Override
+    public CLLightPoint duplicate(long flags){
+        return new CLLightPoint(this, flags);
     }
 }

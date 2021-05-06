@@ -6,6 +6,7 @@ import com.nurverek.firestorm.FSView;
 
 import vanguard.VLListType;
 import vanguard.VLSyncMap;
+import vanguard.VLSyncType;
 import vanguard.VLVCurved;
 import vanguard.VLVEntry;
 import vanguard.VLVManager;
@@ -26,8 +27,16 @@ public class CLView extends FSView{
 
     private VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
-    public CLView(){
+    public CLView(boolean perspectivemode){
+        super(perspectivemode);
+    }
 
+    protected CLView(){
+
+    }
+
+    protected CLView(CLView src, long flags){
+        copy(src, flags);
     }
 
     public void initializeManager(){
@@ -281,10 +290,40 @@ public class CLView extends FSView{
         CLVTools.tune(manager.get(5), fromFar, toFar, delay, cycles, loop, curve);
     }
 
+    @Override
+    public void copy(FSView src, long flags){
+        super.copy(src, flags);
+
+        CLView target = (CLView)src;
+
+        if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+            manager = target.manager;
+
+        }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+
+        }else{
+            Helper.throwMissingDefaultFlags();
+        }
+    }
+
+    @Override
+    public CLView duplicate(long flags){
+        return new CLView(this, flags);
+    }
+
     private static class MapView extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
         
         public MapView(FSView target){
             super(target);
+        }
+
+        public MapView(MapView src, long flags){
+            copy(src, flags);
+        }
+
+        protected MapView(){
+
         }
 
         @Override
@@ -295,6 +334,11 @@ public class CLView extends FSView{
 
             target.applyViewProjection();
         }
+
+        @Override
+        public MapView duplicate(long flags){
+            return new MapView(this, flags);
+        }
     }
 
     private static class MapPerspective extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
@@ -303,10 +347,23 @@ public class CLView extends FSView{
             super(target);
         }
 
+        public MapPerspective(MapPerspective src, long flags){
+            copy(src, flags);
+        }
+
+        protected MapPerspective(){
+
+        }
+
         @Override
         public void sync(VLVManager<VLVEntry> source){
             target.perspective(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(), source.get(3).target.get());
             target.applyViewProjection();
+        }
+
+        @Override
+        public MapPerspective duplicate(long flags){
+            return new MapPerspective(this, flags);
         }
     }
 
@@ -316,6 +373,14 @@ public class CLView extends FSView{
             super(target);
         }
 
+        public MapOrthographic(MapOrthographic src, long flags){
+            copy(src, flags);
+        }
+
+        protected MapOrthographic(){
+
+        }
+
         @Override
         public void sync(VLVManager<VLVEntry> source){
             target.orthographic(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(),
@@ -323,15 +388,28 @@ public class CLView extends FSView{
 
             target.applyViewProjection();
         }
+
+        @Override
+        public MapOrthographic duplicate(long flags){
+            return new MapOrthographic(this, flags);
+        }
     }
 
     private static class MapScaleView extends CLMaps.ScalePoint{
 
-        private final CLView view;
+        private CLView view;
 
         public MapScaleView(CLView view, int targetoffset, int sourceoffset){
             super(view.settingsview, targetoffset, sourceoffset);
             this.view = view;
+        }
+
+        public MapScaleView(MapScaleView src, long flags){
+            copy(src, flags);
+        }
+
+        protected MapScaleView(){
+
         }
 
         @Override
@@ -340,6 +418,28 @@ public class CLView extends FSView{
 
             view.applyLookAt();
             view.applyViewProjection();
+        }
+
+        @Override
+        public void copy(VLSyncType<VLVManager<VLVEntry>> src, long flags){
+            super.copy(src, flags);
+
+            MapScaleView target = (MapScaleView)src;
+
+            if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+                view = target.view;
+
+            }else if(((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE)){
+                view = target.view.duplicate(FLAG_DUPLICATE);
+
+            }else{
+                Helper.throwMissingDefaultFlags();
+            }
+        }
+
+        @Override
+        public MapScaleView duplicate(long flags){
+            return new MapScaleView(this, flags);
         }
     }
 
@@ -365,6 +465,14 @@ public class CLView extends FSView{
             startstatecache = new float[4];
         }
 
+        public MapRotateView(MapRotateView src, long flags){
+            copy(src, flags);
+        }
+
+        protected MapRotateView(){
+
+        }
+
         public void tune(){
             float[] settings = target.settingsview.provider();
 
@@ -387,6 +495,35 @@ public class CLView extends FSView{
 
             target.applyLookAt();
             target.applyViewProjection();
+        }
+
+        @Override
+        public void copy(VLSyncType<VLVEntry> src, long flags){
+            super.copy(src, flags);
+
+            MapRotateView target = (MapRotateView)src;
+
+            if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+                cache = target.cache;
+                startstatecache = target.startstatecache;
+
+            }else if(((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE)){
+                cache = target.cache.clone();
+                startstatecache = target.startstatecache.clone();
+
+            }else{
+                Helper.throwMissingDefaultFlags();
+            }
+
+            offset = target.offset;
+            x = target.x;
+            y = target.y;
+            z = target.z;
+        }
+
+        @Override
+        public MapRotateView duplicate(long flags){
+            return new MapRotateView(this, flags);
         }
     }
 }

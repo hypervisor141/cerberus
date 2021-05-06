@@ -1,7 +1,9 @@
 package com.nurverek.cerberus;
 
 import com.nurverek.firestorm.FSAttenuation;
+import com.nurverek.firestorm.FSLight;
 
+import vanguard.VLCopyable;
 import vanguard.VLFloat;
 import vanguard.VLVCurved;
 import vanguard.VLVEntry;
@@ -18,6 +20,12 @@ public class CLAttenuation{
             super(radius);
         }
 
+        public Radius(Radius src, long flags){
+            copy(src, flags);
+        }
+
+        protected Radius(){}
+
         public VLVEntry entry(){
             return entry;
         }
@@ -29,6 +37,28 @@ public class CLAttenuation{
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
             CLVTools.tune(entry, from, to, delay, cycles, loop, curve);
         }
+
+        @Override
+        public void copy(FSAttenuation src, long flags){
+            super.copy(src, flags);
+
+            CLAttenuation.Radius target = (CLAttenuation.Radius)src;
+
+            if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+                entry = target.entry;
+
+            }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+                entry = target.entry.duplicate(VLCopyable.FLAG_DUPLICATE);
+
+            }else{
+                Helper.throwMissingDefaultFlags();
+            }
+        }
+
+        @Override
+        public CLAttenuation.Radius duplicate(long flags){
+            return new CLAttenuation.Radius(this, flags);
+        }
     }
 
     public static class Distance extends FSAttenuation.Distance{
@@ -38,6 +68,12 @@ public class CLAttenuation{
         public Distance(VLFloat constant, VLFloat linear, VLFloat quadratic){
             super(constant, linear, quadratic);
         }
+
+        public Distance(Distance src, long flags){
+            copy(src, flags);
+        }
+
+        protected Distance(){}
 
         public VLVManager<VLVEntry> manager(){
             return manager;
@@ -60,6 +96,28 @@ public class CLAttenuation{
 
         public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
             CLVTools.tune(manager.get(2), from, to, delay, cycles, loop, curve);
+        }
+
+        @Override
+        public void copy(FSAttenuation src, long flags){
+            super.copy(src, flags);
+
+            CLAttenuation.Distance target = (CLAttenuation.Distance)src;
+
+            if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
+                manager = target.manager;
+
+            }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
+                manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+
+            }else{
+                Helper.throwMissingDefaultFlags();
+            }
+        }
+
+        @Override
+        public CLAttenuation.Distance duplicate(long flags){
+            return new CLAttenuation.Distance(this, flags);
         }
     }
 }
