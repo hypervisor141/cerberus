@@ -29,7 +29,7 @@ public final class CLVTools{
         float[] CACHE4 = new float[4];
         float[] CACHE16 = new float[16];
 
-        for(int i = offset, i2 = 0; i < 3; i++, i2++){
+        for(int i = offset, i2 = 0; i2 < 3; i++, i2++){
             CACHE4[i2] = target[i];
         }
 
@@ -39,7 +39,7 @@ public final class CLVTools{
         Matrix.rotateM(CACHE16, 0, angle, x, y, z);
         Matrix.multiplyMV(CACHE4, 0, CACHE16, 0, CACHE4, 0);
 
-        for(int i = offset, i2 = 0; i < 3; i++, i2++){
+        for(int i = offset, i2 = 0; i2 < 3; i++, i2++){
             target[i] = CACHE4[i2];
         }
     }
@@ -48,7 +48,7 @@ public final class CLVTools{
         float[] CACHE4 = new float[4];
         float[] CACHE16 = new float[16];
 
-        for(int i = offset, i2 = 0; i < 3; i++, i2++){
+        for(int i = offset, i2 = 0; i2 < 3; i++, i2++){
             CACHE4[i2] = target[i];
         }
 
@@ -58,7 +58,7 @@ public final class CLVTools{
         Matrix.scaleM(CACHE16, 0, x, y, z);
         Matrix.multiplyMV(CACHE4, 0, CACHE16, 0, CACHE4, 0);
 
-        for(int i = offset, i2 = 0; i < 3; i++, i2++){
+        for(int i = offset, i2 = 0; i2 < 3; i++, i2++){
             target[i] = CACHE4[i2];
         }
     }
