@@ -16,8 +16,6 @@ import vanguard.VLVariable;
 
 public class CLLightPoint extends FSLightPoint{
 
-    private static final float[] CACHE = new float[16];
-
     public static final int CAT_POSITION = 0;
     public static final int CAT_ROTATE_POSITION = 1;
     public static final int CAT_SCALE_POSITION = 2;
@@ -76,20 +74,12 @@ public class CLLightPoint extends FSLightPoint{
         CLVTools.tune(manager.entries().get(CAT_POSITION).get(2), from, to, delay, cycles, loop, curve);
     }
 
-    public void rotatePosition(float angle, float x, float y, float z){
-        float[] point = position.provider();
-
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.rotateM(CACHE, 0, angle, x, y, z);
-        Matrix.multiplyMV(point, 0, CACHE, 0, point, 0);
+    public void scalePosition(float x, float y, float z){
+        CLVTools.scaleView(position.provider(), 0, x, y, z);
     }
 
-    public void scalePosition(float x, float y, float z){
-        float[] point = position.provider();
-
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.scaleM(CACHE, 0, x, y, z);
-        Matrix.multiplyMV(point, 0, CACHE, 0, point, 0);
+    public void rotatePosition(float angle, float x, float y, float z){
+        CLVTools.rotateView(position.provider(), 0, angle, x, y, z);
     }
 
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

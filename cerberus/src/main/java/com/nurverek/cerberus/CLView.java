@@ -15,8 +15,6 @@ import vanguard.VLVariable;
 
 public class CLView extends FSView{
 
-    private static final float[] CACHE = new float[16];
-
     public static final int CAT_VIEW = 0;
     public static final int CAT_PERSPECTIVE = 1;
     public static final int CAT_ORTHOGRAPHIC = 2;
@@ -170,46 +168,42 @@ public class CLView extends FSView{
     }
 
     public void viewRotatePosition(float angle, float x, float y, float z){
-        rotateView(0, angle, x, y, z);
-    }
-
-    public void viewRotateCenter(float angle, float x, float y, float z){
-        rotateView(3, angle, x, y, z);
-    }
-
-    public void viewRotateUp(float angle, float x, float y, float z){
-        rotateView(6, angle, x, y, z);
-    }
-
-    public void viewScalePosition(float x, float y, float z){
-        scaleView(0, x, y, z);
-    }
-
-    public void viewScaleCenter(float x, float y, float z){
-        scaleView(3, x, y, z);
-    }
-
-    public void viewScaleUp(float x, float y, float z){
-        scaleView(6, x, y, z);
-    }
-
-    private void rotateView(int matoffset, float angle, float x, float y, float z){
-        float[] viewmat = settingsView().provider();
-
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.rotateM(CACHE, 0, angle, x, y, z);
-        Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
+        CLVTools.rotateView(settingsview.provider(), 0, angle, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
-    private void scaleView(int matoffset, float x, float y, float z){
-        float[] viewmat = settingsView().provider();
+    public void viewRotateCenter(float angle, float x, float y, float z){
+        CLVTools.rotateView(settingsview.provider(), 3, angle, x, y, z);
 
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.scaleM(CACHE, 0, x, y, z);
-        Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
+        applyLookAt();
+        applyViewProjection();
+    }
+
+    public void viewRotateUp(float angle, float x, float y, float z){
+        CLVTools.rotateView(settingsview.provider(), 6, angle, x, y, z);
+
+        applyLookAt();
+        applyViewProjection();
+    }
+
+    public void viewScalePosition(float x, float y, float z){
+        CLVTools.scaleView(settingsview.provider(), 0, x, y, z);
+
+        applyLookAt();
+        applyViewProjection();
+    }
+
+    public void viewScaleCenter(float x, float y, float z){
+        CLVTools.scaleView(settingsview.provider(), 3, x, y, z);
+
+        applyLookAt();
+        applyViewProjection();
+    }
+
+    public void viewScaleUp(float x, float y, float z){
+        CLVTools.scaleView(settingsview.provider(), 6, x, y, z);
 
         applyLookAt();
         applyViewProjection();

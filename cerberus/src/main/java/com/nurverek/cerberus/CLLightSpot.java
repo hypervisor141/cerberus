@@ -17,8 +17,6 @@ import vanguard.VLVariable;
 
 public class CLLightSpot extends FSLightSpot{
 
-    private static final float[] CACHE = new float[16];
-
     public static final int CAT_POSITION = 0;
     public static final int CAT_CENTER = 1;
     public static final int CAT_CUTOFFS = 2;
@@ -122,31 +120,19 @@ public class CLLightSpot extends FSLightSpot{
     }
 
     public void rotatePosition(float angle, float x, float y, float z){
-        rotatePoint(position.provider(), angle, x, y, z);
+        CLVTools.rotateView(position.provider(), 0, angle, x, y, z);
     }
 
     public void rotateCenter(float angle, float x, float y, float z){
-        rotatePoint(center.provider(), angle, x, y, z);
+        CLVTools.rotateView(center.provider(), 0, angle, x, y, z);
     }
 
     public void scalePosition(float x, float y, float z){
-        scalePoint(position.provider(), x, y, z);
+        CLVTools.scaleView(position.provider(), 0, x, y, z);
     }
 
     public void scaleCenter(float x, float y, float z){
-        scalePoint(center.provider(), x, y, z);
-    }
-
-    private void rotatePoint(float[] point, float angle, float x, float y, float z){
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.rotateM(CACHE, 0, angle, x, y, z);
-        Matrix.multiplyMV(point, 0, CACHE, 0, point, 0);
-    }
-
-    private void scalePoint(float[] point, float x, float y, float z){
-        Matrix.setIdentityM(CACHE, 0);
-        Matrix.scaleM(CACHE, 0, x, y, z);
-        Matrix.multiplyMV(point, 0, CACHE, 0, point, 0);
+        CLVTools.scaleView(center.provider(), 0, x, y, z);
     }
 
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
