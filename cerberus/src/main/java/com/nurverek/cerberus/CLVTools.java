@@ -1,6 +1,9 @@
 package com.nurverek.cerberus;
 
 import android.opengl.Matrix;
+import android.util.Log;
+
+import java.util.Arrays;
 
 import vanguard.VLVCurved;
 import vanguard.VLVEntry;
