@@ -194,19 +194,25 @@ public class CLView extends FSView{
     }
 
     private void rotateView(int matoffset, float angle, float x, float y, float z){
-        float[] viewmat = matrixView().provider();
+        float[] viewmat = settingsView().provider();
 
         Matrix.setIdentityM(CACHE, 0);
         Matrix.rotateM(CACHE, 0, angle, x, y, z);
         Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
+
+        applyLookAt();
+        applyViewProjection();
     }
 
     private void scaleView(int matoffset, float x, float y, float z){
-        float[] viewmat = matrixView().provider();
+        float[] viewmat = settingsView().provider();
 
         Matrix.setIdentityM(CACHE, 0);
         Matrix.scaleM(CACHE, 0, x, y, z);
         Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
+
+        applyLookAt();
+        applyViewProjection();
     }
 
     public void viewRotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
