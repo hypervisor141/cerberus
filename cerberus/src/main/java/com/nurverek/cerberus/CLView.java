@@ -15,6 +15,8 @@ import vanguard.VLVariable;
 
 public class CLView extends FSView{
 
+    private static final float[] CACHE = new float[16];
+
     public static final int CAT_VIEW = 0;
     public static final int CAT_PERSPECTIVE = 1;
     public static final int CAT_ORTHOGRAPHIC = 2;
@@ -165,6 +167,46 @@ public class CLView extends FSView{
         CLVTools.tune(manager.get(6), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(7), fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(8), fromZ, toZ, delay, cycles, loop, curve);
+    }
+
+    public void viewRotatePosition(float angle, float x, float y, float z){
+        rotateView(0, angle, x, y, z);
+    }
+
+    public void viewRotateCenter(float angle, float x, float y, float z){
+        rotateView(3, angle, x, y, z);
+    }
+
+    public void viewRotateUp(float angle, float x, float y, float z){
+        rotateView(6, angle, x, y, z);
+    }
+
+    public void viewScalePosition(float x, float y, float z){
+        scaleView(0, x, y, z);
+    }
+
+    public void viewScaleCenter(float x, float y, float z){
+        scaleView(3, x, y, z);
+    }
+
+    public void viewScaleUp(float x, float y, float z){
+        scaleView(6, x, y, z);
+    }
+
+    private void rotateView(int matoffset, float angle, float x, float y, float z){
+        float[] viewmat = matrixView().provider();
+
+        Matrix.setIdentityM(CACHE, 0);
+        Matrix.rotateM(CACHE, 0, angle, x, y, z);
+        Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
+    }
+
+    private void scaleView(int matoffset, float x, float y, float z){
+        float[] viewmat = matrixView().provider();
+
+        Matrix.setIdentityM(CACHE, 0);
+        Matrix.scaleM(CACHE, 0, x, y, z);
+        Matrix.multiplyMV(viewmat, matoffset, CACHE, 0, viewmat, matoffset);
     }
 
     public void viewRotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

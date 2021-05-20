@@ -4,9 +4,11 @@ import vanguard.VLVCurved;
 import vanguard.VLVEntry;
 import vanguard.VLVariable;
 
-public class CLVTools{
+public final class CLVTools{
 
-    public static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+    private CLVTools(){}
+
+    static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         entry.delay(delay);
         entry.resetDelayTrackers();
 
