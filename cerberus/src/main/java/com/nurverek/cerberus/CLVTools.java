@@ -37,7 +37,7 @@ public final class CLVTools{
 
         Matrix.setIdentityM(CACHE16, 0);
         Matrix.rotateM(CACHE16, 0, angle, x, y, z);
-        Matrix.multiplyMV(CACHE4, offset, CACHE16, 0, CACHE4, 0);
+        Matrix.multiplyMV(CACHE4, 0, CACHE16, 0, CACHE4, 0);
 
         for(int i = offset, i2 = 0; i < 3; i++, i2++){
             target[i] = CACHE4[i2];
@@ -56,7 +56,7 @@ public final class CLVTools{
 
         Matrix.setIdentityM(CACHE16, 0);
         Matrix.scaleM(CACHE16, 0, x, y, z);
-        Matrix.multiplyMV(CACHE4, offset, CACHE16, 0, CACHE4, 0);
+        Matrix.multiplyMV(CACHE4, 0, CACHE16, 0, CACHE4, 0);
 
         for(int i = offset, i2 = 0; i < 3; i++, i2++){
             target[i] = CACHE4[i2];
