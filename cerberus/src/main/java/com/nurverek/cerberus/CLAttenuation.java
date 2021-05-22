@@ -14,7 +14,7 @@ public class CLAttenuation{
 
     public static class Radius extends FSAttenuation.Radius{
 
-        private VLVEntry entry;
+        protected VLVEntry entry;
 
         public Radius(VLFloat radius){
             super(radius);
@@ -63,7 +63,7 @@ public class CLAttenuation{
 
     public static class Distance extends FSAttenuation.Distance{
 
-        private VLVManager<VLVEntry> manager;
+        protected VLVManager<VLVEntry> manager;
 
         public Distance(VLFloat constant, VLFloat linear, VLFloat quadratic){
             super(constant, linear, quadratic);

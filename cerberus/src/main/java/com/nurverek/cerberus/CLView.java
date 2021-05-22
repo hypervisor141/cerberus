@@ -4,7 +4,6 @@ import android.opengl.Matrix;
 
 import com.nurverek.firestorm.FSView;
 
-import vanguard.VLListType;
 import vanguard.VLSyncMap;
 import vanguard.VLSyncType;
 import vanguard.VLVCurved;
@@ -25,7 +24,7 @@ public class CLView extends FSView{
     public static final int CAT_SCALE_VIEW_CENTER = 7;
     public static final int CAT_SCALE_VIEW_UP = 8;
 
-    private VLVManagerDynamic<VLVManager<VLVEntry>> manager;
+    protected VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
     public CLView(boolean perspectivemode){
         super(perspectivemode);
@@ -90,17 +89,15 @@ public class CLView extends FSView{
         scaleviewup.add(new VLVEntry(new VLVCurved(), 0));
         scaleviewup.add(new VLVEntry(new VLVCurved(), 0));
 
-        VLListType<VLVManager<VLVEntry>> entries = manager.entries();
-
-        entries.add(view);
-        entries.add(perspective);
-        entries.add(orthographic);
-        entries.add(rotateviewpos);
-        entries.add(rotateviewcenter);
-        entries.add(rotateviewup);
-        entries.add(scaleviewpos);
-        entries.add(scaleviewcenter);
-        entries.add(scaleviewup);
+        manager.addEntry(view);
+        manager.addEntry(perspective);
+        manager.addEntry(orthographic);
+        manager.addEntry(rotateviewpos);
+        manager.addEntry(rotateviewcenter);
+        manager.addEntry(rotateviewup);
+        manager.addEntry(scaleviewpos);
+        manager.addEntry(scaleviewcenter);
+        manager.addEntry(scaleviewup);
     }
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
@@ -108,43 +105,43 @@ public class CLView extends FSView{
     }
 
     public void viewPositionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPositionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPositionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(3), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(3), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(4), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(4), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(5), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(5), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(6), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(6), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(7), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(7), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_VIEW).get(8), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_VIEW).get(8), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -152,7 +149,7 @@ public class CLView extends FSView{
     }
 
     public void viewCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
 
         CLVTools.tune(manager.get(3), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(4), fromY, toY, delay, cycles, loop, curve);
@@ -160,7 +157,7 @@ public class CLView extends FSView{
     }
 
     public void viewUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
 
         CLVTools.tune(manager.get(6), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(7), fromY, toY, delay, cycles, loop, curve);
@@ -210,7 +207,7 @@ public class CLView extends FSView{
     }
 
     public void viewRotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = this.manager.entries().get(CAT_ROTATE_VIEW_POSITION).get(0);
+        VLVEntry entry = this.manager.getEntry(CAT_ROTATE_VIEW_POSITION).get(0);
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
@@ -222,7 +219,7 @@ public class CLView extends FSView{
     }
 
     public void viewRotateCenter(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = this.manager.entries().get(CAT_ROTATE_VIEW_CENTER).get(0);
+        VLVEntry entry = this.manager.getEntry(CAT_ROTATE_VIEW_CENTER).get(0);
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
@@ -234,7 +231,7 @@ public class CLView extends FSView{
     }
 
     public void viewRotateUp(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVEntry entry = this.manager.entries().get(CAT_ROTATE_VIEW_UP).get(0);
+        VLVEntry entry = this.manager.getEntry(CAT_ROTATE_VIEW_UP).get(0);
 
         CLVTools.tune(entry, fromangle, toangle, delay, cycles, loop, curve);
 
@@ -246,7 +243,7 @@ public class CLView extends FSView{
     }
 
     public void viewScalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_SCALE_VIEW_POSITION);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_POSITION);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -254,7 +251,7 @@ public class CLView extends FSView{
     }
 
     public void viewScaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_SCALE_VIEW_CENTER);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_CENTER);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -262,7 +259,7 @@ public class CLView extends FSView{
     }
 
     public void viewScaleUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_SCALE_VIEW_UP);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_UP);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -270,25 +267,25 @@ public class CLView extends FSView{
     }
 
     public void perspectiveFov(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_PERSPECTIVE).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void perspectiveAspect(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_PERSPECTIVE).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void perspectiveNear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_PERSPECTIVE).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void perspectiveFar(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_PERSPECTIVE).get(3), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE).get(3), from, to, delay, cycles, loop, curve);
     }
 
     public void perspective(float fromFov, float toFov, float fromAspect, float toAspect, float fromNear, float toNear,
                             float fromFar, float toFar, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
 
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_PERSPECTIVE);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_PERSPECTIVE);
 
         CLVTools.tune(manager.get(0), fromFov, toFov, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromAspect, toAspect, delay, cycles, loop, curve);
@@ -297,32 +294,32 @@ public class CLView extends FSView{
     }
 
     public void orthographicLeft(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicRight(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicBottom(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicTop(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(3), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(3), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicNear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(4), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(4), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographicFar(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.entries().get(CAT_ORTHOGRAPHIC).get(5), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC).get(5), from, to, delay, cycles, loop, curve);
     }
 
     public void orthographic(float fromLeft, float toLeft, float fromRight, float toRight, float fromBottom, float toBottom, float fromTop, float toTop, float fromNear, float toNear,
                              float fromFar, float toFar, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.entries().get(CAT_ORTHOGRAPHIC);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ORTHOGRAPHIC);
         
         CLVTools.tune(manager.get(0), fromLeft, toLeft, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromRight, toRight, delay, cycles, loop, curve);
