@@ -1,18 +1,15 @@
 package com.nurverek.cerberus;
 
-import android.opengl.Matrix;
+import com.firestorm.program.FSLight;
+import com.firestorm.program.FSLightPoint;
+import com.firestorm.shading.FSAttenuation;
 
-import com.nurverek.firestorm.FSAttenuation;
-import com.nurverek.firestorm.FSLight;
-import com.nurverek.firestorm.FSLightPoint;
-
-import vanguard.VLArrayFloat;
-import vanguard.VLListType;
-import vanguard.VLVCurved;
-import vanguard.VLVEntry;
-import vanguard.VLVManager;
-import vanguard.VLVManagerDynamic;
-import vanguard.VLVariable;
+import vanguard.array.VLArrayFloat;
+import vanguard.variable.VLVCurved;
+import vanguard.variable.VLVEntry;
+import vanguard.variable.VLVManager;
+import vanguard.variable.VLVManagerDynamic;
+import vanguard.variable.VLVariable;
 
 public class CLLightPoint extends FSLightPoint{
 

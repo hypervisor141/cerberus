@@ -1,15 +1,12 @@
 package com.nurverek.cerberus;
 
 import android.opengl.Matrix;
-import android.util.Log;
 
-import java.util.Arrays;
+import vanguard.variable.VLVCurved;
+import vanguard.variable.VLVEntry;
+import vanguard.variable.VLVariable;
 
-import vanguard.VLVCurved;
-import vanguard.VLVEntry;
-import vanguard.VLVariable;
-
-public final class CLVTools{
+final class CLVTools{
 
     private CLVTools(){}
 

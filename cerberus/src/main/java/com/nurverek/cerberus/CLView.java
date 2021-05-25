@@ -2,15 +2,15 @@ package com.nurverek.cerberus;
 
 import android.opengl.Matrix;
 
-import com.nurverek.firestorm.FSView;
+import com.firestorm.engine.FSView;
 
-import vanguard.VLSyncMap;
-import vanguard.VLSyncType;
-import vanguard.VLVCurved;
-import vanguard.VLVEntry;
-import vanguard.VLVManager;
-import vanguard.VLVManagerDynamic;
-import vanguard.VLVariable;
+import vanguard.sync.VLSyncMap;
+import vanguard.sync.VLSyncType;
+import vanguard.variable.VLVCurved;
+import vanguard.variable.VLVEntry;
+import vanguard.variable.VLVManager;
+import vanguard.variable.VLVManagerDynamic;
+import vanguard.variable.VLVariable;
 
 public class CLView extends FSView{
 

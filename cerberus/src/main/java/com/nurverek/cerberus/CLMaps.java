@@ -2,14 +2,12 @@ package com.nurverek.cerberus;
 
 import android.opengl.Matrix;
 
-import com.nurverek.firestorm.FSLight;
-
-import vanguard.VLArrayFloat;
-import vanguard.VLFloat;
-import vanguard.VLSyncMap;
-import vanguard.VLSyncType;
-import vanguard.VLVEntry;
-import vanguard.VLVManager;
+import vanguard.array.VLArrayFloat;
+import vanguard.primitive.VLFloat;
+import vanguard.sync.VLSyncMap;
+import vanguard.sync.VLSyncType;
+import vanguard.variable.VLVEntry;
+import vanguard.variable.VLVManager;
 
 public class CLMaps{
 

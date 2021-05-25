@@ -1,17 +1,14 @@
 package com.nurverek.cerberus;
 
-import android.opengl.Matrix;
+import com.firestorm.program.FSLight;
+import com.firestorm.program.FSLightDirect;
 
-import com.nurverek.firestorm.FSLight;
-import com.nurverek.firestorm.FSLightDirect;
-
-import vanguard.VLArrayFloat;
-import vanguard.VLListType;
-import vanguard.VLVCurved;
-import vanguard.VLVEntry;
-import vanguard.VLVManager;
-import vanguard.VLVManagerDynamic;
-import vanguard.VLVariable;
+import vanguard.array.VLArrayFloat;
+import vanguard.variable.VLVCurved;
+import vanguard.variable.VLVEntry;
+import vanguard.variable.VLVManager;
+import vanguard.variable.VLVManagerDynamic;
+import vanguard.variable.VLVariable;
 
 public final class CLLightDirect extends FSLightDirect{
 
