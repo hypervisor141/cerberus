@@ -3,6 +3,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenLocal(){
+            content{
+                includeGroup "hypervisor"
+            }
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
@@ -16,6 +21,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenLocal(){
+            content{
+                includeGroup "hypervisor"
+            }
+        }
     }
 }
 

@@ -1,3 +1,5 @@
-include ':cerberus'
 include ':app'
+include ':cerberus'
 rootProject.name = "cerberus"
+include ':firestorm'
+project(':firestorm').projectDir=new File('/home/shayan/data/projects/sources/android/firestorm/firestorm/')
