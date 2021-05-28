@@ -1,15 +1,14 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
-import com.firestorm.program.FSLight;
-import com.firestorm.program.FSLightPoint;
-import com.firestorm.shading.FSAttenuation;
-
-import vanguard.array.VLArrayFloat;
-import vanguard.variable.VLVCurved;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVManager;
-import vanguard.variable.VLVManagerDynamic;
-import vanguard.variable.VLVariable;
+import hypervisor.firestorm.program.FSLight;
+import hypervisor.firestorm.program.FSLightPoint;
+import hypervisor.firestorm.shading.FSAttenuation;
+import hypervisor.vanguard.array.VLArrayFloat;
+import hypervisor.vanguard.variable.VLVCurved;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVariable;
 
 public class CLLightPoint extends FSLightPoint{
 

@@ -1,46 +1,42 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
-import com.firestorm.program.FSLight;
-import com.firestorm.program.FSLightSpot;
+import hypervisor.firestorm.program.FSLight;
+import hypervisor.firestorm.program.FSLightDirect;
+import hypervisor.vanguard.array.VLArrayFloat;
+import hypervisor.vanguard.variable.VLVCurved;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVariable;
 
-import vanguard.array.VLArrayFloat;
-import vanguard.primitive.VLFloat;
-import vanguard.variable.VLVCurved;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVManager;
-import vanguard.variable.VLVManagerDynamic;
-import vanguard.variable.VLVariable;
-
-public class CLLightSpot extends FSLightSpot{
+public final class CLLightDirect extends FSLightDirect{
 
     public static final int CAT_POSITION = 0;
     public static final int CAT_CENTER = 1;
-    public static final int CAT_CUTOFFS = 2;
-    public static final int CAT_ROTATE_POSITION = 3;
-    public static final int CAT_ROTATE_CENTER = 4;
-    public static final int CAT_SCALE_POSITION = 5;
-    public static final int CAT_SCALE_CENTER = 6;
+    public static final int CAT_ROTATE_POSITION = 2;
+    public static final int CAT_ROTATE_CENTER = 3;
+    public static final int CAT_SCALE_POSITION = 4;
+    public static final int CAT_SCALE_CENTER = 5;
 
     protected VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
-    public CLLightSpot(VLArrayFloat position, VLArrayFloat center, VLFloat cutoff, VLFloat outtercutoff){
-        super(position, center, cutoff, outtercutoff);
+    public CLLightDirect(VLArrayFloat position, VLArrayFloat center){
+        super(position, center);
     }
 
-    public CLLightSpot(CLLightSpot src, long flags){
+    public CLLightDirect(CLLightDirect src, long flags){
         copy(src, flags);
     }
 
-    protected CLLightSpot(){
+    protected CLLightDirect(){
 
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(2, 2, 7);
+        manager = new VLVManagerDynamic<>(2, 2, 6);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
         VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));
-        VLVManager<VLVEntry> cutoffs = new VLVManager<>(2, 0);
         VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
@@ -53,9 +49,6 @@ public class CLLightSpot extends FSLightSpot{
         center.add(new VLVEntry(new VLVCurved(), 0));
         center.add(new VLVEntry(new VLVCurved(), 0));
         center.add(new VLVEntry(new VLVCurved(), 0));
-
-        cutoffs.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(cutoff)));
-        cutoffs.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(outercutoff)));
 
         rotatepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)));
         rotatecenter.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)));
@@ -74,7 +67,6 @@ public class CLLightSpot extends FSLightSpot{
         manager.addEntry(rotatecenter);
         manager.addEntry(scalepos);
         manager.addEntry(scalecenter);
-        manager.addEntry(cutoffs);
     }
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
@@ -103,14 +95,6 @@ public class CLLightSpot extends FSLightSpot{
 
     public void centerZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         CLVTools.tune(manager.getEntry(CAT_CENTER).get(2), from, to, delay, cycles, loop, curve);
-    }
-
-    public void cutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_CUTOFFS).get(0), from, to, delay, cycles, loop, curve);
-    }
-
-    public void outerCutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_CUTOFFS).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void rotatePosition(float angle, float x, float y, float z){
@@ -162,7 +146,7 @@ public class CLLightSpot extends FSLightSpot{
     }
 
     public void scaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_CENTER);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_POSITION);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -173,7 +157,7 @@ public class CLLightSpot extends FSLightSpot{
     public void copy(FSLight src, long flags){
         super.copy(src, flags);
 
-        CLLightSpot target = (CLLightSpot)src;
+        CLLightDirect target = (CLLightDirect)src;
 
         if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
             manager = target.manager;
@@ -187,8 +171,7 @@ public class CLLightSpot extends FSLightSpot{
     }
 
     @Override
-    public CLLightSpot duplicate(long flags){
-        return new CLLightSpot(this, flags);
+    public CLLightDirect duplicate(long flags){
+        return new CLLightDirect(this, flags);
     }
 }
-

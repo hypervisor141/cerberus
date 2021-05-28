@@ -1,13 +1,13 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
 import android.opengl.Matrix;
 
-import vanguard.array.VLArrayFloat;
-import vanguard.primitive.VLFloat;
-import vanguard.sync.VLSyncMap;
-import vanguard.sync.VLSyncType;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVManager;
+import hypervisor.vanguard.array.VLArrayFloat;
+import hypervisor.vanguard.primitive.VLFloat;
+import hypervisor.vanguard.sync.VLSyncMap;
+import hypervisor.vanguard.sync.VLSyncType;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
 
 public class CLMaps{
 

@@ -1,16 +1,15 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
 import android.opengl.Matrix;
 
-import com.firestorm.engine.FSView;
-
-import vanguard.sync.VLSyncMap;
-import vanguard.sync.VLSyncType;
-import vanguard.variable.VLVCurved;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVManager;
-import vanguard.variable.VLVManagerDynamic;
-import vanguard.variable.VLVariable;
+import hypervisor.firestorm.engine.FSView;
+import hypervisor.vanguard.sync.VLSyncMap;
+import hypervisor.vanguard.sync.VLSyncType;
+import hypervisor.vanguard.variable.VLVCurved;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVariable;
 
 public class CLView extends FSView{
 

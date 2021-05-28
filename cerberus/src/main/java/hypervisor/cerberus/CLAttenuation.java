@@ -1,13 +1,12 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
-import com.firestorm.shading.FSAttenuation;
-
-import vanguard.primitive.VLFloat;
-import vanguard.utils.VLCopyable;
-import vanguard.variable.VLVCurved;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVManager;
-import vanguard.variable.VLVariable;
+import hypervisor.firestorm.shading.FSAttenuation;
+import hypervisor.vanguard.primitive.VLFloat;
+import hypervisor.vanguard.utils.VLCopyable;
+import hypervisor.vanguard.variable.VLVCurved;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVariable;
 
 public class CLAttenuation{
 

@@ -1,2 +1,1 @@
-# cerberus
-Building on top of FireStorm and Vanguard to provide direct rendering functions
+A library building on top of FireStorm to expand engine functionality

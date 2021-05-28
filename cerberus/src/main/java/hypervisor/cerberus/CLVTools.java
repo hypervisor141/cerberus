@@ -1,10 +1,10 @@
-package com.nurverek.cerberus;
+package hypervisor.cerberus;
 
 import android.opengl.Matrix;
 
-import vanguard.variable.VLVCurved;
-import vanguard.variable.VLVEntry;
-import vanguard.variable.VLVariable;
+import hypervisor.vanguard.variable.VLVCurved;
+import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVariable;
 
 final class CLVTools{
 
