@@ -1,6 +1,6 @@
 package hypervisor.cerberus;
 
-import hypervisor.firestorm.shading.FSAttenuation;
+import hypervisor.firestorm.program.FSAttenuation;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.utils.VLCopyable;
 import hypervisor.vanguard.variable.VLVCurved;

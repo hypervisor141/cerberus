@@ -1,8 +1,8 @@
 package hypervisor.cerberus;
 
+import hypervisor.firestorm.program.FSAttenuation;
 import hypervisor.firestorm.program.FSLight;
 import hypervisor.firestorm.program.FSLightPoint;
-import hypervisor.firestorm.shading.FSAttenuation;
 import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
