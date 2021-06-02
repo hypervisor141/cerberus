@@ -6,8 +6,6 @@ import hypervisor.vanguard.utils.VLCopyable;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
-import hypervisor.vanguard.variable.VLVTypeManager;
-import hypervisor.vanguard.variable.VLVTypeRunner;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLAttenuation{
@@ -36,10 +34,6 @@ public class CLAttenuation{
 
         public float radiusValue(){
             return radius.get();
-        }
-
-        public void registerToRootManager(VLVTypeManager<VLVTypeRunner> root){
-            root.add(entry);
         }
 
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -92,10 +86,6 @@ public class CLAttenuation{
 
         public VLVManager<VLVEntry> manager(){
             return manager;
-        }
-
-        public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
-            root.add(manager);
         }
 
         public float constantValue(){

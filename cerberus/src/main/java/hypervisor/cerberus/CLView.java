@@ -9,7 +9,6 @@ import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
-import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLView extends FSView{
@@ -110,10 +109,6 @@ public class CLView extends FSView{
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
-    }
-
-    public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
-        root.add(manager);
     }
 
     public void viewPositionX(float value){
