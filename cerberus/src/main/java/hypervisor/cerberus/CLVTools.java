@@ -15,8 +15,7 @@ final class CLVTools{
         entry.resetDelayTrackers();
 
         VLVCurved target = (VLVCurved)entry.target;
-        target.setFrom(from);
-        target.setTo(to);
+        target.setRange(from, to);
         target.setLoop(loop);
         target.setCurve(curve);
         target.initialize(cycles);
