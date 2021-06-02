@@ -7,6 +7,7 @@ import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 public final class CLLightDirect extends FSLightDirect{
@@ -32,7 +33,7 @@ public final class CLLightDirect extends FSLightDirect{
 
     }
 
-    public void initializeManager(){
+    public void buildManager(){
         manager = new VLVManagerDynamic<>(6, 0, 6, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
@@ -71,6 +72,58 @@ public final class CLLightDirect extends FSLightDirect{
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
+    }
+
+    public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
+        root.add(manager);
+    }
+
+    public void positionX(float value){
+        position.provider()[0] = value;
+    }
+
+    public void positionY(float value){
+        position.provider()[1] = value;
+    }
+
+    public void positionZ(float value){
+        position.provider()[2] = value;
+    }
+
+    public void centerX(float value){
+        center.provider()[0] = value;
+    }
+
+    public void centerY(float value){
+        center.provider()[1] = value;
+    }
+
+    public void centerZ(float value){
+        center.provider()[2] = value;
+    }
+
+    public float positionX(){
+        return position.provider()[0];
+    }
+
+    public float positionY(){
+        return position.provider()[1];
+    }
+
+    public float positionZ(){
+        return position.provider()[2];
+    }
+
+    public float centerX(){
+        return center.provider()[0];
+    }
+
+    public float centerY(){
+        return center.provider()[1];
+    }
+
+    public float centerZ(){
+        return center.provider()[2];
     }
 
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -146,7 +199,7 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void scaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_POSITION);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_CENTER);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);

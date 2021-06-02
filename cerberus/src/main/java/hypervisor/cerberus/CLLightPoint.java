@@ -8,6 +8,7 @@ import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLLightPoint extends FSLightPoint{
@@ -30,7 +31,7 @@ public class CLLightPoint extends FSLightPoint{
 
     }
 
-    public void initializeManager(){
+    public void buildManager(){
         manager = new VLVManagerDynamic<>(3, 0, 3, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
@@ -54,6 +55,34 @@ public class CLLightPoint extends FSLightPoint{
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
+    }
+
+    public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
+        root.add(manager);
+    }
+
+    public void positionX(float value){
+        position.provider()[0] = value;
+    }
+
+    public void positionY(float value){
+        position.provider()[1] = value;
+    }
+
+    public void positionZ(float value){
+        position.provider()[2] = value;
+    }
+
+    public float positionX(){
+        return position.provider()[0];
+    }
+
+    public float positionY(){
+        return position.provider()[1];
+    }
+
+    public float positionZ(){
+        return position.provider()[2];
     }
 
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

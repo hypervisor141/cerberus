@@ -6,6 +6,8 @@ import hypervisor.vanguard.utils.VLCopyable;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVTypeManager;
+import hypervisor.vanguard.variable.VLVTypeRunner;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLAttenuation{
@@ -24,12 +26,20 @@ public class CLAttenuation{
 
         protected Radius(){}
 
+        public void buildManager(){
+            entry = new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(radius));
+        }
+
         public VLVEntry entry(){
             return entry;
         }
 
-        public void initializeManager(){
-            entry = new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(radius));
+        public float radiusValue(){
+            return radius.get();
+        }
+
+        public void registerToRootManager(VLVTypeManager<VLVTypeRunner> root){
+            root.add(entry);
         }
 
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -73,15 +83,31 @@ public class CLAttenuation{
 
         protected Distance(){}
 
-        public VLVManager<VLVEntry> manager(){
-            return manager;
-        }
-
-        public void initializeManager(){
+        public void buildManager(){
             manager = new VLVManager<>(3,0);
             manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(constant)));
             manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(linear)));
             manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(quadratic)));
+        }
+
+        public VLVManager<VLVEntry> manager(){
+            return manager;
+        }
+
+        public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
+            root.add(manager);
+        }
+
+        public float constantValue(){
+            return constant.get();
+        }
+
+        public float linearValue(){
+            return linear.get();
+        }
+
+        public float quadraticValue(){
+            return quadratic.get();
         }
 
         public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

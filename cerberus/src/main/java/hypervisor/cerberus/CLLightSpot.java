@@ -8,6 +8,7 @@ import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLLightSpot extends FSLightSpot{
@@ -34,7 +35,7 @@ public class CLLightSpot extends FSLightSpot{
 
     }
 
-    public void initializeManager(){
+    public void buildManager(){
         manager = new VLVManagerDynamic<>(7, 0, 7, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
@@ -78,6 +79,74 @@ public class CLLightSpot extends FSLightSpot{
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
+    }
+
+    public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
+        root.add(manager);
+    }
+
+    public void positionX(float value){
+        position.provider()[0] = value;
+    }
+
+    public void positionY(float value){
+        position.provider()[1] = value;
+    }
+
+    public void positionZ(float value){
+        position.provider()[2] = value;
+    }
+
+    public void centerX(float value){
+        center.provider()[0] = value;
+    }
+
+    public void centerY(float value){
+        center.provider()[1] = value;
+    }
+
+    public void centerZ(float value){
+        center.provider()[2] = value;
+    }
+
+    public void cutOff(float value){
+        cutoff.set(value);
+    }
+
+    public void outerCutOff(float value){
+        outercutoff.set(value);
+    }
+
+    public float positionX(){
+        return position.provider()[0];
+    }
+
+    public float positionY(){
+        return position.provider()[1];
+    }
+
+    public float positionZ(){
+        return position.provider()[2];
+    }
+
+    public float centerX(){
+        return center.provider()[0];
+    }
+
+    public float centerY(){
+        return center.provider()[1];
+    }
+
+    public float centerZ(){
+        return center.provider()[2];
+    }
+
+    public float cutOffValue(){
+        return cutoff.get();
+    }
+
+    public float outerCutOffValue(){
+        return outercutoff.get();
     }
 
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){

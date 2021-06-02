@@ -9,6 +9,7 @@ import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLView extends FSView{
@@ -39,7 +40,7 @@ public class CLView extends FSView{
         copy(src, flags);
     }
 
-    public void initializeManager(){
+    public void buildManager(){
         manager = new VLVManagerDynamic<>(11, 0, 11, 0);
 
         VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this));
@@ -109,6 +110,162 @@ public class CLView extends FSView{
 
     public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
+    }
+
+    public void registerToRootManager(VLVTypeManager<VLVTypeManager<?>> root){
+        root.add(manager);
+    }
+
+    public void viewPositionX(float value){
+        settingsview.provider()[0] = value;
+    }
+
+    public void viewPositionY(float value){
+        settingsview.provider()[1] = value;
+    }
+
+    public void viewPositionZ(float value){
+        settingsview.provider()[2] = value;
+    }
+
+    public void viewCenterX(float value){
+        settingsview.provider()[3] = value;
+    }
+
+    public void viewCenterY(float value){
+        settingsview.provider()[4] = value;
+    }
+
+    public void viewCenterZ(float value){
+        settingsview.provider()[5] = value;
+    }
+
+    public void viewUpX(float value){
+        settingsview.provider()[6] = value;
+    }
+
+    public void viewUpY(float value){
+        settingsview.provider()[7] = value;
+    }
+
+    public void viewUpZ(float value){
+        settingsview.provider()[8] = value;
+    }
+
+    public void orthographicLeft(float value){
+        settingsorthographic.provider()[0] = value;
+    }
+
+    public void orthographicRight(float value){
+        settingsorthographic.provider()[1] = value;
+    }
+
+    public void orthographicBottom(float value){
+        settingsorthographic.provider()[2] = value;
+    }
+
+    public void orthographicTop(float value){
+        settingsorthographic.provider()[3] = value;
+    }
+
+    public void orthographicNear(float value){
+        settingsorthographic.provider()[4] = value;
+    }
+
+    public void orthographicFar(float value){
+        settingsorthographic.provider()[5] = value;
+    }
+
+    public void perspectiveAspect(float value){
+        settingsperspective.provider()[0] = value;
+    }
+
+    public void perspectiveFOV(float value){
+        settingsperspective.provider()[1] = value;
+    }
+
+    public void perspectiveNear(float value){
+        settingsperspective.provider()[2] = value;
+    }
+
+    public void perspectiveFar(float value){
+        settingsperspective.provider()[3] = value;
+    }
+
+    public float viewPositionX(){
+        return settingsview.provider()[0];
+    }
+
+    public float viewPositionY(){
+        return settingsview.provider()[1];
+    }
+
+    public float viewPositionZ(){
+        return settingsview.provider()[2];
+    }
+
+    public float viewCenterX(){
+        return settingsview.provider()[3];
+    }
+
+    public float viewCenterY(){
+        return settingsview.provider()[4];
+    }
+
+    public float viewCenterZ(){
+        return settingsview.provider()[5];
+    }
+
+    public float viewUpX(){
+        return settingsview.provider()[6];
+    }
+
+    public float viewUpY(){
+        return settingsview.provider()[7];
+    }
+
+    public float viewUpZ(){
+        return settingsview.provider()[8];
+    }
+
+    public float orthographicLeft(){
+        return settingsorthographic.provider()[0] ;
+    }
+
+    public float orthographicRight(){
+        return settingsorthographic.provider()[1] ;
+    }
+
+    public float orthographicBottom(){
+        return settingsorthographic.provider()[2] ;
+    }
+
+    public float orthographicTop(){
+        return settingsorthographic.provider()[3] ;
+    }
+
+    public float orthographicNear(){
+        return settingsorthographic.provider()[4] ;
+    }
+
+    public float orthographicFar(){
+        return settingsorthographic.provider()[5] ;
+    }
+
+    public float perspectiveAspect(){
+        return settingsperspective.provider()[0] ;
+    }
+
+    public float perspectiveFOV(){
+        return settingsperspective.provider()[1] ;
+    }
+
+    public float perspectiveNear(){
+        return settingsperspective.provider()[2] ;
+    }
+
+    public float perspectiveFar(){
+        return settingsperspective.provider()[3] ;
     }
 
     public void viewPositionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
