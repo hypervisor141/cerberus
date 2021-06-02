@@ -33,7 +33,7 @@ public final class CLLightDirect extends FSLightDirect{
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(2, 2, 6);
+        manager = new VLVManagerDynamic<>(6, 0, 6, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
         VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));

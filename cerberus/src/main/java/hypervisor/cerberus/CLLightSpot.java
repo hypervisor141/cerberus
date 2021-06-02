@@ -35,7 +35,7 @@ public class CLLightSpot extends FSLightSpot{
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(2, 2, 7);
+        manager = new VLVManagerDynamic<>(7, 0, 7, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
         VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));

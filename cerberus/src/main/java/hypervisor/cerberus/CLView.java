@@ -40,7 +40,7 @@ public class CLView extends FSView{
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(3, 3, 9);
+        manager = new VLVManagerDynamic<>(11, 0, 11, 0);
 
         VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this));
         VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(this));

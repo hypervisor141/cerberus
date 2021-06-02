@@ -31,7 +31,7 @@ public class CLLightPoint extends FSLightPoint{
     }
 
     public void initializeManager(){
-        manager = new VLVManagerDynamic<>(3, 0, 3);
+        manager = new VLVManagerDynamic<>(3, 0, 3, 0);
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
         VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0);
