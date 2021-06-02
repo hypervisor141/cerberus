@@ -382,6 +382,7 @@ public class CLView extends FSView{
             settings[offset + 1] = source.get(1).target.get();
             settings[offset + 2] = source.get(2).target.get();
 
+            target.applyLookAt();
             target.applyViewProjection();
         }
 
