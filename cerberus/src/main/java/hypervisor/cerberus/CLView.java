@@ -13,15 +13,17 @@ import hypervisor.vanguard.variable.VLVariable;
 
 public class CLView extends FSView{
 
-    public static final int CAT_VIEW = 0;
-    public static final int CAT_PERSPECTIVE = 1;
-    public static final int CAT_ORTHOGRAPHIC = 2;
-    public static final int CAT_ROTATE_VIEW_POSITION = 3;
-    public static final int CAT_ROTATE_VIEW_CENTER = 4;
-    public static final int CAT_ROTATE_VIEW_UP = 5;
-    public static final int CAT_SCALE_VIEW_POSITION = 6;
-    public static final int CAT_SCALE_VIEW_CENTER = 7;
-    public static final int CAT_SCALE_VIEW_UP = 8;
+    public static final int CAT_PERSPECTIVE = 0;
+    public static final int CAT_ORTHOGRAPHIC = 1;
+    public static final int CAT_MOVE_VIEW_POSITION = 2;
+    public static final int CAT_MOVE_VIEW_CENTER = 3;
+    public static final int CAT_MOVE_VIEW_UP = 4;
+    public static final int CAT_ROTATE_VIEW_POSITION = 5;
+    public static final int CAT_ROTATE_VIEW_CENTER = 6;
+    public static final int CAT_ROTATE_VIEW_UP = 7;
+    public static final int CAT_SCALE_VIEW_POSITION = 8;
+    public static final int CAT_SCALE_VIEW_CENTER = 9;
+    public static final int CAT_SCALE_VIEW_UP = 10;
 
     protected VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
@@ -40,9 +42,11 @@ public class CLView extends FSView{
     public void initializeManager(){
         manager = new VLVManagerDynamic<>(3, 3, 9);
 
-        VLVManager<VLVEntry> view = new VLVManager<>(9, 0, new MapView(this));
         VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this));
         VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(this));
+        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, new MapView(this, 0));
+        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, new MapView(this, 3));
+        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, new MapView(this, 6));
         VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0);
         VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0);
@@ -50,16 +54,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new MapScaleView(this, 3, 0));
         VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new MapScaleView(this, 6, 0));
 
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-        view.add(new VLVEntry(new VLVCurved(), 0));
-
         perspective.add(new VLVEntry(new VLVCurved(), 0));
         perspective.add(new VLVEntry(new VLVCurved(), 0));
         perspective.add(new VLVEntry(new VLVCurved(), 0));
@@ -71,6 +65,18 @@ public class CLView extends FSView{
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
         orthographic.add(new VLVEntry(new VLVCurved(), 0));
+
+        moveviewpos.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewpos.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewpos.add(new VLVEntry(new VLVCurved(), 0));
+
+        moveviewcenter.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewcenter.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewcenter.add(new VLVEntry(new VLVCurved(), 0));
+
+        moveviewup.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewup.add(new VLVEntry(new VLVCurved(), 0));
+        moveviewup.add(new VLVEntry(new VLVCurved(), 0));
 
         rotateviewpos.add(new VLVEntry(new VLVCurved(), 0, new MapRotateView(this, 0, 0F, 0F, 0F)));
         rotateviewcenter.add(new VLVEntry(new VLVCurved(), 0, new MapRotateView(this, 3, 0F, 0F, 0F)));
@@ -88,9 +94,11 @@ public class CLView extends FSView{
         scaleviewup.add(new VLVEntry(new VLVCurved(), 0));
         scaleviewup.add(new VLVEntry(new VLVCurved(), 0));
 
-        manager.addEntry(view);
         manager.addEntry(perspective);
         manager.addEntry(orthographic);
+        manager.addEntry(moveviewpos);
+        manager.addEntry(moveviewcenter);
+        manager.addEntry(moveviewup);
         manager.addEntry(rotateviewpos);
         manager.addEntry(rotateviewcenter);
         manager.addEntry(rotateviewup);
@@ -104,43 +112,43 @@ public class CLView extends FSView{
     }
 
     public void viewPositionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(0), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_POSITION).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPositionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(1), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_POSITION).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPositionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(2), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_POSITION).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(3), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_CENTER).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(4), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_CENTER).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void viewCenterZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(5), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_CENTER).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(6), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_UP).get(0), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(7), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_UP).get(1), from, to, delay, cycles, loop, curve);
     }
 
     public void viewUpZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_VIEW).get(8), from, to, delay, cycles, loop, curve);
+        CLVTools.tune(manager.getEntry(CAT_MOVE_VIEW_UP).get(2), from, to, delay, cycles, loop, curve);
     }
 
     public void viewPosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_POSITION);
 
         CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
         CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
@@ -148,19 +156,19 @@ public class CLView extends FSView{
     }
 
     public void viewCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_CENTER);
 
-        CLVTools.tune(manager.get(3), fromX, toX, delay, cycles, loop, curve);
-        CLVTools.tune(manager.get(4), fromY, toY, delay, cycles, loop, curve);
-        CLVTools.tune(manager.get(5), fromZ, toZ, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
     }
 
     public void viewUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_VIEW);
+        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_UP);
 
-        CLVTools.tune(manager.get(6), fromX, toX, delay, cycles, loop, curve);
-        CLVTools.tune(manager.get(7), fromY, toY, delay, cycles, loop, curve);
-        CLVTools.tune(manager.get(8), fromZ, toZ, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(0), fromX, toX, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(1), fromY, toY, delay, cycles, loop, curve);
+        CLVTools.tune(manager.get(2), fromZ, toZ, delay, cycles, loop, curve);
     }
 
     public void viewRotatePosition(float angle, float x, float y, float z){
@@ -351,9 +359,12 @@ public class CLView extends FSView{
     }
 
     private static class MapView extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
+
+        public int offset;
         
-        public MapView(FSView target){
+        public MapView(FSView target, int offset){
             super(target);
+            this.offset = offset;
         }
 
         public MapView(MapView src, long flags){
@@ -366,11 +377,18 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            target.lookAt(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(),
-                    source.get(3).target.get(), source.get(4).target.get(), source.get(5).target.get(),
-                    source.get(6).target.get(), source.get(7).target.get(), source.get(8).target.get());
+            float[] settings = target.settingsView().provider();
+            settings[offset] = source.get(0).target.get();
+            settings[offset + 1] = source.get(1).target.get();
+            settings[offset + 2] = source.get(2).target.get();
 
             target.applyViewProjection();
+        }
+
+        @Override
+        public void copy(VLSyncType<VLVManager<VLVEntry>> src, long flags){
+            super.copy(src, flags);
+            this.offset = ((MapView)src).offset;
         }
 
         @Override
