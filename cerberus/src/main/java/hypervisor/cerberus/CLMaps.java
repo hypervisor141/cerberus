@@ -15,10 +15,17 @@ import hypervisor.vanguard.variable.VLVTypeRunner;
 
 public class CLMaps{
 
-    public static class Chain<SOURCE extends VLVTypeRunner> implements VLSyncType<SOURCE>{
+    public static class Chain<SOURCE extends VLVTypeRunner, TARGET> extends VLSyncMap<SOURCE, TARGET>{
 
         public Post<SOURCE> post;
         protected boolean started;
+
+        public Chain(TARGET target, Post<SOURCE> post){
+            super(target);
+
+            this.post = post;
+            started = false;
+        }
 
         public Chain(Post<SOURCE> post){
             this.post = post;
@@ -29,7 +36,7 @@ public class CLMaps{
 
         }
 
-        public Chain(Chain<SOURCE> src, long flags){
+        public Chain(Chain<SOURCE, TARGET> src, long flags){
             copy(src, flags);
         }
 
@@ -46,11 +53,11 @@ public class CLMaps{
 
         @Override
         public void copy(VLSyncType<SOURCE> src, long flags){
-            this.post = ((Chain<SOURCE>)src).post;
+            this.post = ((Chain<SOURCE, TARGET>)src).post;
         }
 
         @Override
-        public Chain<SOURCE> duplicate(long flags){
+        public Chain<SOURCE, TARGET> duplicate(long flags){
             return new Chain<>(this, flags);
         }
 
@@ -71,6 +78,12 @@ public class CLMaps{
             this.host = host;
             started = false;
         }
+
+        public SelfCleaner(VLVManagerDynamic<?> host){
+            this.host = host;
+            started = false;
+        }
+
 
         public SelfCleaner(SelfCleaner<SOURCE, TARGET> src, long flags){
             copy(src, flags);
