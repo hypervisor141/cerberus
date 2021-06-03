@@ -1,6 +1,7 @@
 package hypervisor.cerberus;
 
 import android.opengl.Matrix;
+import android.widget.TableRow;
 
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;

@@ -99,7 +99,7 @@ public class CLMaps{
                 started = true;
 
             }else if(started && host != null && source.done()){
-                host.deactivateEntry(source);
+                host.deactivateEntry(host.indexOf(source));
                 started = false;
             }
         }
