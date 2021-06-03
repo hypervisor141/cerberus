@@ -35,7 +35,6 @@ public class CLMaps{
                 }
                 if(post != null){
                     post.run();
-                    post = null;
                 }
             }
         }
