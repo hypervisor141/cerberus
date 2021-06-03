@@ -16,9 +16,11 @@ public class CLMaps{
     public static class Chain<SOURCE extends VLVEntry> implements VLSyncType<SOURCE>{
 
         public Post<SOURCE> post;
+        protected boolean started;
 
         public Chain(Post<SOURCE> post){
             this.post = post;
+            started = false;
         }
 
         public Chain(){
@@ -31,7 +33,11 @@ public class CLMaps{
 
         @Override
         public void sync(SOURCE source){
-            if(post != null && !source.paused() && source.done()){
+            if(!source.paused()){
+                started = true;
+
+            }else if(started && post != null && source.done()){
+                started = false;
                 post.post(source);
             }
         }
@@ -55,10 +61,12 @@ public class CLMaps{
     public static abstract class SelfCleaner<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
 
         public VLVManagerDynamic<SOURCE> host;
+        protected boolean started;
 
         public SelfCleaner(TARGET target, VLVManagerDynamic<SOURCE> host){
             super(target);
             this.host = host;
+            started = false;
         }
 
         protected SelfCleaner(){
@@ -67,8 +75,12 @@ public class CLMaps{
 
         @Override
         public void sync(SOURCE source){
-            if(host != null && !source.paused() && source.done()){
+            if(!source.paused()){
+                started = true;
+
+            }else if(started && host != null && source.done()){
                 host.deactivateEntry(source);
+                started = false;
             }
         }
     }
