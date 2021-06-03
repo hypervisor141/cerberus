@@ -92,6 +92,10 @@ public class CLAttenuation{
             constant.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
             linear.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
             quadratic.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+
+            manager.addEntry(constant);
+            manager.addEntry(linear);
+            manager.addEntry(quadratic);
         }
 
         public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){

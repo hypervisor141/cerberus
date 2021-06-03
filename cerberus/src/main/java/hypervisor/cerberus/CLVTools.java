@@ -11,8 +11,7 @@ final class CLVTools{
 
     private CLVTools(){}
 
-    static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVEntry entry = manager.get(targetindex);
+    static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
         ((CLMaps.Chain<VLVEntry, Object>)entry.syncer()).post = post;
         entry.delay(delay);
         entry.resetDelayTrackers();
@@ -22,6 +21,19 @@ final class CLVTools{
         target.setCurve(curve);
         target.initialize(from, to, cycles);
         target.activate();
+    }
+
+    static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        tune(manager.get(targetindex), from, to, delay, cycles, loop, curve, post);
+    }
+
+    static void tune(VLVManager<VLVEntry> manager, int targetindex, float value){
+        VLVEntry entry = manager.get(targetindex);
+        ((CLMaps.Chain<VLVEntry, Object>)entry.syncer()).post = null;
+
+        entry.delay(0);
+        entry.resetDelayTrackers();
+        entry.target.set(value);
     }
 
     static void rotateView(float[] target, int offset, float angle, float x, float y, float z){
