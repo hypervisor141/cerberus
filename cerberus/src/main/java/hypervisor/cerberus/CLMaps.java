@@ -58,7 +58,7 @@ public class CLMaps{
         }
     }
 
-    public static abstract class SelfCleaner<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
+    public static class SelfCleaner<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
 
         public VLVManagerDynamic<SOURCE> host;
         protected boolean started;
@@ -67,6 +67,10 @@ public class CLMaps{
             super(target);
             this.host = host;
             started = false;
+        }
+
+        public SelfCleaner(SelfCleaner<SOURCE, TARGET> src, long flags){
+            copy(src, flags);
         }
 
         protected SelfCleaner(){
@@ -82,6 +86,20 @@ public class CLMaps{
                 host.deactivateEntry(source);
                 started = false;
             }
+        }
+
+        @Override
+        public void copy(VLSyncType<SOURCE> src, long flags){
+            super.copy(src, flags);
+
+            SelfCleaner<SOURCE, TARGET> target = (SelfCleaner<SOURCE, TARGET>)src;
+            host = target.host;
+            started = target.started;
+        }
+
+        @Override
+        public SelfCleaner<SOURCE, TARGET> duplicate(long flags){
+            return new SelfCleaner<>(this, flags);
         }
     }
 
