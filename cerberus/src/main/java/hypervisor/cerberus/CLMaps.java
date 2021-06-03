@@ -10,10 +10,11 @@ import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
 import hypervisor.vanguard.variable.VLVTypeManager;
+import hypervisor.vanguard.variable.VLVTypeRunner;
 
 public class CLMaps{
 
-    public static class Chain<SOURCE extends VLVEntry> implements VLSyncType<SOURCE>{
+    public static class Chain<SOURCE extends VLVTypeRunner> implements VLSyncType<SOURCE>{
 
         public Post<SOURCE> post;
         protected boolean started;
@@ -52,7 +53,7 @@ public class CLMaps{
             return new Chain<>(this, flags);
         }
 
-        public static interface Post<SOURCE extends VLVEntry>{
+        public static interface Post<SOURCE extends VLVTypeRunner>{
 
             void post(SOURCE source);
         }
