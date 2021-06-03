@@ -3,6 +3,7 @@ package hypervisor.cerberus;
 import android.opengl.Matrix;
 
 import hypervisor.firestorm.engine.FSView;
+import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
@@ -41,17 +42,17 @@ public class CLView extends FSView{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 11, 11, 0);
 
-        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this, manager));
-        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(this, manager));
-        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, new MapView(this, 0, manager));
-        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, new MapView(this, 3, manager));
-        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, new MapView(this, 6, manager));
-        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, new MapRotateView(this, 0, 0F, 0F, 0F, manager));
-        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, new MapRotateView(this, 3, 0F, 0F, 0F, manager));
-        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, new MapRotateView(this, 6, 0F, 0F, 0F, manager));
-        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, new MapScaleView(this, 0, 0, manager));
-        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new MapScaleView(this, 3, 0, manager));
-        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new MapScaleView(this, 6, 0, manager));
+        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this));
+        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(this));
+        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, new MapView(this, 0));
+        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, new MapView(this, 3));
+        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, new MapView(this, 6));
+        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, new MapRotateView(this, 0, 0F, 0F, 0F));
+        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, new MapRotateView(this, 3, 0F, 0F, 0F));
+        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, new MapRotateView(this, 6, 0F, 0F, 0F));
+        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, new MapScaleView(this, 0, 0));
+        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new MapScaleView(this, 3, 0));
+        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new MapScaleView(this, 6, 0));
 
         perspective.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
         perspective.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
@@ -542,12 +543,12 @@ public class CLView extends FSView{
         return new CLView(this, flags);
     }
 
-    private static class MapView extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, FSView>{
+    private static class MapView extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
 
         public int offset;
         
-        public MapView(FSView target, int offset, VLVManagerDynamic<?> host){
-            super(target, host);
+        public MapView(FSView target, int offset){
+            super(target);
             this.offset = offset;
         }
 
@@ -561,8 +562,6 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             float[] settings = target.settingsView().provider();
             settings[offset] = source.get(0).target.get();
             settings[offset + 1] = source.get(1).target.get();
@@ -584,10 +583,10 @@ public class CLView extends FSView{
         }
     }
 
-    private static class MapPerspective extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, FSView>{
+    private static class MapPerspective extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
 
-        public MapPerspective(FSView target, VLVManagerDynamic<?> host){
-            super(target, host);
+        public MapPerspective(FSView target){
+            super(target);
         }
 
         public MapPerspective(MapPerspective src, long flags){
@@ -600,8 +599,6 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             target.perspective(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(), source.get(3).target.get());
             target.applyViewProjection();
         }
@@ -612,10 +609,10 @@ public class CLView extends FSView{
         }
     }
 
-    private static class MapOrthographic extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, FSView>{
+    private static class MapOrthographic extends VLSyncMap<VLVManager<VLVEntry>, FSView>{
 
-        public MapOrthographic(FSView target, VLVManagerDynamic<?> host){
-            super(target, host);
+        public MapOrthographic(FSView target){
+            super(target);
         }
 
         public MapOrthographic(MapOrthographic src, long flags){
@@ -628,8 +625,6 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             target.orthographic(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(),
                     source.get(3).target.get(), source.get(4).target.get(), source.get(5).target.get());
 
@@ -646,8 +641,8 @@ public class CLView extends FSView{
 
         public CLView view;
 
-        public MapScaleView(CLView view, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
-            super(view.settingsview, targetoffset, sourceoffset, host);
+        public MapScaleView(CLView view, int targetoffset, int sourceoffset){
+            super(view.settingsview, targetoffset, sourceoffset);
             this.view = view;
         }
 
@@ -690,7 +685,7 @@ public class CLView extends FSView{
         }
     }
 
-    public static class MapRotateView extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, CLView>{
+    public static class MapRotateView extends VLSyncMap<VLVManager<VLVEntry>, CLView>{
 
         protected float[] cache;
         protected float[] startstatecache;
@@ -700,8 +695,8 @@ public class CLView extends FSView{
         public float y;
         public float z;
 
-        public MapRotateView(CLView target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
-            super(target, host);
+        public MapRotateView(CLView target, int offset, float x, float y, float z){
+            super(target);
 
             this.offset = offset;
             this.x = x;
@@ -731,8 +726,6 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             Matrix.setIdentityM(cache, 0);
             Matrix.rotateM(cache, 0, source.get(0).target.get(), x, y, z);
             Matrix.multiplyMV(cache, 0, cache, 0, startstatecache, 0);

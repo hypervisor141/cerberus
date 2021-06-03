@@ -35,12 +35,12 @@ public final class CLLightDirect extends FSLightDirect{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 6, 6, 0);
 
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3, manager));
-        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3, manager));
-        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F, manager));
-        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F, manager));
-        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0, manager));
-        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.center, 0, 0, manager));
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
+        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));
+        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F));
+        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F));
+        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
+        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.center, 0, 0));
 
         position.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
         position.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));

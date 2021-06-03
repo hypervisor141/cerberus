@@ -25,7 +25,7 @@ public class CLAttenuation{
         protected Radius(){}
 
         public void buildManager(){
-            manager = new VLVManager<>(1, 0, new CLMaps.Set(radius, null));
+            manager = new VLVManager<>(1, 0, new CLMaps.Set(radius));
             manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
         }
 
@@ -85,9 +85,9 @@ public class CLAttenuation{
         public void buildManager(){
             manager = new VLVManagerDynamic<>(0, 3, 3, 0);
 
-            VLVManager<VLVEntry> constant = new VLVManager<>(1,0, new CLMaps.Set(constant(), manager));
-            VLVManager<VLVEntry> linear = new VLVManager<>(1,0, new CLMaps.Set(linear(), manager));
-            VLVManager<VLVEntry> quadratic = new VLVManager<>(1,0, new CLMaps.Set(quadratic(), manager));
+            VLVManager<VLVEntry> constant = new VLVManager<>(1,0, new CLMaps.Set(constant()));
+            VLVManager<VLVEntry> linear = new VLVManager<>(1,0, new CLMaps.Set(linear()));
+            VLVManager<VLVEntry> quadratic = new VLVManager<>(1,0, new CLMaps.Set(quadratic()));
 
             constant.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
             linear.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));

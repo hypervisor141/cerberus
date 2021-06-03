@@ -6,11 +6,9 @@ import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
-import hypervisor.vanguard.variable.VLV;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
-import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVTypeRunner;
 
 public class CLMaps{
@@ -70,65 +68,10 @@ public class CLMaps{
         }
     }
 
-    public static class SelfCleaner<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
+    public static class Set extends VLSyncMap<VLVManager<VLVEntry>, VLFloat>{
 
-        public VLVManagerDynamic<?> host;
-        protected boolean started;
-
-        public SelfCleaner(TARGET target, VLVManagerDynamic<?> host){
+        public Set(VLFloat target){
             super(target);
-
-            this.host = host;
-            started = false;
-        }
-
-        public SelfCleaner(VLVManagerDynamic<?> host){
-            this.host = host;
-            started = false;
-        }
-
-
-        public SelfCleaner(SelfCleaner<SOURCE, TARGET> src, long flags){
-            copy(src, flags);
-        }
-
-        protected SelfCleaner(){
-
-        }
-
-        @Override
-        public void sync(SOURCE source){
-            if(!source.paused()){
-                started = true;
-
-            }else if(started && source.done()){
-                started = false;
-
-                if(host != null){
-                    host.deactivateEntry(host.indexOf(source));
-                }
-            }
-        }
-
-        @Override
-        public void copy(VLSyncType<SOURCE> src, long flags){
-            super.copy(src, flags);
-
-            SelfCleaner<SOURCE, TARGET> target = (SelfCleaner<SOURCE, TARGET>)src;
-            host = target.host;
-            started = target.started;
-        }
-
-        @Override
-        public SelfCleaner<SOURCE, TARGET> duplicate(long flags){
-            return new SelfCleaner<>(this, flags);
-        }
-    }
-
-    public static class Set extends SelfCleaner<VLVManager<VLVEntry>, VLFloat>{
-
-        public Set(VLFloat target, VLVManagerDynamic<?> host){
-            super(target, host);
         }
 
         protected Set(Set src, long flags){}
@@ -137,7 +80,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
             target.set(source.get(0).target.get());
         }
 
@@ -147,14 +89,14 @@ public class CLMaps{
         }
     }
 
-    public static class SetArray extends SelfCleaner<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class SetArray extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
         public int count;
 
-        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count, VLVManagerDynamic<?> host){
-            super(target, host);
+        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count){
+            super(target);
 
             this.targetoffset = targetoffset;
             this.sourceoffset = sourceoffset;
@@ -169,7 +111,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
             float[] target = this.target.provider();
 
             for(int i = 0; i < count; i++){
@@ -193,7 +134,7 @@ public class CLMaps{
         }
     }
 
-    public static class RotatePoint extends SelfCleaner<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class RotatePoint extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
         protected float[] startstatecache;
@@ -203,8 +144,8 @@ public class CLMaps{
         public float y;
         public float z;
 
-        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
-            super(target, host);
+        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z){
+            super(target);
 
             cache = new float[16];
             startstatecache = new float[4];
@@ -234,8 +175,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             float[] target = this.target.provider();
 
             Matrix.setIdentityM(cache, 0);
@@ -273,15 +212,15 @@ public class CLMaps{
         }
     }
 
-    public static class ScalePoint extends SelfCleaner<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScalePoint extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
 
         public int targetoffset;
         public int sourceoffset;
 
-        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
-            super(target, host);
+        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset){
+            super(target);
 
             cache = new float[16];
             Matrix.setIdentityM(cache, 0);
@@ -298,8 +237,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
-
             float[] target = this.target.provider();
 
             Matrix.scaleM(cache, 0, source.get(sourceoffset).target.get(), source.get(sourceoffset + 1).target.get(), source.get(sourceoffset + 2).target.get());
@@ -332,15 +269,15 @@ public class CLMaps{
         }
     }
 
-    public static class RotateMatrix extends SelfCleaner<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class RotateMatrix extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int offset;
         public float x;
         public float y;
         public float z;
 
-        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
-            super(target, host);
+        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z){
+            super(target);
 
             this.offset = offset;
             this.x = x;
@@ -356,7 +293,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
             Matrix.rotateM(target.provider(), offset, source.get(0).target.get(), x, y, z);
         }
 
@@ -377,13 +313,13 @@ public class CLMaps{
         }
     }
 
-    public static class ScaleMatrix extends SelfCleaner<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScaleMatrix extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
 
-        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
-            super(target, host);
+        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset){
+            super(target);
 
             this.targetoffset = targetoffset;
             this.sourceoffset = sourceoffset;
@@ -397,7 +333,6 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            super.sync(source);
             Matrix.scaleM(target.provider(), targetoffset, source.get(sourceoffset).target.get(), source.get(sourceoffset + 1).target.get(), source.get(sourceoffset + 2).target.get());
         }
 
