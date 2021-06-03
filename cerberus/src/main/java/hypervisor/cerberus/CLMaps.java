@@ -45,9 +45,12 @@ public class CLMaps{
             if(!source.paused()){
                 started = true;
 
-            }else if(started && post != null && source.done()){
+            }else if(started && source.done()){
                 started = false;
-                post.post(source);
+
+                if(post != null){
+                    post.post(source);
+                }
             }
         }
 
@@ -98,9 +101,12 @@ public class CLMaps{
             if(!source.paused()){
                 started = true;
 
-            }else if(started && host != null && source.done()){
-                host.deactivateEntry(host.indexOf(source));
+            }else if(started && source.done()){
                 started = false;
+
+                if(host != null){
+                    host.deactivateEntry(host.indexOf(source));
+                }
             }
         }
 
