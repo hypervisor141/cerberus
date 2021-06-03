@@ -12,7 +12,7 @@ final class CLVTools{
     private CLVTools(){}
 
     static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
-        ((CLMaps.TaskedMap<?, ?>)manager.syncer()).post = null;
+        ((CLMaps.TaskedMap<?, ?>)manager.syncer()).post = post;
         VLVEntry entry = manager.get(targetindex);
 
         entry.delay(delay);
