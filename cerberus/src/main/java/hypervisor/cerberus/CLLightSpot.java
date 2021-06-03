@@ -220,17 +220,17 @@ public class CLLightSpot extends FSLightSpot{
     public void scalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
         VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_POSITION);
 
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, post);
+        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, null);
         CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, post);
     }
 
     public void scaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
         VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_CENTER);
 
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, post);
+        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, null);
         CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, post);
     }
 
     @Override

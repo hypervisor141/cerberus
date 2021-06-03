@@ -13,34 +13,58 @@ import hypervisor.vanguard.variable.VLVTypeManager;
 
 public class CLMaps{
 
-    public static abstract class TaskedMap<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
+    public static class ChainMap<SOURCE extends VLVEntry> implements VLSyncType<SOURCE>{
 
         public Runnable post;
+
+        public ChainMap(Runnable post){
+            this.post = post;
+        }
+
+        public ChainMap(ChainMap<SOURCE> src, long flags){
+            copy(src, flags);
+        }
+
+        @Override
+        public void sync(SOURCE source){
+            if(post != null && source.done()){
+                post.run();
+            }
+        }
+
+        @Override
+        public void copy(VLSyncType<SOURCE> src, long flags){
+            this.post = ((ChainMap<SOURCE>)src).post;
+        }
+
+        @Override
+        public ChainMap<SOURCE> duplicate(long flags){
+            return new ChainMap<>(this, flags);
+        }
+    }
+
+    public static abstract class SelfCleaningMap<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
+
         public VLVManagerDynamic<SOURCE> host;
 
-        public TaskedMap(TARGET target, VLVManagerDynamic<SOURCE> host){
+        public SelfCleaningMap(TARGET target, VLVManagerDynamic<SOURCE> host){
             super(target);
             this.host = host;
         }
 
-        protected TaskedMap(){
+        protected SelfCleaningMap(){
 
         }
 
         @Override
         public void sync(SOURCE source){
-            if(source.done()){
-                if(host != null){
-                    host.deactivateEntry(source);
-                }
-                if(post != null){
-                    post.run();
-                }
+            if(host != null && source.done()){
+                host.deactivateEntry(source);
             }
         }
     }
 
-    public static class Set extends TaskedMap<VLVManager<VLVEntry>, VLFloat>{
+    public static class Set extends SelfCleaningMap<VLVManager<VLVEntry>, VLFloat>{
 
         public Set(VLFloat target, VLVManagerDynamic<VLVManager<VLVEntry>> host){
             super(target, host);
@@ -62,7 +86,7 @@ public class CLMaps{
         }
     }
 
-    public static class SetArray extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class SetArray extends SelfCleaningMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
@@ -108,7 +132,7 @@ public class CLMaps{
         }
     }
 
-    public static class RotatePoint extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class RotatePoint extends SelfCleaningMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
         protected float[] startstatecache;
@@ -188,7 +212,7 @@ public class CLMaps{
         }
     }
 
-    public static class ScalePoint extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScalePoint extends SelfCleaningMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
 
@@ -247,7 +271,7 @@ public class CLMaps{
         }
     }
 
-    public static class RotateMatrix extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class RotateMatrix extends SelfCleaningMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int offset;
         public float x;
@@ -292,7 +316,7 @@ public class CLMaps{
         }
     }
 
-    public static class ScaleMatrix extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScaleMatrix extends SelfCleaningMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
