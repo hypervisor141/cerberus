@@ -525,6 +525,8 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             float[] settings = target.settingsView().provider();
             settings[offset] = source.get(0).target.get();
             settings[offset + 1] = source.get(1).target.get();
@@ -562,6 +564,8 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             target.perspective(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(), source.get(3).target.get());
             target.applyViewProjection();
         }
@@ -588,6 +592,8 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             target.orthographic(source.get(0).target.get(), source.get(1).target.get(), source.get(2).target.get(),
                     source.get(3).target.get(), source.get(4).target.get(), source.get(5).target.get());
 
@@ -689,6 +695,8 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             Matrix.setIdentityM(cache, 0);
             Matrix.rotateM(cache, 0, source.get(0).target.get(), x, y, z);
             Matrix.multiplyMV(cache, 0, cache, 0, startstatecache, 0);

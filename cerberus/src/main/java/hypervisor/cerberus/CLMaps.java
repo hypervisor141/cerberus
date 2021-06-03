@@ -52,6 +52,7 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
             target.set(source.get(0).target.get());
         }
 
@@ -83,6 +84,7 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
             float[] target = this.target.provider();
 
             for(int i = 0; i < count; i++){
@@ -147,6 +149,8 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             float[] target = this.target.provider();
 
             Matrix.setIdentityM(cache, 0);
@@ -209,6 +213,8 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
+
             float[] target = this.target.provider();
 
             Matrix.scaleM(cache, 0, source.get(sourceoffset).target.get(), source.get(sourceoffset + 1).target.get(), source.get(sourceoffset + 2).target.get());
@@ -265,6 +271,7 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
             Matrix.rotateM(target.provider(), offset, source.get(0).target.get(), x, y, z);
         }
 
@@ -305,6 +312,7 @@ public class CLMaps{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
+            super.sync(source);
             Matrix.scaleM(target.provider(), targetoffset, source.get(sourceoffset).target.get(), source.get(sourceoffset + 1).target.get(), source.get(sourceoffset + 2).target.get());
         }
 
