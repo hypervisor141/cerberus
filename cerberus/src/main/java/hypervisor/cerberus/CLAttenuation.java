@@ -26,7 +26,7 @@ public class CLAttenuation{
 
         public void buildManager(){
             manager = new VLVManager<>(1, 0, new CLMaps.Set(radius, null));
-            manager.add(new VLVEntry(new VLVCurved(), 0));
+            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
         }
 
         public VLVManager<VLVEntry> manager(){
@@ -37,7 +37,7 @@ public class CLAttenuation{
             return radius.get();
         }
 
-        public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager, 0, from, to, delay, cycles, loop, curve, post);
         }
 
@@ -89,9 +89,9 @@ public class CLAttenuation{
             VLVManager<VLVEntry> linear = new VLVManager<>(1,0, new CLMaps.Set(linear(), manager));
             VLVManager<VLVEntry> quadratic = new VLVManager<>(1,0, new CLMaps.Set(quadratic(), manager));
 
-            constant.add(new VLVEntry(new VLVCurved(), 0));
-            linear.add(new VLVEntry(new VLVCurved(), 0));
-            quadratic.add(new VLVEntry(new VLVCurved(), 0));
+            constant.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+            linear.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+            quadratic.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
         }
 
         public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
@@ -110,15 +110,15 @@ public class CLAttenuation{
             return quadratic.get();
         }
 
-        public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_CONSTANT), 0, from, to, delay, cycles, loop, curve, post);
         }
 
-        public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_LINEAR), 0, from, to, delay, cycles, loop, curve, post);
         }
 
-        public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_QUADRATIC), 0, from, to, delay, cycles, loop, curve, post);
         }
 
