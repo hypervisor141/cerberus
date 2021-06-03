@@ -6,6 +6,7 @@ import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
+import hypervisor.vanguard.variable.VLV;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
@@ -66,6 +67,7 @@ public class CLMaps{
 
         public SelfCleaner(TARGET target, VLVManagerDynamic<SOURCE> host){
             super(target);
+
             this.host = host;
             started = false;
         }
