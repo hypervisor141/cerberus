@@ -510,7 +510,7 @@ public class CLView extends FSView{
 
         public int offset;
         
-        public MapView(FSView target, int offset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public MapView(FSView target, int offset, VLVManagerDynamic<?> host){
             super(target, host);
             this.offset = offset;
         }
@@ -550,7 +550,7 @@ public class CLView extends FSView{
 
     private static class MapPerspective extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, FSView>{
 
-        public MapPerspective(FSView target, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public MapPerspective(FSView target, VLVManagerDynamic<?> host){
             super(target, host);
         }
 
@@ -578,7 +578,7 @@ public class CLView extends FSView{
 
     private static class MapOrthographic extends CLMaps.SelfCleaner<VLVManager<VLVEntry>, FSView>{
 
-        public MapOrthographic(FSView target, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public MapOrthographic(FSView target, VLVManagerDynamic<?> host){
             super(target, host);
         }
 
@@ -610,7 +610,7 @@ public class CLView extends FSView{
 
         public CLView view;
 
-        public MapScaleView(CLView view, int targetoffset, int sourceoffset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public MapScaleView(CLView view, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
             super(view.settingsview, targetoffset, sourceoffset, host);
             this.view = view;
         }
@@ -664,7 +664,7 @@ public class CLView extends FSView{
         public float y;
         public float z;
 
-        public MapRotateView(CLView target, int offset, float x, float y, float z, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public MapRotateView(CLView target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
             super(target, host);
 
             this.offset = offset;

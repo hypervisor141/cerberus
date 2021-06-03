@@ -62,10 +62,10 @@ public class CLMaps{
 
     public static class SelfCleaner<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
 
-        public VLVManagerDynamic<SOURCE> host;
+        public VLVManagerDynamic<?> host;
         protected boolean started;
 
-        public SelfCleaner(TARGET target, VLVManagerDynamic<SOURCE> host){
+        public SelfCleaner(TARGET target, VLVManagerDynamic<?> host){
             super(target);
 
             this.host = host;
@@ -108,7 +108,7 @@ public class CLMaps{
 
     public static class Set extends SelfCleaner<VLVManager<VLVEntry>, VLFloat>{
 
-        public Set(VLFloat target, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public Set(VLFloat target, VLVManagerDynamic<?> host){
             super(target, host);
         }
 
@@ -134,7 +134,7 @@ public class CLMaps{
         public int sourceoffset;
         public int count;
 
-        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count, VLVManagerDynamic<?> host){
             super(target, host);
 
             this.targetoffset = targetoffset;
@@ -184,7 +184,7 @@ public class CLMaps{
         public float y;
         public float z;
 
-        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
             super(target, host);
 
             cache = new float[16];
@@ -261,7 +261,7 @@ public class CLMaps{
         public int targetoffset;
         public int sourceoffset;
 
-        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
             super(target, host);
 
             cache = new float[16];
@@ -320,7 +320,7 @@ public class CLMaps{
         public float y;
         public float z;
 
-        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<?> host){
             super(target, host);
 
             this.offset = offset;
@@ -363,7 +363,7 @@ public class CLMaps{
         public int targetoffset;
         public int sourceoffset;
 
-        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<?> host){
             super(target, host);
 
             this.targetoffset = targetoffset;
