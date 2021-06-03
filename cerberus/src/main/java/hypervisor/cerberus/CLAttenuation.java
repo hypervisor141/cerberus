@@ -2,17 +2,17 @@ package hypervisor.cerberus;
 
 import hypervisor.firestorm.program.FSAttenuation;
 import hypervisor.vanguard.primitive.VLFloat;
-import hypervisor.vanguard.utils.VLCopyable;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVManagerDynamic;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLAttenuation{
 
     public static class Radius extends FSAttenuation.Radius{
 
-        protected VLVEntry entry;
+        protected VLVManager<VLVEntry> manager;
 
         public Radius(VLFloat radius){
             super(radius);
@@ -25,19 +25,20 @@ public class CLAttenuation{
         protected Radius(){}
 
         public void buildManager(){
-            entry = new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(radius));
+            manager = new VLVManager<>(1, 0, new CLMaps.Set(radius, null));
+            manager.add(new VLVEntry(new VLVCurved(), 0));
         }
 
-        public VLVEntry entry(){
-            return entry;
+        public VLVManager<VLVEntry> manager(){
+            return manager;
         }
 
         public float radiusValue(){
             return radius.get();
         }
 
-        public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-            CLVTools.tune(entry, from, to, delay, cycles, loop, curve);
+        public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+            CLVTools.tune(manager, 0, from, to, delay, cycles, loop, curve, post);
         }
 
         @Override
@@ -47,10 +48,10 @@ public class CLAttenuation{
             CLAttenuation.Radius target = (CLAttenuation.Radius)src;
 
             if((flags & FLAG_REFERENCE) == FLAG_REFERENCE){
-                entry = target.entry;
+                manager = target.manager;
 
             }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
-                entry = target.entry.duplicate(VLCopyable.FLAG_DUPLICATE);
+                manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
 
             }else{
                 Helper.throwMissingDefaultFlags();
@@ -65,7 +66,11 @@ public class CLAttenuation{
 
     public static class Distance extends FSAttenuation.Distance{
 
-        protected VLVManager<VLVEntry> manager;
+        public static final int CAT_CONSTANT = 0;
+        public static final int CAT_LINEAR = 1;
+        public static final int CAT_QUADRATIC = 2;
+
+        protected VLVManagerDynamic<VLVManager<VLVEntry>> manager;
 
         public Distance(VLFloat constant, VLFloat linear, VLFloat quadratic){
             super(constant, linear, quadratic);
@@ -78,13 +83,18 @@ public class CLAttenuation{
         protected Distance(){}
 
         public void buildManager(){
-            manager = new VLVManager<>(3,0);
-            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(constant)));
-            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(linear)));
-            manager.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Set(quadratic)));
+            manager = new VLVManagerDynamic<>(0, 3, 3, 0);
+
+            VLVManager<VLVEntry> constant = new VLVManager<>(1,0, new CLMaps.Set(constant(), manager));
+            VLVManager<VLVEntry> linear = new VLVManager<>(1,0, new CLMaps.Set(linear(), manager));
+            VLVManager<VLVEntry> quadratic = new VLVManager<>(1,0, new CLMaps.Set(quadratic(), manager));
+
+            constant.add(new VLVEntry(new VLVCurved(), 0));
+            linear.add(new VLVEntry(new VLVCurved(), 0));
+            quadratic.add(new VLVEntry(new VLVCurved(), 0));
         }
 
-        public VLVManager<VLVEntry> manager(){
+        public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
             return manager;
         }
 
@@ -100,16 +110,16 @@ public class CLAttenuation{
             return quadratic.get();
         }
 
-        public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-            CLVTools.tune(manager.get(0), from, to, delay, cycles, loop, curve);
+        public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+            CLVTools.tune(manager.getEntry(CAT_CONSTANT), 0, from, to, delay, cycles, loop, curve, post);
         }
 
-        public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-            CLVTools.tune(manager.get(1), from, to, delay, cycles, loop, curve);
+        public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+            CLVTools.tune(manager.getEntry(CAT_LINEAR), 0, from, to, delay, cycles, loop, curve, post);
         }
 
-        public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-            CLVTools.tune(manager.get(2), from, to, delay, cycles, loop, curve);
+        public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+            CLVTools.tune(manager.getEntry(CAT_QUADRATIC), 0, from, to, delay, cycles, loop, curve, post);
         }
 
         @Override

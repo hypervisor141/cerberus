@@ -8,13 +8,43 @@ import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
+import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
 
 public class CLMaps{
 
-    public static class Set extends VLSyncMap<VLVEntry, VLFloat>{
+    public static abstract class TaskedMap<SOURCE extends VLVTypeManager<?>, TARGET> extends VLSyncMap<SOURCE, TARGET>{
 
-        public Set(VLFloat target){
+        public Runnable post;
+        public VLVManagerDynamic<SOURCE> host;
+
+        public TaskedMap(TARGET target, VLVManagerDynamic<SOURCE> host){
             super(target);
+            this.host = host;
+        }
+
+        protected TaskedMap(){
+
+        }
+
+        @Override
+        public void sync(SOURCE source){
+            if(source.done()){
+                if(host != null){
+                    host.deactivateEntry(source);
+                }
+                if(post != null){
+                    post.run();
+                    post = null;
+                }
+            }
+        }
+    }
+
+    public static class Set extends TaskedMap<VLVManager<VLVEntry>, VLFloat>{
+
+        public Set(VLFloat target, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
         }
 
         protected Set(Set src, long flags){}
@@ -22,8 +52,8 @@ public class CLMaps{
         protected Set(){}
 
         @Override
-        public void sync(VLVEntry source){
-            target.set(source.target.get());
+        public void sync(VLVManager<VLVEntry> source){
+            target.set(source.get(0).target.get());
         }
 
         @Override
@@ -32,14 +62,14 @@ public class CLMaps{
         }
     }
 
-    public static class SetArray extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class SetArray extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
         public int count;
 
-        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count){
-            super(target);
+        public SetArray(VLArrayFloat target, int targetoffset, int sourceoffset, int count, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
 
             this.targetoffset = targetoffset;
             this.sourceoffset = sourceoffset;
@@ -77,7 +107,7 @@ public class CLMaps{
         }
     }
 
-    public static class RotatePoint extends VLSyncMap<VLVEntry, VLArrayFloat>{
+    public static class RotatePoint extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
         protected float[] startstatecache;
@@ -87,8 +117,8 @@ public class CLMaps{
         public float y;
         public float z;
 
-        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z){
-            super(target);
+        public RotatePoint(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
 
             cache = new float[16];
             startstatecache = new float[4];
@@ -103,7 +133,9 @@ public class CLMaps{
             copy(src, flags);
         }
 
-        protected RotatePoint(){}
+        protected RotatePoint(){
+
+        }
 
         public void tune(){
             float[] target = this.target.provider();
@@ -115,16 +147,16 @@ public class CLMaps{
         }
 
         @Override
-        public void sync(VLVEntry source){
+        public void sync(VLVManager<VLVEntry> source){
             float[] target = this.target.provider();
 
             Matrix.setIdentityM(cache, 0);
-            Matrix.rotateM(cache, 0, source.target.get(), x, y, z);
+            Matrix.rotateM(cache, 0, source.get(0).target.get(), x, y, z);
             Matrix.multiplyMV(target, offset, cache, 0, startstatecache, 0);
         }
 
         @Override
-        public void copy(VLSyncType<VLVEntry> src, long flags){
+        public void copy(VLSyncType<VLVManager<VLVEntry>> src, long flags){
             super.copy(src, flags);
 
             RotatePoint target = (RotatePoint)src;
@@ -153,15 +185,15 @@ public class CLMaps{
         }
     }
 
-    public static class ScalePoint extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScalePoint extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         protected float[] cache;
 
         public int targetoffset;
         public int sourceoffset;
 
-        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset){
-            super(target);
+        public ScalePoint(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
 
             cache = new float[16];
             Matrix.setIdentityM(cache, 0);
@@ -210,15 +242,15 @@ public class CLMaps{
         }
     }
 
-    public static class RotateMatrix extends VLSyncMap<VLVEntry, VLArrayFloat>{
+    public static class RotateMatrix extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int offset;
         public float x;
         public float y;
         public float z;
 
-        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z){
-            super(target);
+        public RotateMatrix(VLArrayFloat target, int offset, float x, float y, float z, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
 
             this.offset = offset;
             this.x = x;
@@ -233,12 +265,12 @@ public class CLMaps{
         protected RotateMatrix(){}
 
         @Override
-        public void sync(VLVEntry source){
-            Matrix.rotateM(target.provider(), offset, source.target.get(), x, y, z);
+        public void sync(VLVManager<VLVEntry> source){
+            Matrix.rotateM(target.provider(), offset, source.get(0).target.get(), x, y, z);
         }
 
         @Override
-        public void copy(VLSyncType<VLVEntry> src, long flags){
+        public void copy(VLSyncType<VLVManager<VLVEntry>> src, long flags){
             super.copy(src, flags);
 
             RotateMatrix target = (RotateMatrix)src;
@@ -254,13 +286,13 @@ public class CLMaps{
         }
     }
 
-    public static class ScaleMatrix extends VLSyncMap<VLVManager<VLVEntry>, VLArrayFloat>{
+    public static class ScaleMatrix extends TaskedMap<VLVManager<VLVEntry>, VLArrayFloat>{
 
         public int targetoffset;
         public int sourceoffset;
 
-        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset){
-            super(target);
+        public ScaleMatrix(VLArrayFloat target, int targetoffset, int sourceoffset, VLVManagerDynamic<VLVManager<VLVEntry>> host){
+            super(target, host);
 
             this.targetoffset = targetoffset;
             this.sourceoffset = sourceoffset;

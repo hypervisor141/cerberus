@@ -4,21 +4,24 @@ import android.opengl.Matrix;
 
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
+import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVariable;
 
 final class CLVTools{
 
     private CLVTools(){}
 
-    static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+    static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, Runnable post){
+        ((CLMaps.TaskedMap<?, ?>)manager.syncer()).post = null;
+        VLVEntry entry = manager.get(targetindex);
+
         entry.delay(delay);
         entry.resetDelayTrackers();
 
         VLVCurved target = (VLVCurved)entry.target;
-        target.setRange(from, to);
         target.setLoop(loop);
         target.setCurve(curve);
-        target.initialize(cycles);
+        target.initialize(from, to, cycles);
     }
 
     static void rotateView(float[] target, int offset, float angle, float x, float y, float z){
