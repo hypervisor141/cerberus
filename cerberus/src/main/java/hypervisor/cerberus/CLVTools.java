@@ -21,6 +21,7 @@ final class CLVTools{
         target.setLoop(loop);
         target.setCurve(curve);
         target.initialize(from, to, cycles);
+        target.activate();
     }
 
     static void rotateView(float[] target, int offset, float angle, float x, float y, float z){
