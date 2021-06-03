@@ -195,6 +195,22 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(manager.getEntry(CAT_OUTERCUTOFF), 0, from, to, delay, cycles, loop, curve, post);
     }
 
+    public void position(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+    }
+
+    public void center(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_CENTER);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+    }
+
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
         VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ROTATE_POSITION);
         CLVTools.tune(manager, 0, fromangle, toangle, delay, cycles, loop, curve, post);

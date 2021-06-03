@@ -100,6 +100,14 @@ public class CLLightPoint extends FSLightPoint{
         CLVTools.rotateView(position.provider(), 0, angle, x, y, z);
     }
 
+    public void position(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+    }
+
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_POSITION);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve, post);
