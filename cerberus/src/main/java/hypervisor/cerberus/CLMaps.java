@@ -27,7 +27,7 @@ public class CLMaps{
 
         @Override
         public void sync(SOURCE source){
-            if(post != null && source.done()){
+            if(post != null && !source.paused() && source.done()){
                 post.run();
             }
         }
@@ -58,7 +58,7 @@ public class CLMaps{
 
         @Override
         public void sync(SOURCE source){
-            if(host != null && source.done()){
+            if(host != null && !source.paused() && source.done()){
                 host.deactivateEntry(source);
             }
         }
