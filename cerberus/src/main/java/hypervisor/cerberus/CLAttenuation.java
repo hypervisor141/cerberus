@@ -39,6 +39,7 @@ public class CLAttenuation{
 
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager, 0, from, to, delay, cycles, loop, curve, post);
+            manager.start();
         }
 
         @Override
@@ -115,18 +116,30 @@ public class CLAttenuation{
         }
 
         public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-            CLVTools.tune(manager.getEntry(CAT_CONSTANT), 0, from, to, delay, cycles, loop, curve, post);
+            VLVManager<VLVEntry> target = manager.getEntry(CAT_CONSTANT);
+            CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+
             manager.activateEntry(CAT_CONSTANT);
+            target.start();
+            manager.start();
         }
 
         public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-            CLVTools.tune(manager.getEntry(CAT_LINEAR), 0, from, to, delay, cycles, loop, curve, post);
+            VLVManager<VLVEntry> target = manager.getEntry(CAT_LINEAR);
+            CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+
             manager.activateEntry(CAT_LINEAR);
+            target.start();
+            manager.start();
         }
 
         public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-            CLVTools.tune(manager.getEntry(CAT_QUADRATIC), 0, from, to, delay, cycles, loop, curve, post);
+            VLVManager<VLVEntry> target = manager.getEntry(CAT_QUADRATIC);
+            CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+
             manager.activateEntry(CAT_QUADRATIC);
+            target.start();
+            manager.start();
         }
 
         @Override

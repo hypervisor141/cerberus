@@ -262,126 +262,6 @@ public class CLView extends FSView{
         return settingsperspective.provider()[3] ;
     }
 
-    public void viewPositionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
-
-        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 1, viewPositionY());
-        CLVTools.tune(target, 2, viewPositionZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
-    }
-
-    public void viewPositionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
-
-        CLVTools.tune(target, 0, viewPositionX());
-        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 2, viewPositionZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
-    }
-
-    public void viewPositionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
-
-        CLVTools.tune(target, 0, viewPositionX());
-        CLVTools.tune(target, 1, viewPositionY());
-        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
-
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
-    }
-
-    public void viewCenterX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
-
-        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 1, viewCenterY());
-        CLVTools.tune(target, 2, viewCenterZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
-    }
-
-    public void viewCenterY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
-
-        CLVTools.tune(target, 0, viewCenterX());
-        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 2, viewCenterZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
-    }
-
-    public void viewCenterZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
-
-        CLVTools.tune(target, 0, viewCenterX());
-        CLVTools.tune(target, 1, viewCenterY());
-        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
-
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
-    }
-
-    public void viewUpX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
-
-        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 1, viewCenterY());
-        CLVTools.tune(target, 2, viewCenterZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
-    }
-
-    public void viewUpY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
-
-        CLVTools.tune(target, 0, viewCenterX());
-        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
-        CLVTools.tune(target, 2, viewCenterZ());
-
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
-    }
-
-    public void viewUpZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
-
-        CLVTools.tune(target, 0, viewCenterX());
-        CLVTools.tune(target, 1, viewCenterY());
-        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
-
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
-    }
-
-    public void viewPosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_POSITION);
-
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, post);
-
-        this.manager.activateEntry(CAT_MOVE_VIEW_POSITION);
-    }
-
-    public void viewCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_CENTER);
-
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, post);
-
-        this.manager.activateEntry(CAT_MOVE_VIEW_CENTER);
-    }
-
-    public void viewUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_MOVE_VIEW_UP);
-
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, post);
-
-        this.manager.activateEntry(CAT_MOVE_VIEW_UP);
-    }
-
     public void viewRotatePosition(float angle, float x, float y, float z){
         CLVTools.rotateView(settingsview.provider(), 0, angle, x, y, z);
 
@@ -424,124 +304,350 @@ public class CLView extends FSView{
         applyViewProjection();
     }
 
-    public void viewRotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ROTATE_VIEW_POSITION);
-        CLVTools.tune(manager, 0, fromangle, toangle, delay, cycles, loop, curve, post);
+    public void viewPositionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
 
-        MapRotateView map = (MapRotateView)manager.syncer();
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, viewPositionY());
+        CLVTools.tune(target, 2, viewPositionZ());
+
+        target.start();
+        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
+        manager.start();
+    }
+
+    public void viewPositionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
+
+        CLVTools.tune(target, 0, viewPositionX());
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 2, viewPositionZ());
+
+        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
+        target.start();
+        manager.start();
+    }
+
+    public void viewPositionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
+
+        CLVTools.tune(target, 0, viewPositionX());
+        CLVTools.tune(target, 1, viewPositionY());
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
+        target.start();
+        manager.start();
+    }
+
+    public void viewCenterX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
+
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, viewCenterY());
+        CLVTools.tune(target, 2, viewCenterZ());
+
+        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
+        target.start();
+        manager.start();
+    }
+
+    public void viewCenterY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
+
+        CLVTools.tune(target, 0, viewCenterX());
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 2, viewCenterZ());
+
+        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
+        target.start();
+        manager.start();
+    }
+
+    public void viewCenterZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
+
+        CLVTools.tune(target, 0, viewCenterX());
+        CLVTools.tune(target, 1, viewCenterY());
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
+        target.start();
+        manager.start();
+    }
+
+    public void viewUpX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
+
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, viewCenterY());
+        CLVTools.tune(target, 2, viewCenterZ());
+
+        manager.activateEntry(CAT_MOVE_VIEW_UP);
+        target.start();
+        manager.start();
+    }
+
+    public void viewUpY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
+
+        CLVTools.tune(target, 0, viewCenterX());
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 2, viewCenterZ());
+
+        manager.activateEntry(CAT_MOVE_VIEW_UP);
+        target.start();
+        manager.start();
+    }
+
+    public void viewUpZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
+
+        CLVTools.tune(target, 0, viewCenterX());
+        CLVTools.tune(target, 1, viewCenterY());
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_UP);
+        target.start();
+        manager.start();
+    }
+
+    public void viewPosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_POSITION);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
+        target.start();
+        manager.start();
+    }
+
+    public void viewCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_CENTER);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
+        target.start();
+        manager.start();
+    }
+
+    public void viewUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_MOVE_VIEW_UP);
+
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_MOVE_VIEW_UP);
+        target.start();
+        manager.start();
+    }
+
+    public void viewRotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_VIEW_POSITION);
+        CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve, post);
+
+        MapRotateView map = (MapRotateView)target.syncer();
         map.x = x;
         map.y = y;
         map.z = z;
         map.tune();
+
+        manager.activateEntry(CAT_ROTATE_VIEW_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void viewRotateCenter(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ROTATE_VIEW_CENTER);
-        CLVTools.tune(manager, 0, fromangle, toangle, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_VIEW_CENTER);
+        CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve, post);
 
-        MapRotateView map = (MapRotateView)manager.syncer();
+        MapRotateView map = (MapRotateView)target.syncer();
         map.x = x;
         map.y = y;
         map.z = z;
         map.tune();
+
+        manager.activateEntry(CAT_ROTATE_VIEW_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void viewRotateUp(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ROTATE_VIEW_UP);
-        CLVTools.tune(manager, 0, fromangle, toangle, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_VIEW_UP);
+        CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve, post);
 
-        MapRotateView map = (MapRotateView)manager.syncer();
+        MapRotateView map = (MapRotateView)target.syncer();
         map.x = x;
         map.y = y;
         map.z = z;
         map.tune();
+
+        manager.activateEntry(CAT_ROTATE_VIEW_UP);
+        target.start();
+        manager.start();
     }
 
     public void viewScalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_POSITION);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_SCALE_VIEW_POSITION);
 
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, post);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+
+        manager.activateEntry(CAT_SCALE_VIEW_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void viewScaleCenter(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_CENTER);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_SCALE_VIEW_CENTER);
 
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, post);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+
+        manager.activateEntry(CAT_SCALE_VIEW_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void viewScaleUp(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_SCALE_VIEW_UP);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_SCALE_VIEW_UP);
 
-        CLVTools.tune(manager, 0, fromX, toX, delay, cycles, loop, curve, post);
-        CLVTools.tune(manager, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, null);
+
+        manager.activateEntry(CAT_SCALE_VIEW_UP);
+        target.start();
+        manager.start();
     }
 
     public void perspectiveFov(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE), 0, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_PERSPECTIVE);
+        target.start();
+        manager.start();
     }
 
     public void perspectiveAspect(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE), 1, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_PERSPECTIVE);
+        target.start();
+        manager.start();
     }
 
     public void perspectiveNear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE), 2, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_PERSPECTIVE);
+        target.start();
+        manager.start();
     }
 
     public void perspectiveFar(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_PERSPECTIVE), 3, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
+        CLVTools.tune(target, 3, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_PERSPECTIVE);
+        target.start();
+        manager.start();
     }
 
     public void perspective(float fromFov, float toFov, float fromAspect, float toAspect, float fromNear, float toNear,
                             float fromFar, float toFar, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
 
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_PERSPECTIVE);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
 
-        CLVTools.tune(manager, 0, fromFov, toFov, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 1, fromAspect, toAspect, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromNear, toNear, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 3, fromFar, toFar, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, fromFov, toFov, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromAspect, toAspect, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromNear, toNear, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 3, fromFar, toFar, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_PERSPECTIVE);
+        target.start();
+        manager.start();
     }
 
     public void orthographicLeft(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 0, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographicRight(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 1, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographicBottom(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 2, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographicTop(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 3, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 3, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographicNear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 4, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 4, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographicFar(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        CLVTools.tune(manager.getEntry(CAT_ORTHOGRAPHIC), 5, from, to, delay, cycles, loop, curve, post);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
+        CLVTools.tune(target, 5, from, to, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     public void orthographic(float fromLeft, float toLeft, float fromRight, float toRight, float fromBottom, float toBottom, float fromTop, float toTop, float fromNear, float toNear,
                              float fromFar, float toFar, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        VLVManager<VLVEntry> manager = this.manager.getEntry(CAT_ORTHOGRAPHIC);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         
-        CLVTools.tune(manager, 0, fromLeft, toLeft, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 1, fromRight, toRight, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 2, fromBottom, fromBottom, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 3, fromTop, toTop, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 4, fromNear, toNear, delay, cycles, loop, curve, null);
-        CLVTools.tune(manager, 5, fromFar, toFar, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, fromLeft, toLeft, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 1, fromRight, toRight, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 2, fromBottom, fromBottom, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 3, fromTop, toTop, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 4, fromNear, toNear, delay, cycles, loop, curve, null);
+        CLVTools.tune(target, 5, fromFar, toFar, delay, cycles, loop, curve, post);
+
+        manager.activateEntry(CAT_ORTHOGRAPHIC);
+        target.start();
+        manager.start();
     }
 
     @Override
