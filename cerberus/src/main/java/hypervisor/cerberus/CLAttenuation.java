@@ -116,14 +116,17 @@ public class CLAttenuation{
 
         public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_CONSTANT), 0, from, to, delay, cycles, loop, curve, post);
+            manager.activateEntry(CAT_CONSTANT);
         }
 
         public void linear(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_LINEAR), 0, from, to, delay, cycles, loop, curve, post);
+            manager.activateEntry(CAT_LINEAR);
         }
 
         public void quadratic(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
             CLVTools.tune(manager.getEntry(CAT_QUADRATIC), 0, from, to, delay, cycles, loop, curve, post);
+            manager.activateEntry(CAT_QUADRATIC);
         }
 
         @Override
