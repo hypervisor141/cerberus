@@ -106,7 +106,7 @@ public class CLView extends FSView{
         manager.addEntry(scaleviewup);
     }
 
-    public VLVManagerDynamic<?> manager(){
+    public VLVManagerDynamic<VLVManager<VLVEntry>> manager(){
         return manager;
     }
 
