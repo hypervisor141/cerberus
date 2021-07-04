@@ -9,7 +9,7 @@ import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
 import hypervisor.vanguard.variable.VLVariable;
 
-public final class CLLightDirect extends FSLightDirect{
+public class CLLightDirect extends FSLightDirect{
 
     public static final int CAT_POSITION = 0;
     public static final int CAT_CENTER = 1;
