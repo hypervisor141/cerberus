@@ -3,10 +3,14 @@ package hypervisor.cerberus;
 import hypervisor.firestorm.program.FSLight;
 import hypervisor.firestorm.program.FSLightDirect;
 import hypervisor.vanguard.array.VLArrayFloat;
+import hypervisor.vanguard.sync.VLSyncMap;
+import hypervisor.vanguard.sync.VLSyncType;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
 import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
+import hypervisor.vanguard.variable.VLVTypeManager;
+import hypervisor.vanguard.variable.VLVTypeRunner;
 import hypervisor.vanguard.variable.VLVariable;
 
 public class CLLightDirect extends FSLightDirect{
@@ -33,7 +37,7 @@ public class CLLightDirect extends FSLightDirect{
     }
 
     public void buildManager(){
-        manager = new VLVManagerDynamic<>(0, 6, 6, 0);
+        manager = new VLVManagerDynamic<>(0, 6, 6, 0, new SyncDirection(this));
 
         VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), manager, 0, 0, 3));
         VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), manager, 0, 0, 3));
@@ -307,5 +311,30 @@ public class CLLightDirect extends FSLightDirect{
     @Override
     public CLLightDirect duplicate(long flags){
         return new CLLightDirect(this, flags);
+    }
+
+    private static final class SyncDirection extends VLSyncMap<VLVManager<VLVManager<VLVEntry>>, CLLightDirect>{
+
+        public SyncDirection(CLLightDirect target){
+            super(target);
+        }
+
+        public SyncDirection(SyncDirection src, long flags){
+            copy(src, flags);
+        }
+
+        protected SyncDirection(){
+
+        }
+
+        @Override
+        public void sync(VLVManager<VLVManager<VLVEntry>> source){
+            target.updateDirection();
+        }
+
+        @Override
+        public SyncDirection duplicate(long flags){
+            return new SyncDirection(this, flags);
+        }
     }
 }
