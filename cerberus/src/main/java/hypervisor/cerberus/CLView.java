@@ -111,194 +111,194 @@ public class CLView extends FSView{
     }
 
     public void viewPositionX(float value){
-        settingsview.provider()[0] = value;
+        settingsview.array[0] = value;
     }
 
     public void viewPositionY(float value){
-        settingsview.provider()[1] = value;
+        settingsview.array[1] = value;
     }
 
     public void viewPositionZ(float value){
-        settingsview.provider()[2] = value;
+        settingsview.array[2] = value;
     }
 
     public void viewCenterX(float value){
-        settingsview.provider()[3] = value;
+        settingsview.array[3] = value;
     }
 
     public void viewCenterY(float value){
-        settingsview.provider()[4] = value;
+        settingsview.array[4] = value;
     }
 
     public void viewCenterZ(float value){
-        settingsview.provider()[5] = value;
+        settingsview.array[5] = value;
     }
 
     public void viewUpX(float value){
-        settingsview.provider()[6] = value;
+        settingsview.array[6] = value;
     }
 
     public void viewUpY(float value){
-        settingsview.provider()[7] = value;
+        settingsview.array[7] = value;
     }
 
     public void viewUpZ(float value){
-        settingsview.provider()[8] = value;
+        settingsview.array[8] = value;
     }
 
     public void orthographicLeft(float value){
-        settingsorthographic.provider()[0] = value;
+        settingsorthographic.array[0] = value;
     }
 
     public void orthographicRight(float value){
-        settingsorthographic.provider()[1] = value;
+        settingsorthographic.array[1] = value;
     }
 
     public void orthographicBottom(float value){
-        settingsorthographic.provider()[2] = value;
+        settingsorthographic.array[2] = value;
     }
 
     public void orthographicTop(float value){
-        settingsorthographic.provider()[3] = value;
+        settingsorthographic.array[3] = value;
     }
 
     public void orthographicNear(float value){
-        settingsorthographic.provider()[4] = value;
+        settingsorthographic.array[4] = value;
     }
 
     public void orthographicFar(float value){
-        settingsorthographic.provider()[5] = value;
+        settingsorthographic.array[5] = value;
     }
 
     public void perspectiveAspect(float value){
-        settingsperspective.provider()[0] = value;
+        settingsperspective.array[0] = value;
     }
 
     public void perspectiveFOV(float value){
-        settingsperspective.provider()[1] = value;
+        settingsperspective.array[1] = value;
     }
 
     public void perspectiveNear(float value){
-        settingsperspective.provider()[2] = value;
+        settingsperspective.array[2] = value;
     }
 
     public void perspectiveFar(float value){
-        settingsperspective.provider()[3] = value;
+        settingsperspective.array[3] = value;
     }
 
     public float viewPositionX(){
-        return settingsview.provider()[0];
+        return settingsview.array[0];
     }
 
     public float viewPositionY(){
-        return settingsview.provider()[1];
+        return settingsview.array[1];
     }
 
     public float viewPositionZ(){
-        return settingsview.provider()[2];
+        return settingsview.array[2];
     }
 
     public float viewCenterX(){
-        return settingsview.provider()[3];
+        return settingsview.array[3];
     }
 
     public float viewCenterY(){
-        return settingsview.provider()[4];
+        return settingsview.array[4];
     }
 
     public float viewCenterZ(){
-        return settingsview.provider()[5];
+        return settingsview.array[5];
     }
 
     public float viewUpX(){
-        return settingsview.provider()[6];
+        return settingsview.array[6];
     }
 
     public float viewUpY(){
-        return settingsview.provider()[7];
+        return settingsview.array[7];
     }
 
     public float viewUpZ(){
-        return settingsview.provider()[8];
+        return settingsview.array[8];
     }
 
     public float orthographicLeft(){
-        return settingsorthographic.provider()[0] ;
+        return settingsorthographic.array[0] ;
     }
 
     public float orthographicRight(){
-        return settingsorthographic.provider()[1] ;
+        return settingsorthographic.array[1] ;
     }
 
     public float orthographicBottom(){
-        return settingsorthographic.provider()[2] ;
+        return settingsorthographic.array[2] ;
     }
 
     public float orthographicTop(){
-        return settingsorthographic.provider()[3] ;
+        return settingsorthographic.array[3] ;
     }
 
     public float orthographicNear(){
-        return settingsorthographic.provider()[4] ;
+        return settingsorthographic.array[4] ;
     }
 
     public float orthographicFar(){
-        return settingsorthographic.provider()[5] ;
+        return settingsorthographic.array[5] ;
     }
 
     public float perspectiveAspect(){
-        return settingsperspective.provider()[0] ;
+        return settingsperspective.array[0] ;
     }
 
     public float perspectiveFOV(){
-        return settingsperspective.provider()[1] ;
+        return settingsperspective.array[1] ;
     }
 
     public float perspectiveNear(){
-        return settingsperspective.provider()[2] ;
+        return settingsperspective.array[2] ;
     }
 
     public float perspectiveFar(){
-        return settingsperspective.provider()[3] ;
+        return settingsperspective.array[3] ;
     }
 
     public void viewRotatePosition(float angle, float x, float y, float z){
-        CLVTools.rotateView(settingsview.provider(), 0, angle, x, y, z);
+        CLVTools.rotateView(settingsview.array, 0, angle, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
     public void viewRotateCenter(float angle, float x, float y, float z){
-        CLVTools.rotateView(settingsview.provider(), 3, angle, x, y, z);
+        CLVTools.rotateView(settingsview.array, 3, angle, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
     public void viewRotateUp(float angle, float x, float y, float z){
-        CLVTools.rotateView(settingsview.provider(), 6, angle, x, y, z);
+        CLVTools.rotateView(settingsview.array, 6, angle, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
     public void viewScalePosition(float x, float y, float z){
-        CLVTools.scaleView(settingsview.provider(), 0, x, y, z);
+        CLVTools.scaleView(settingsview.array, 0, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
     public void viewScaleCenter(float x, float y, float z){
-        CLVTools.scaleView(settingsview.provider(), 3, x, y, z);
+        CLVTools.scaleView(settingsview.array, 3, x, y, z);
 
         applyLookAt();
         applyViewProjection();
     }
 
     public void viewScaleUp(float x, float y, float z){
-        CLVTools.scaleView(settingsview.provider(), 6, x, y, z);
+        CLVTools.scaleView(settingsview.array, 6, x, y, z);
 
         applyLookAt();
         applyViewProjection();
@@ -693,7 +693,7 @@ public class CLView extends FSView{
         public void sync(VLVManager<VLVEntry> source){
             super.sync(source);
 
-            float[] settings = target.settingsView().provider();
+            float[] settings = target.settingsView().array;
             settings[offset] = source.get(0).target.get();
             settings[offset + 1] = source.get(1).target.get();
             settings[offset + 2] = source.get(2).target.get();
@@ -839,7 +839,7 @@ public class CLView extends FSView{
         }
 
         public void tune(){
-            float[] settings = target.settingsview.provider();
+            float[] settings = target.settingsview.array;
 
             startstatecache[0] = settings[offset];
             startstatecache[1] = settings[offset + 1];
@@ -855,7 +855,7 @@ public class CLView extends FSView{
             Matrix.rotateM(cache, 0, source.get(0).target.get(), x, y, z);
             Matrix.multiplyMV(cache, 0, cache, 0, startstatecache, 0);
 
-            float[] settings = target.settingsview.provider();
+            float[] settings = target.settingsview.array;
             settings[offset] = cache[0];
             settings[offset + 1] = cache[1];
             settings[offset + 2] = cache[2];

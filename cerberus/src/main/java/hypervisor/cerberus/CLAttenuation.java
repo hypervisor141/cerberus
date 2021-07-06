@@ -34,7 +34,7 @@ public class CLAttenuation{
         }
 
         public float radiusValue(){
-            return radius.get();
+            return radius.value;
         }
 
         public void radius(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
@@ -104,15 +104,15 @@ public class CLAttenuation{
         }
 
         public float constantValue(){
-            return constant.get();
+            return constant.value;
         }
 
         public float linearValue(){
-            return linear.get();
+            return linear.value;
         }
 
         public float quadraticValue(){
-            return quadratic.get();
+            return quadratic.value;
         }
 
         public void constant(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){

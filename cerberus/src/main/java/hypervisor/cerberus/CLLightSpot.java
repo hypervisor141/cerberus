@@ -84,83 +84,83 @@ public class CLLightSpot extends FSLightSpot{
     }
 
     public void positionX(float value){
-        position.provider()[0] = value;
+        position.array[0] = value;
     }
 
     public void positionY(float value){
-        position.provider()[1] = value;
+        position.array[1] = value;
     }
 
     public void positionZ(float value){
-        position.provider()[2] = value;
+        position.array[2] = value;
     }
 
     public void centerX(float value){
-        center.provider()[0] = value;
+        center.array[0] = value;
     }
 
     public void centerY(float value){
-        center.provider()[1] = value;
+        center.array[1] = value;
     }
 
     public void centerZ(float value){
-        center.provider()[2] = value;
+        center.array[2] = value;
     }
 
     public void cutOff(float value){
-        cutoff.set(value);
+        cutoff.value = value;
     }
 
     public void outerCutOff(float value){
-        outercutoff.set(value);
+        outercutoff.value = value;
     }
 
     public float positionX(){
-        return position.provider()[0];
+        return position.array[0];
     }
 
     public float positionY(){
-        return position.provider()[1];
+        return position.array[1];
     }
 
     public float positionZ(){
-        return position.provider()[2];
+        return position.array[2];
     }
 
     public float centerX(){
-        return center.provider()[0];
+        return center.array[0];
     }
 
     public float centerY(){
-        return center.provider()[1];
+        return center.array[1];
     }
 
     public float centerZ(){
-        return center.provider()[2];
+        return center.array[2];
     }
 
     public float cutOffValue(){
-        return cutoff.get();
+        return cutoff.value;
     }
 
     public float outerCutOffValue(){
-        return outercutoff.get();
+        return outercutoff.value;
     }
 
     public void rotatePosition(float angle, float x, float y, float z){
-        CLVTools.rotateView(position.provider(), 0, angle, x, y, z);
+        CLVTools.rotateView(position.array, 0, angle, x, y, z);
     }
 
     public void rotateCenter(float angle, float x, float y, float z){
-        CLVTools.rotateView(center.provider(), 0, angle, x, y, z);
+        CLVTools.rotateView(center.array, 0, angle, x, y, z);
     }
 
     public void scalePosition(float x, float y, float z){
-        CLVTools.scaleView(position.provider(), 0, x, y, z);
+        CLVTools.scaleView(position.array, 0, x, y, z);
     }
 
     public void scaleCenter(float x, float y, float z){
-        CLVTools.scaleView(center.provider(), 0, x, y, z);
+        CLVTools.scaleView(center.array, 0, x, y, z);
     }
 
     public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
