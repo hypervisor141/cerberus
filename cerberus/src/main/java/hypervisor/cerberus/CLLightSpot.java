@@ -317,7 +317,7 @@ public class CLLightSpot extends FSLightSpot{
             manager = target.manager;
 
         }else if((flags & FLAG_DUPLICATE) == FLAG_DUPLICATE){
-            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_FORCE_DUPLICATE_ENTRIES);
+            manager = target.manager.duplicate(FLAG_CUSTOM | VLVManager.FLAG_DUPLICATE_ENTRIES);
 
         }else{
             Helper.throwMissingDefaultFlags();
