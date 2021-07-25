@@ -13,6 +13,7 @@ import hypervisor.vanguard.variable.VLVTypeManager;
 import hypervisor.vanguard.variable.VLVTypeRunner;
 import hypervisor.vanguard.variable.VLVariable;
 
+@SuppressWarnings("unused")
 public class CLLightDirect extends FSLightDirect{
 
     public static final int CAT_POSITION = 0;

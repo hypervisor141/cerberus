@@ -10,6 +10,7 @@ import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
 import hypervisor.vanguard.variable.VLVariable;
 
+@SuppressWarnings("unused")
 public class CLView extends FSView{
 
     public static final int CAT_PERSPECTIVE = 0;

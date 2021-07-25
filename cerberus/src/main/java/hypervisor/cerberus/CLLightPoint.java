@@ -10,6 +10,7 @@ import hypervisor.vanguard.variable.VLVManager;
 import hypervisor.vanguard.variable.VLVManagerDynamic;
 import hypervisor.vanguard.variable.VLVariable;
 
+@SuppressWarnings("unused")
 public class CLLightPoint extends FSLightPoint{
 
     public static final int CAT_POSITION = 0;
