@@ -34,19 +34,19 @@ public class CLLightPoint extends FSLightPoint{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 6, 3, 0);
 
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), manager, 0, 0, 3));
-        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, manager, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, manager, 0, 0));
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
+        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F));
+        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
 
-        position.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
-        position.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
-        position.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+        position.add(new VLVEntry(new VLVCurved(), 0));
+        position.add(new VLVEntry(new VLVCurved(), 0));
+        position.add(new VLVEntry(new VLVCurved(), 0));
 
-        rotatepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+        rotatepos.add(new VLVEntry(new VLVCurved(), 0));
 
-        scalepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
-        scalepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
-        scalepos.add(new VLVEntry(new VLVCurved(), 0, new CLMaps.Chain<>()));
+        scalepos.add(new VLVEntry(new VLVCurved(), 0));
+        scalepos.add(new VLVEntry(new VLVCurved(), 0));
+        scalepos.add(new VLVEntry(new VLVCurved(), 0));
 
         manager.addEntry(position);
         manager.addEntry(rotatepos);
@@ -89,10 +89,10 @@ public class CLLightPoint extends FSLightPoint{
         CLVTools.rotateView(position.array, 0, angle, x, y, z);
     }
 
-    public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void positionX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
 
-        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 1, positionY());
         CLVTools.tune(target, 2, positionZ());
 
@@ -101,11 +101,11 @@ public class CLLightPoint extends FSLightPoint{
         target.start();
     }
 
-    public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
 
         CLVTools.tune(target, 0, positionX());
-        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, positionZ());
         
         manager.activateEntry(CAT_POSITION);
@@ -113,35 +113,35 @@ public class CLLightPoint extends FSLightPoint{
         target.start();
     }
 
-    public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
 
         CLVTools.tune(target, 0, positionX());
         CLVTools.tune(target, 1, positionY());
-        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
         manager.activateEntry(CAT_POSITION);
         manager.start();
         target.start();
     }
 
-    public void position(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void position(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_POSITION);
 
-        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
-        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
         manager.activateEntry(CAT_POSITION);
         manager.start();
         target.start();
     }
 
-    public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_POSITION);
-        CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)target.syncer();
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)target.syncerOnChange();
         map.x = x;
         map.y = y;
         map.z = z;
@@ -152,12 +152,12 @@ public class CLLightPoint extends FSLightPoint{
         target.start();
     }
 
-    public void scalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
+    public void scalePosition(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         VLVManager<VLVEntry> target = manager.getEntry(CAT_SCALE_POSITION);
 
-        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve, null);
-        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve, null);
-        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve, post);
+        CLVTools.tune(target, 0, fromX, toX, delay, cycles, loop, curve);
+        CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
+        CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
         manager.activateEntry(CAT_SCALE_POSITION);
         manager.start();

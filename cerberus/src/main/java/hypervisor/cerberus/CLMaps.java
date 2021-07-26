@@ -39,17 +39,17 @@ public class CLMaps{
         }
     }
 
-    public static class SelfRemoval<SOURCE extends VLVTypeRunner, TARGET extends VLVManager<?>> extends VLSyncMap<SOURCE, TARGET>{
+    public static class SelfRemove<SOURCE extends VLVTypeRunner, TARGET extends VLVManager<?>> extends VLSyncMap<SOURCE, TARGET>{
 
-        public SelfRemoval(TARGET host){
+        public SelfRemove(TARGET host){
             super(host);
         }
 
-        public SelfRemoval(SelfRemoval<SOURCE, TARGET> src, long flags){
+        public SelfRemove(SelfRemove<SOURCE, TARGET> src, long flags){
             copy(src, flags);
         }
 
-        protected SelfRemoval(){
+        protected SelfRemove(){
 
         }
 
@@ -59,8 +59,8 @@ public class CLMaps{
         }
 
         @Override
-        public SelfRemoval<SOURCE, TARGET> duplicate(long flags){
-            return new SelfRemoval<>(this, flags);
+        public SelfRemove<SOURCE, TARGET> duplicate(long flags){
+            return new SelfRemove<>(this, flags);
         }
     }
 

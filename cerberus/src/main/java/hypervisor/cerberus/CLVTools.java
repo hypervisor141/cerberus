@@ -1,7 +1,6 @@
 package hypervisor.cerberus;
 
 import android.opengl.Matrix;
-import android.widget.TableRow;
 
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
@@ -12,8 +11,7 @@ final class CLVTools{
 
     private CLVTools(){}
 
-    static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        ((CLMaps.Chain<VLVEntry, Object>)entry.syncer()).post = post;
+    static void tune(VLVEntry entry, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
         entry.delay(delay);
         entry.resetDelayTrackers();
 
@@ -24,13 +22,12 @@ final class CLVTools{
         target.activate();
     }
 
-    static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve, CLMaps.Chain.Post<VLVEntry> post){
-        tune(manager.get(targetindex), from, to, delay, cycles, loop, curve, post);
+    static void tune(VLVManager<VLVEntry> manager, int targetindex, float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
+        tune(manager.get(targetindex), from, to, delay, cycles, loop, curve);
     }
 
     static void tune(VLVManager<VLVEntry> manager, int targetindex, float value){
         VLVEntry entry = manager.get(targetindex);
-        ((CLMaps.Chain<VLVEntry, Object>)entry.syncer()).post = null;
 
         entry.delay(0);
         entry.resetDelayTrackers();
