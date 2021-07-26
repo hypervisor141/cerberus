@@ -276,7 +276,7 @@ public class CLLightSpot extends FSLightSpot{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_POSITION);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)target.syncerOnChange();
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncMap<?, ?>)target.syncerOnChange()).post.target;
         map.x = x;
         map.y = y;
         map.z = z;
@@ -290,7 +290,7 @@ public class CLLightSpot extends FSLightSpot{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_CENTER);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)target.syncerOnChange();
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncMap<?, ?>)target.syncerOnChange()).post.target;
         map.x = x;
         map.y = y;
         map.z = z;
