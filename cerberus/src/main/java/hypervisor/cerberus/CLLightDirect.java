@@ -44,8 +44,8 @@ public class CLLightDirect extends FSLightDirect{
         CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
         CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
         
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(position(), 0, 0, 3)), deactivator, null);
-        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(center(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(super.position, 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(super.center, 0, 0, 3)), deactivator, null);
         VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)), deactivator, null);
         VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)), deactivator, null);
         VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.position, 0, 0)), deactivator, null);
