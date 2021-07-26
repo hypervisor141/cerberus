@@ -667,10 +667,9 @@ public class CLView extends FSView{
 
         @Override
         public void sync(VLVManager<VLVEntry> source){
-            float[] settings = target.settingsView().array;
-            settings[offset] = source.get(0).target.get();
-            settings[offset + 1] = source.get(1).target.get();
-            settings[offset + 2] = source.get(2).target.get();
+            target.settingsView(offset, source.get(0).target.get());
+            target.settingsView(offset + 1, source.get(1).target.get());
+            target.settingsView(offset + 2, source.get(2).target.get());
 
             target.applyLookAt();
             target.applyViewProjection();
