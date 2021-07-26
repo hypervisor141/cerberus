@@ -2,6 +2,7 @@ package hypervisor.cerberus;
 
 import hypervisor.firestorm.program.FSLight;
 import hypervisor.firestorm.program.FSLightDirect;
+import hypervisor.firestorm.sync.FSSyncMap;
 import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
@@ -40,12 +41,15 @@ public class CLLightDirect extends FSLightDirect{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 6, 6, 0, new SyncDirection(this));
 
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
-        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));
-        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
-        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.center, 0, 0));
+        CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
+        CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
+        
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(position(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(center(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.position, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.center, 0, 0)), deactivator, null);
 
         position.add(new VLVEntry(new VLVCurved(), 0));
         position.add(new VLVEntry(new VLVCurved(), 0));
@@ -149,7 +153,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, positionY());
         CLVTools.tune(target, 2, positionZ());
 
-        manager.activateEntry(CAT_POSITION);
         target.start();
         manager.start();
     }
@@ -161,7 +164,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, positionZ());
 
-        manager.activateEntry(CAT_POSITION);
         target.start();
         manager.start();
     }
@@ -173,7 +175,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, positionY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_POSITION);
         target.start();
         manager.start();
     }
@@ -185,7 +186,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, centerY());
         CLVTools.tune(target, 2, centerZ());
 
-        manager.activateEntry(CAT_CENTER);
         target.start();
         manager.start();
     }
@@ -197,7 +197,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, centerZ());
 
-        manager.activateEntry(CAT_CENTER);
         target.start();
         manager.start();
     }
@@ -209,7 +208,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, centerY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_CENTER);
         target.start();
         manager.start();
     }
@@ -221,7 +219,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_POSITION);
         target.start();
         manager.start();
     }
@@ -233,7 +230,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_CENTER);
         target.start();
         manager.start();
     }
@@ -248,7 +244,6 @@ public class CLLightDirect extends FSLightDirect{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_POSITION);
         target.start();
         manager.start();
     }
@@ -263,7 +258,6 @@ public class CLLightDirect extends FSLightDirect{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_CENTER);
         target.start();
         manager.start();
     }
@@ -275,7 +269,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_POSITION);
         manager.start();
         target.start();
     }
@@ -287,7 +280,6 @@ public class CLLightDirect extends FSLightDirect{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_CENTER);
         manager.start();
         target.start();
     }

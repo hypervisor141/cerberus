@@ -39,6 +39,31 @@ public class CLMaps{
         }
     }
 
+    public static class SelfActivate<SOURCE extends VLVTypeRunner, TARGET extends VLVManagerDynamic<?>> extends VLSyncMap<SOURCE, TARGET>{
+
+        public SelfActivate(TARGET host){
+            super(host);
+        }
+
+        public SelfActivate(SelfActivate<SOURCE, TARGET> src, long flags){
+            copy(src, flags);
+        }
+
+        protected SelfActivate(){
+
+        }
+
+        @Override
+        public void sync(SOURCE source){
+            target.activateEntry(target.indexOfEntry(source));
+        }
+
+        @Override
+        public SelfActivate<SOURCE, TARGET> duplicate(long flags){
+            return new SelfActivate<>(this, flags);
+        }
+    }
+
     public static class SelfRemove<SOURCE extends VLVTypeRunner, TARGET extends VLVManager<?>> extends VLSyncMap<SOURCE, TARGET>{
 
         public SelfRemove(TARGET host){

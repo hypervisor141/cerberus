@@ -2,6 +2,7 @@ package hypervisor.cerberus;
 
 import hypervisor.firestorm.program.FSLight;
 import hypervisor.firestorm.program.FSLightSpot;
+import hypervisor.firestorm.sync.FSSyncMap;
 import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.variable.VLVCurved;
@@ -39,14 +40,17 @@ public class CLLightSpot extends FSLightSpot{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 7, 7, 0);
 
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, new CLMaps.SetArray(position(), 0, 0, 3));
-        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, new CLMaps.SetArray(center(), 0, 0, 3));
-        VLVManager<VLVEntry> cutoff = new VLVManager<>(1, 0, new CLMaps.Set(cutOff()));
-        VLVManager<VLVEntry> outercutoff = new VLVManager<>(1, 0, new CLMaps.Set(outerCutOff()));
-        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.position, 0, 0));
-        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, new CLMaps.ScalePoint(super.center, 0, 0));
+        CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
+        CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
+
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(position(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(center(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> cutoff = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(cutOff())), deactivator, null);
+        VLVManager<VLVEntry> outercutoff = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(outerCutOff())), deactivator, null);
+        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.position, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.center, 0, 0)), deactivator, null);
 
         position.add(new VLVEntry(new VLVCurved(), 0));
         position.add(new VLVEntry(new VLVCurved(), 0));
@@ -171,7 +175,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, positionY());
         CLVTools.tune(target, 2, positionZ());
 
-        manager.activateEntry(CAT_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void positionY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -181,7 +186,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, positionZ());
 
-        manager.activateEntry(CAT_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void positionZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -191,7 +197,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, positionY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void centerX(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -201,7 +208,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, centerY());
         CLVTools.tune(target, 2, centerZ());
 
-        manager.activateEntry(CAT_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void centerY(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -211,7 +219,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, centerZ());
 
-        manager.activateEntry(CAT_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void centerZ(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -221,17 +230,24 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, centerY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void cutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_CUTOFF), 0, from, to, delay, cycles, loop, curve);
-        manager.activateEntry(CAT_CUTOFF);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_CUTOFF);
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve);
+
+        target.start();
+        manager.start();
     }
 
     public void outerCutOff(float from, float to, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
-        CLVTools.tune(manager.getEntry(CAT_OUTERCUTOFF), 0, from, to, delay, cycles, loop, curve);
-        manager.activateEntry(CAT_OUTERCUTOFF);
+        VLVManager<VLVEntry> target = manager.getEntry(CAT_OUTERCUTOFF);
+        CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve);
+
+        target.start();
+        manager.start();
     }
 
     public void position(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -241,7 +257,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_POSITION);
+        target.start();
+        manager.start();
     }
 
     public void center(float fromX, float toX, float fromY, float toY, float fromZ, float toZ, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -251,7 +268,8 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_CENTER);
+        target.start();
+        manager.start();
     }
 
     public void rotatePosition(float fromangle, float toangle, float x, float y, float z, int delay, int cycles, VLVariable.Loop loop, VLVCurved.Curve curve){
@@ -264,7 +282,6 @@ public class CLLightSpot extends FSLightSpot{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_POSITION);
         manager.start();
         target.start();
     }
@@ -279,7 +296,6 @@ public class CLLightSpot extends FSLightSpot{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_CENTER);
         manager.start();
         target.start();
     }
@@ -291,7 +307,6 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_POSITION);
         manager.start();
         target.start();
     }
@@ -303,7 +318,6 @@ public class CLLightSpot extends FSLightSpot{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_CENTER);
         manager.start();
         target.start();
     }

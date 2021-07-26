@@ -3,6 +3,7 @@ package hypervisor.cerberus;
 import android.opengl.Matrix;
 
 import hypervisor.firestorm.engine.FSView;
+import hypervisor.firestorm.sync.FSSyncMap;
 import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
 import hypervisor.vanguard.variable.VLVCurved;
@@ -43,17 +44,20 @@ public class CLView extends FSView{
     public void buildManager(){
         manager = new VLVManagerDynamic<>(0, 11, 11, 0);
 
-        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, new MapPerspective(this));
-        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, new MapOrthographic(this));
-        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, new MapView(this, 0));
-        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, new MapView(this, 3));
-        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, new MapView(this, 6));
-        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, new MapRotateView(this, 0, 0F, 0F, 0F));
-        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, new MapRotateView(this, 3, 0F, 0F, 0F));
-        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, new MapRotateView(this, 6, 0F, 0F, 0F));
-        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, new MapScaleView(this, 0, 0));
-        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, new MapScaleView(this, 3, 0));
-        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, new MapScaleView(this, 6, 0));
+        CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
+        CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
+
+        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, activator, new FSSyncMap<>(new MapPerspective(this)), deactivator, null);
+        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, activator, new FSSyncMap<>(new MapOrthographic(this)), deactivator, null);
+        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 0)), deactivator, null);
+        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 3)), deactivator, null);
+        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 6)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 3, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 6, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 3, 0)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 6, 0)), deactivator, null);
 
         perspective.add(new VLVEntry(new VLVCurved(), 0));
         perspective.add(new VLVEntry(new VLVCurved(), 0));
@@ -314,7 +318,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 2, viewPositionZ());
 
         target.start();
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
         manager.start();
     }
 
@@ -325,7 +328,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, viewPositionZ());
 
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
         target.start();
         manager.start();
     }
@@ -337,7 +339,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, viewPositionY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
         target.start();
         manager.start();
     }
@@ -349,7 +350,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, viewCenterY());
         CLVTools.tune(target, 2, viewCenterZ());
 
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -361,7 +361,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, viewCenterZ());
 
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -373,7 +372,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, viewCenterY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -385,7 +383,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, viewCenterY());
         CLVTools.tune(target, 2, viewCenterZ());
 
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -397,7 +394,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, viewCenterZ());
 
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -409,7 +405,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, viewCenterY());
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -421,7 +416,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_POSITION);
         target.start();
         manager.start();
     }
@@ -433,7 +427,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -445,7 +438,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_MOVE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -460,7 +452,6 @@ public class CLView extends FSView{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_VIEW_POSITION);
         target.start();
         manager.start();
     }
@@ -475,7 +466,6 @@ public class CLView extends FSView{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -490,7 +480,6 @@ public class CLView extends FSView{
         map.z = z;
         map.tune();
 
-        manager.activateEntry(CAT_ROTATE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -502,7 +491,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_VIEW_POSITION);
         target.start();
         manager.start();
     }
@@ -514,7 +502,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_VIEW_CENTER);
         target.start();
         manager.start();
     }
@@ -526,7 +513,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 1, fromY, toY, delay, cycles, loop, curve);
         CLVTools.tune(target, 2, fromZ, toZ, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_SCALE_VIEW_UP);
         target.start();
         manager.start();
     }
@@ -535,7 +521,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
         CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_PERSPECTIVE);
         target.start();
         manager.start();
     }
@@ -544,7 +529,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_PERSPECTIVE);
         target.start();
         manager.start();
     }
@@ -553,7 +537,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_PERSPECTIVE);
         target.start();
         manager.start();
     }
@@ -562,7 +545,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_PERSPECTIVE);
         CLVTools.tune(target, 3, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_PERSPECTIVE);
         target.start();
         manager.start();
     }
@@ -577,7 +559,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 2, fromNear, toNear, delay, cycles, loop, curve);
         CLVTools.tune(target, 3, fromFar, toFar, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_PERSPECTIVE);
         target.start();
         manager.start();
     }
@@ -586,7 +567,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 0, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -595,7 +575,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 1, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -604,7 +583,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 2, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -613,7 +591,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 3, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -622,7 +599,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 4, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -631,7 +607,6 @@ public class CLView extends FSView{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ORTHOGRAPHIC);
         CLVTools.tune(target, 5, from, to, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
@@ -647,7 +622,6 @@ public class CLView extends FSView{
         CLVTools.tune(target, 4, fromNear, toNear, delay, cycles, loop, curve);
         CLVTools.tune(target, 5, fromFar, toFar, delay, cycles, loop, curve);
 
-        manager.activateEntry(CAT_ORTHOGRAPHIC);
         target.start();
         manager.start();
     }
