@@ -2,7 +2,7 @@ package hypervisor.cerberus;
 
 import hypervisor.firestorm.program.FSLight;
 import hypervisor.firestorm.program.FSLightSpot;
-import hypervisor.firestorm.sync.FSSyncMap;
+import hypervisor.firestorm.sync.FSSyncPostMap;
 import hypervisor.vanguard.array.VLArrayFloat;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.variable.VLVCurved;
@@ -43,14 +43,14 @@ public class CLLightSpot extends FSLightSpot{
         CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
         CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
 
-        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(position(), 0, 0, 3)), deactivator, null);
-        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.SetArray(center(), 0, 0, 3)), deactivator, null);
-        VLVManager<VLVEntry> cutoff = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(cutOff())), deactivator, null);
-        VLVManager<VLVEntry> outercutoff = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(outerCutOff())), deactivator, null);
-        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)), deactivator, null);
-        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)), deactivator, null);
-        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.position, 0, 0)), deactivator, null);
-        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new CLMaps.ScalePoint(super.center, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> position = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new CLMaps.SetArray(position(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> center = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new CLMaps.SetArray(center(), 0, 0, 3)), deactivator, null);
+        VLVManager<VLVEntry> cutoff = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.Set(cutOff())), deactivator, null);
+        VLVManager<VLVEntry> outercutoff = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.Set(outerCutOff())), deactivator, null);
+        VLVManager<VLVEntry> rotatepos = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.RotatePoint(super.position, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotatecenter = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.RotatePoint(super.center, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> scalepos = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new CLMaps.ScalePoint(super.position, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> scalecenter = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new CLMaps.ScalePoint(super.center, 0, 0)), deactivator, null);
 
         position.add(new VLVEntry(new VLVCurved(), 0));
         position.add(new VLVEntry(new VLVCurved(), 0));
@@ -276,7 +276,7 @@ public class CLLightSpot extends FSLightSpot{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_POSITION);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncMap<?, ?>)target.syncerOnChange()).post.target;
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncPostMap<?, ?>)target.syncerOnChange()).post.target;
         map.x = x;
         map.y = y;
         map.z = z;
@@ -290,7 +290,7 @@ public class CLLightSpot extends FSLightSpot{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_CENTER);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncMap<?, ?>)target.syncerOnChange()).post.target;
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncPostMap<?, ?>)target.syncerOnChange()).post.target;
         map.x = x;
         map.y = y;
         map.z = z;

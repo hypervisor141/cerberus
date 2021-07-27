@@ -3,7 +3,7 @@ package hypervisor.cerberus;
 import android.opengl.Matrix;
 
 import hypervisor.firestorm.engine.FSView;
-import hypervisor.firestorm.sync.FSSyncMap;
+import hypervisor.firestorm.sync.FSSyncPostMap;
 import hypervisor.vanguard.sync.VLSyncMap;
 import hypervisor.vanguard.sync.VLSyncType;
 import hypervisor.vanguard.variable.VLVCurved;
@@ -47,17 +47,17 @@ public class CLView extends FSView{
         CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
         CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
 
-        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, activator, new FSSyncMap<>(new MapPerspective(this)), deactivator, null);
-        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, activator, new FSSyncMap<>(new MapOrthographic(this)), deactivator, null);
-        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 0)), deactivator, null);
-        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 3)), deactivator, null);
-        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapView(this, 6)), deactivator, null);
-        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 0, 0F, 0F, 0F)), deactivator, null);
-        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 3, 0F, 0F, 0F)), deactivator, null);
-        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new MapRotateView(this, 6, 0F, 0F, 0F)), deactivator, null);
-        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 0, 0)), deactivator, null);
-        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 3, 0)), deactivator, null);
-        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, activator, new FSSyncMap<>(new MapScaleView(this, 6, 0)), deactivator, null);
+        VLVManager<VLVEntry> perspective = new VLVManager<>(4, 0, activator, new FSSyncPostMap<>(new MapPerspective(this)), deactivator, null);
+        VLVManager<VLVEntry> orthographic = new VLVManager<>(6, 0, activator, new FSSyncPostMap<>(new MapOrthographic(this)), deactivator, null);
+        VLVManager<VLVEntry> moveviewpos = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapView(this, 0)), deactivator, null);
+        VLVManager<VLVEntry> moveviewcenter = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapView(this, 3)), deactivator, null);
+        VLVManager<VLVEntry> moveviewup = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapView(this, 6)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewpos = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new MapRotateView(this, 0, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewcenter = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new MapRotateView(this, 3, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> rotateviewup = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new MapRotateView(this, 6, 0F, 0F, 0F)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewpos = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapScaleView(this, 0, 0)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewcenter = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapScaleView(this, 3, 0)), deactivator, null);
+        VLVManager<VLVEntry> scaleviewup = new VLVManager<>(3, 0, activator, new FSSyncPostMap<>(new MapScaleView(this, 6, 0)), deactivator, null);
 
         perspective.add(new VLVEntry(new VLVCurved(), 0));
         perspective.add(new VLVEntry(new VLVCurved(), 0));

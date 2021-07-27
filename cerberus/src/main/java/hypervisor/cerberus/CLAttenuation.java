@@ -1,7 +1,7 @@
 package hypervisor.cerberus;
 
 import hypervisor.firestorm.program.FSAttenuation;
-import hypervisor.firestorm.sync.FSSyncMap;
+import hypervisor.firestorm.sync.FSSyncPostMap;
 import hypervisor.vanguard.primitive.VLFloat;
 import hypervisor.vanguard.variable.VLVCurved;
 import hypervisor.vanguard.variable.VLVEntry;
@@ -91,9 +91,9 @@ public class CLAttenuation{
             CLMaps.SelfActivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> activator = new CLMaps.SelfActivate<>(manager);
             CLMaps.SelfDeactivate<VLVManager<VLVEntry>, VLVManagerDynamic<?>> deactivator = new CLMaps.SelfDeactivate<>(manager);
 
-            VLVManager<VLVEntry> constant = new VLVManager<>(1, 0, activator, new FSSyncMap<>( new CLMaps.Set(constant())), deactivator, null);
-            VLVManager<VLVEntry> linear = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(linear())), deactivator, null);
-            VLVManager<VLVEntry> quadratic = new VLVManager<>(1, 0, activator, new FSSyncMap<>(new CLMaps.Set(quadratic())), deactivator, null);
+            VLVManager<VLVEntry> constant = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>( new CLMaps.Set(constant())), deactivator, null);
+            VLVManager<VLVEntry> linear = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.Set(linear())), deactivator, null);
+            VLVManager<VLVEntry> quadratic = new VLVManager<>(1, 0, activator, new FSSyncPostMap<>(new CLMaps.Set(quadratic())), deactivator, null);
 
             constant.add(new VLVEntry(new VLVCurved(), 0));
             linear.add(new VLVEntry(new VLVCurved(), 0));
