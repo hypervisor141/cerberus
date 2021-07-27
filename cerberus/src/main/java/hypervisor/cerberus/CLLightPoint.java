@@ -142,7 +142,7 @@ public class CLLightPoint extends FSLightPoint{
         VLVManager<VLVEntry> target = manager.getEntry(CAT_ROTATE_POSITION);
         CLVTools.tune(target, 0, fromangle, toangle, delay, cycles, loop, curve);
 
-        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncPostMap<?, ?>)target.syncerOnChange()).post.target;
+        CLMaps.RotatePoint map = (CLMaps.RotatePoint)((FSSyncPostMap<?>)target.syncerOnChange()).task.target;
         map.x = x;
         map.y = y;
         map.z = z;
